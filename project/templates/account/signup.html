@@ -1,0 +1,20 @@
+{% extends "material/frontend/base_lockscreen.html" %}
+{% load i18n material_form %}
+
+{% block title %}{% trans 'Log in' %} - {{ block.super }}{% endblock %}
+
+{% block content %}
+<form action="{{ app_path }}" method="post" id="signup-form">{% csrf_token %}
+    {% form %}
+        {% part form.email prefix %}<i class="material-icons prefix">email</i>{% endpart %}
+        {% part form.username prefix %}<i class="material-icons prefix">account_box</i>{% endpart %}
+        {% part form.password1 prefix %}<i class="material-icons prefix">lock</i>{% endpart %}
+        {% part form.password2 prefix %}<i class="material-icons prefix">lock</i>{% endpart %}
+    {% endform %}
+    <div class="action right-align">
+        <button type="submit" class="btn btn-primary">{% trans 'Sign Up' %}</button>
+    </div>
+</form>
+{% endblock %}
+
+{% block icon %}account_circle{% endblock %}
