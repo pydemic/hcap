@@ -44,6 +44,7 @@ DEV_REQUIREMENTS = [
     "django-debug-toolbar==2.2",
     "django-extensions==2.2.9",
     "pycodestyle==2.5.0",
+    "pre-comit==2.2.0",
 ]
 
 PROD_REQUIREMENTS = ["gunicorn==20.0.4"]
