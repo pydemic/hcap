@@ -2,6 +2,7 @@
 
 [![pipeline status](https://gitlab.com/pydemic/capacidade_hospitalar/badges/master/pipeline.svg)](https://gitlab.com/pydemic/capacidade_hospitalar/commits/master)
 [![coverage report](https://gitlab.com/pydemic/capacidade_hospitalar/badges/master/coverage.svg)](https://gitlab.com/pydemic/capacidade_hospitalar/commits/master)
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pydemic/capacidade_hospitalar)
 
 ## Table of Contents
 
