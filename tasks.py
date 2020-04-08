@@ -78,7 +78,7 @@ def clean(ctx, all=False, yes=False):
             for file in remove_files:
                 os.remove(file)
     else:
-        print('No auto migrations found. If you want to delete all migrations use `--all`')
+        print("No auto migrations found. If you want to delete all migrations use `--all`")
 
 
 # Production
