@@ -25,8 +25,7 @@ BASE_DIR = Path(__file__).parent.parent
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env("DJANGO_SECRET_KEY",
-                 default="chx%(moz%at)dig_0-j3fjk+e=ri@_-dk8b64x-po!m_!cenz(")
+SECRET_KEY = env("DJANGO_SECRET_KEY", default="chx%(moz%at)dig_0-j3fjk+e=ri@_-dk8b64x-po!m_!cenz(")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DJANGO_DEBUG", default=True)
@@ -77,11 +76,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = "project.urls"
 
 TEMPLATES = [
-    {
-        "BACKEND": "django.template.backends.jinja2.Jinja2",
-        "APP_DIRS": True,
-        "DIRS": [],
-    },
+    {"BACKEND": "django.template.backends.jinja2.Jinja2", "APP_DIRS": True, "DIRS": [],},
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [BASE_DIR / "project" / "templates"],
@@ -113,12 +108,10 @@ DATABASES = {
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
-    },
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator", },
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator", },
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator", },
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",},
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",},
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",},
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
 ]
 
 AUTHENTICATION_BACKENDS = (
@@ -175,5 +168,11 @@ ACCOUNT_USERNAME_BLACKLIST = [
 # Email
 
 DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", default="you@domain.com")
-EMAIL_BACKEND = env('DJANGO_EMAIL_BACKEND',
-                    default='django.core.mail.backends.console.EmailBackend')
+EMAIL_BACKEND = env(
+    "DJANGO_EMAIL_BACKEND", default="django.core.mail.backends.console.EmailBackend"
+)
+
+if DEBUG:
+    INSTALLED_APPS = INSTALLED_APPS + ["debug_toolbar", "django_extensions"]
+    INTERNAL_IPS = ["127.0.0.1", "localhost"]
+    MIDDLEWARE = MIDDLEWARE + ["debug_toolbar.middleware.DebugToolbarMiddleware"]

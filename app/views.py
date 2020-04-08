@@ -22,13 +22,9 @@ class LogEntryViewSet(ModelViewSet):
             Row("sari_icu_pediatric", "covid_casespediatric"),
         ),
         Fieldset(
-            "Leitos Clínicos (outras causas)",
-            Row("regular_beds_adults", "regular_beds_pediatric"),
+            "Leitos Clínicos (outras causas)", Row("regular_beds_adults", "regular_beds_pediatric"),
         ),
-        Fieldset(
-            "Leitos UTI (outras causas)",
-            Row("regular_icu_adults", "regular_icu_pediatric"),
-        ),
+        Fieldset("Leitos UTI (outras causas)", Row("regular_icu_adults", "regular_icu_pediatric"),),
     )
 
 
@@ -54,14 +50,8 @@ class HealthcareUnityViewSet(ModelViewSet):
     filters = ("municipality", "is_validated")
     list_display = ("name", "cnes_id", "municipality", "is_validated")
     layout = Layout(
+        Fieldset("Características do estabelecimento", "name", Row("cnes_id", "municipality"),),
         Fieldset(
-            "Características do estabelecimento",
-            "name",
-            Row("cnes_id", "municipality"),
-        ),
-        Fieldset(
-            "Responsável principal por preenchimento de cadastro",
-            "contact",
-            Row("email", "phone"),
+            "Responsável principal por preenchimento de cadastro", "contact", Row("email", "phone"),
         ),
     )

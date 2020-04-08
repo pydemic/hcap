@@ -1,0 +1,110 @@
+image: ritproject/cli:docker
+services:
+  - docker:dind
+variables:
+  RIT_TUNNEL_RUN: rit --log on_error tunnel --input disabled run apps hospital_capacity
+  GIT_SUBMODULE_STRATEGY: recursive
+stages:
+  - test
+  - update project images
+  - update production images
+  # - deploy
+before_script:
+  - rit --log on_error config tunnel add repo https://gitlab.com/pydemic/tunnel --name tunnel
+  - rit --log on_error config tunnel default set tunnel
+
+# Stage: test
+
+test:
+  stage: test
+  variables:
+    BUILD_TYPE: recursive
+  script:
+    - $RIT_TUNNEL_RUN development build
+    - $RIT_TUNNEL_RUN development test up
+    - $RIT_TUNNEL_RUN development test sync
+    - $RIT_TUNNEL_RUN development test all
+  except:
+    variables:
+      - $CI_COMMIT_MESSAGE =~ /--skip-test/
+  tags:
+    - docker
+
+# Stage: update project images
+
+.update_project_image: &update_project_image
+  stage: update project images
+  script:
+    - $RIT_TUNNEL_RUN python build
+    - $RIT_TUNNEL_RUN $IMAGE_TAG build
+    - docker login --username $DOCKER_HUB_USERNAME --password $DOCKER_HUB_PASSWORD
+    - $RIT_TUNNEL_RUN python push
+    - $RIT_TUNNEL_RUN $IMAGE_TAG push
+  tags:
+    - docker
+
+update development project image:
+  <<: *update_project_image
+  variables:
+    IMAGE_TAG: development
+  only:
+    - /^development$/
+
+update production project image:
+  <<: *update_project_image
+  variables:
+    IMAGE_TAG: production
+  only:
+    - /^production$/
+
+# Stage: update production images
+
+.update_production_image: &update_production_image
+  stage: update production images
+  script:
+    - $RIT_TUNNEL_RUN production build
+    - docker login --username $DOCKER_HUB_USERNAME --password $DOCKER_HUB_PASSWORD
+    - $RIT_TUNNEL_RUN production push
+  tags:
+    - docker
+
+update staging image:
+  <<: *update_production_image
+  variables:
+    BUILD_TYPE: recursive
+    IMAGE_TAG: staging
+  only:
+    - /^staging$/
+
+update latest image:
+  <<: *update_production_image
+  variables:
+    BUILD_TYPE: recursive
+    IMAGE_TAG: latest
+  only:
+    - /^latest$/
+
+# Deploy
+
+.deploy: &deploy
+  stage: deploy
+  script:
+    - $RIT_TUNNEL_RUN production deploy up
+    - $RIT_TUNNEL_RUN production deploy sync
+    - $RIT_TUNNEL_RUN production deploy playbook
+  tags:
+    - docker
+
+deploy staging:
+  <<: *deploy
+  environment:
+    name: staging
+  only:
+    - /^staging$/
+
+deploy production:
+  <<: *deploy
+  environment:
+    name: production
+  only:
+    - /^latest$/

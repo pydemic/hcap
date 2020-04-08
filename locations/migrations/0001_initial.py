@@ -32,8 +32,7 @@ class Migration(migrations.Migration):
                 (
                     "state",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE,
-                        to="locations.State",
+                        on_delete=django.db.models.deletion.CASCADE, to="locations.State",
                     ),
                 ),
             ],

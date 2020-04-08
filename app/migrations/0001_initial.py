@@ -22,17 +22,13 @@ class Migration(migrations.Migration):
                 (
                     "id",
                     models.AutoField(
-                        auto_created=True,
-                        primary_key=True,
-                        serialize=False,
-                        verbose_name="ID",
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID",
                     ),
                 ),
                 (
                     "is_validated",
                     models.BooleanField(
-                        default=False,
-                        verbose_name="Unidade foi validada por um gestor?",
+                        default=False, verbose_name="Unidade foi validada por um gestor?",
                     ),
                 ),
                 (
@@ -77,8 +73,7 @@ class Migration(migrations.Migration):
                 (
                     "municipality",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE,
-                        to="locations.Municipality",
+                        on_delete=django.db.models.deletion.CASCADE, to="locations.Municipality",
                     ),
                 ),
             ],
@@ -93,26 +88,19 @@ class Migration(migrations.Migration):
                 (
                     "id",
                     models.AutoField(
-                        auto_created=True,
-                        primary_key=True,
-                        serialize=False,
-                        verbose_name="ID",
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID",
                     ),
                 ),
                 (
                     "created",
                     model_utils.fields.AutoCreatedField(
-                        default=django.utils.timezone.now,
-                        editable=False,
-                        verbose_name="created",
+                        default=django.utils.timezone.now, editable=False, verbose_name="created",
                     ),
                 ),
                 (
                     "modified",
                     model_utils.fields.AutoLastModifiedField(
-                        default=django.utils.timezone.now,
-                        editable=False,
-                        verbose_name="modified",
+                        default=django.utils.timezone.now, editable=False, verbose_name="modified",
                     ),
                 ),
                 ("date", models.DateField()),
@@ -203,8 +191,7 @@ class Migration(migrations.Migration):
                 (
                     "unity",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE,
-                        to="app.HealthcareUnity",
+                        on_delete=django.db.models.deletion.CASCADE, to="app.HealthcareUnity",
                     ),
                 ),
             ],
@@ -219,26 +206,19 @@ class Migration(migrations.Migration):
                 (
                     "id",
                     models.AutoField(
-                        auto_created=True,
-                        primary_key=True,
-                        serialize=False,
-                        verbose_name="ID",
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID",
                     ),
                 ),
                 (
                     "created",
                     model_utils.fields.AutoCreatedField(
-                        default=django.utils.timezone.now,
-                        editable=False,
-                        verbose_name="created",
+                        default=django.utils.timezone.now, editable=False, verbose_name="created",
                     ),
                 ),
                 (
                     "modified",
                     model_utils.fields.AutoLastModifiedField(
-                        default=django.utils.timezone.now,
-                        editable=False,
-                        verbose_name="modified",
+                        default=django.utils.timezone.now, editable=False, verbose_name="modified",
                     ),
                 ),
                 (
@@ -258,8 +238,7 @@ class Migration(migrations.Migration):
                 (
                     "icu_adults",
                     models.PositiveSmallIntegerField(
-                        help_text="Informe a capacidade total.",
-                        verbose_name="Leitos UTI adulto",
+                        help_text="Informe a capacidade total.", verbose_name="Leitos UTI adulto",
                     ),
                 ),
                 (
@@ -272,14 +251,10 @@ class Migration(migrations.Migration):
                 (
                     "unity",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE,
-                        to="app.HealthcareUnity",
+                        on_delete=django.db.models.deletion.CASCADE, to="app.HealthcareUnity",
                     ),
                 ),
             ],
-            options={
-                "verbose_name": "Capacidade",
-                "verbose_name_plural": "Valores de capacidade",
-            },
+            options={"verbose_name": "Capacidade", "verbose_name_plural": "Valores de capacidade",},
         ),
     ]

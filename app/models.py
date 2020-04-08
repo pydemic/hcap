@@ -8,16 +8,10 @@ from app.fields import HospitalBedsField
 
 
 class HealthcareUnity(models.Model):
-    municipality = models.ForeignKey(
-        "locations.Municipality", on_delete=models.CASCADE,
-    )
-    is_validated = models.BooleanField(
-        "Unidade foi validada por um gestor?", default=False,
-    )
+    municipality = models.ForeignKey("locations.Municipality", on_delete=models.CASCADE,)
+    is_validated = models.BooleanField("Unidade foi validada por um gestor?", default=False,)
     cnes_id = models.CharField(
-        "Registro CNES",
-        max_length=15,
-        validators=[validators.RegexValidator(r"[0-9]+")],
+        "Registro CNES", max_length=15, validators=[validators.RegexValidator(r"[0-9]+")],
     )
     name = models.CharField(
         "Estabelecimento", max_length=100, help_text="Nome do estabelecimento de saúde"
@@ -56,9 +50,7 @@ class Capacity(TimeStampedModel):
     beds_pediatric = HospitalBedsField(
         "Leitos clínicos pediátricos", help_text="Informe a capacidade total.",
     )
-    icu_adults = HospitalBedsField(
-        "Leitos UTI adulto", help_text="Informe a capacidade total.",
-    )
+    icu_adults = HospitalBedsField("Leitos UTI adulto", help_text="Informe a capacidade total.",)
     icu_pediatric = HospitalBedsField(
         "Leitos UTI pediátrico", help_text="Informe a capacidade total.",
     )

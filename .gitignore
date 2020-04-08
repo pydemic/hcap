@@ -1,3 +1,14 @@
-db.sqlite3
+*.egg-info
 .idea
+.pytest_cache
 __pycache__
+.coverage
+db.sqlite3
+collect
+
+# docker-compose
+docker-compose*
+
+# VSCode
+.devcontainer*
+.vscode
