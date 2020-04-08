@@ -1,0 +1,25 @@
+{% extends "material/frontend/base_lockscreen.html" %}
+{% load i18n  %}
+
+{% block content %}
+<div class="row">
+    <div class="col s8 offset-s2">
+        <p>{% trans 'Are you sure you want to sign out?' %}</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12">
+        <form method="post" action="{% url 'account_logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary white-text">{% trans 'Sign Out' %}</a>
+        </form>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12">
+        <a href="{% url 'home' %}" class="btn btn-primary white-text">{% trans 'Go Back' %}</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block icon %}thumb_up{% endblock %}
