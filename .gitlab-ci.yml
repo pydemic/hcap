@@ -86,25 +86,25 @@ update latest image:
 
 # Deploy
 
-.deploy: &deploy
-  stage: deploy
-  script:
-    - $RIT_TUNNEL_RUN production deploy up
-    - $RIT_TUNNEL_RUN production deploy sync
-    - $RIT_TUNNEL_RUN production deploy playbook
-  tags:
-    - docker
+# .deploy: &deploy
+#   stage: deploy
+#   script:
+#     - $RIT_TUNNEL_RUN production deploy up
+#     - $RIT_TUNNEL_RUN production deploy sync
+#     - $RIT_TUNNEL_RUN production deploy playbook
+#   tags:
+#     - docker
 
-deploy staging:
-  <<: *deploy
-  environment:
-    name: staging
-  only:
-    - /^staging$/
+# deploy staging:
+#   <<: *deploy
+#   environment:
+#     name: staging
+#   only:
+#     - /^staging$/
 
-deploy production:
-  <<: *deploy
-  environment:
-    name: production
-  only:
-    - /^latest$/
+# deploy production:
+#   <<: *deploy
+#   environment:
+#     name: production
+#   only:
+#     - /^latest$/
