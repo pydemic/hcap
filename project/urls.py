@@ -18,7 +18,7 @@ from django.views.generic import RedirectView
 from material.frontend import urls as frontend_urls
 
 urlpatterns = [
-    path('accounts/', include('allauth.urls')),
-    path('', RedirectView.as_view(url='./app/'), name="home"),
-    path('', include(frontend_urls)),
+    path("accounts/", include("allauth.urls")),
+    path("", RedirectView.as_view(url="./app/"), name="home"),
+    path("", include(frontend_urls)),
 ]

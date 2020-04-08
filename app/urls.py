@@ -5,8 +5,8 @@ from . import views
 
 
 urlpatterns = [
-    path('', RedirectView.as_view(url='./diario/'), name="index"),
-    path('diario/', include(views.LogEntryViewSet().urls)),
-    path('capacidade/', include(views.CapacityViewSet().urls)),
-    path('unidade-de-saude/', include(views.HealthcareUnityViewSet().urls)),
+    path("", RedirectView.as_view(url="./diario/"), name="index"),
+    path("diario/", include(views.LogEntryViewSet().urls)),
+    path("capacidade/", include(views.CapacityViewSet().urls)),
+    path("unidade-de-saude/", include(views.HealthcareUnityViewSet().urls)),
 ]
