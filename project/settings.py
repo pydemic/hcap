@@ -13,6 +13,11 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os
 from pathlib import Path
 
+import environ
+
+env = environ.Env()
+environ.Env.read_env()
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = Path(__file__).parent.parent
 
@@ -20,12 +25,13 @@ BASE_DIR = Path(__file__).parent.parent
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "chx%(moz%at)dig_0-j3fjk+e=ri@_-dk8b64x-po!m_!cenz("
+SECRET_KEY = env("DJANGO_SECRET_KEY",
+                 default="chx%(moz%at)dig_0-j3fjk+e=ri@_-dk8b64x-po!m_!cenz(")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env("DJANGO_DEBUG", default=True)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env("DJANGO_ALLOWED_HOSTS", default=[])
 
 # Application definition
 
@@ -108,8 +114,7 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation"
-                ".UserAttributeSimilarityValidator",
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator", },
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator", },
@@ -117,9 +122,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 AUTHENTICATION_BACKENDS = (
-    # Needed to login by username in Django admin, regardless of `allauth`
     "django.contrib.auth.backends.ModelBackend",
-    # `allauth` specific authentication methods, such as login by e-mail
     "allauth.account.auth_backends.AuthenticationBackend",
 )
 
@@ -127,13 +130,9 @@ AUTHENTICATION_BACKENDS = (
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
 LANGUAGE_CODE = "pt-br"
-
 TIME_ZONE = "UTC"
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
@@ -154,9 +153,9 @@ ACCOUNT_USERNAME_REQUIRED = True
 ACCOUNT_EMAIL_REQUIRED = True
 LOGIN_REDIRECT_URL = "/"
 SOCIALACCOUNT_QUERY_EMAIL = True
-ACCOUNT_EMAIL_VERIFICATION = (
-    "mandatory"  # Verifying the email address will be compulsory
-)
+# ACCOUNT_EMAIL_VERIFICATION = (
+#     "mandatory"  # Verifying the email address will be compulsory
+# )
 ACCOUNT_USERNAME_BLACKLIST = [
     "administrator",
     "help",
@@ -175,7 +174,6 @@ ACCOUNT_USERNAME_BLACKLIST = [
 
 # Email
 
-DEFAULT_FROM_EMAIL = "you@domain.com"
-# EMAIL_BACKEND = env('DJANGO_EMAIL_BACKEND',
-# default='django.core.mail.backends.console.EmailBackend')
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", default="you@domain.com")
+EMAIL_BACKEND = env('DJANGO_EMAIL_BACKEND',
+                    default='django.core.mail.backends.console.EmailBackend')
