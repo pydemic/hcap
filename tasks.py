@@ -98,5 +98,3 @@ def serve(ctx):
     workers = os.environ.get("SERVER_WORKERS", "1")
 
     ctx.run(f"gunicorn project.wsgi -w {workers} -b 0.0.0.0:{port}")
-
-
