@@ -31,6 +31,7 @@ class Command(BaseCommand):
             for _ in range(desired_capacities):
                 Capacity.objects.create(
                     unity=health_unit,
+                    notifier=random_user(),
                     date=fake.date(),
                     beds_adults=fake.random_int(),
                     beds_pediatric=fake.random_int(),
@@ -40,6 +41,7 @@ class Command(BaseCommand):
             for _ in range(desired_entries):
                 LogEntry.objects.create(
                     unity=health_unit,
+                    notifier=random_user(),
                     date=fake.date(),
                     sari_cases_adults=fake.random_int(),
                     covid_cases_adults=fake.random_int(),
