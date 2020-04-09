@@ -20,7 +20,7 @@ class State(models.Model):
 
 class Municipality(models.Model):
     id = models.IntegerField(primary_key=True)
-    state = models.ForeignKey("State", on_delete=models.CASCADE,)
+    state = models.ForeignKey("State", on_delete=models.CASCADE, related_name='cities')
     name = models.CharField(max_length=50)
 
     class Meta:

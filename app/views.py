@@ -13,18 +13,22 @@ class LogEntryViewSet(ModelViewSet):
         "date",
         Fieldset(
             "Leitos Clínicos ocupados com pacientes SRAG",
-            Row("sari_beds_adults", "covid_cases_adults"),
-            Row("sari_beds_pediatric", "covid_cases_pediatric"),
+            Row("sari_cases_adults", "covid_cases_adults"),
+            Row("sari_cases_pediatric", "covid_cases_pediatric"),
         ),
         Fieldset(
             "Leitos UTI ocupados com pacientes SRAG",
-            Row("sari_icu_adults", "covid_casesadults"),
-            Row("sari_icu_pediatric", "covid_casespediatric"),
+            Row("icu_sari_cases_adults", "icu_covid_cases_adults"),
+            Row("icu_sari_cases_pediatric", "icu_covid_cases_pediatric"),
         ),
         Fieldset(
-            "Leitos Clínicos (outras causas)", Row("regular_beds_adults", "regular_beds_pediatric"),
+            "Leitos Clínicos (outras causas)",
+            Row("regular_cases_adults", "regular_cases_pediatric"),
         ),
-        Fieldset("Leitos UTI (outras causas)", Row("regular_icu_adults", "regular_icu_pediatric"),),
+        Fieldset(
+            "Leitos UTI (outras causas)",
+            Row("regular_icu_adults", "regular_icu_pediatric"),
+        ),
     )
 
 
@@ -39,8 +43,9 @@ class CapacityViewSet(ModelViewSet):
     )
     layout = Layout(
         "unity",
-        Fieldset("Leitos clínicos", Row("beds_adults", "beds_pediatric"),),
-        Fieldset("Leitos clínicos", Row("icu_adults", "icu_pediatric"),),
+        "date",
+        Fieldset("Leitos clínicos/enfermaria", Row("beds_adults", "beds_pediatric"),),
+        Fieldset("Leitos UTI", Row("icu_adults", "icu_pediatric"),),
     )
 
 
@@ -50,8 +55,10 @@ class HealthcareUnityViewSet(ModelViewSet):
     filters = ("municipality", "is_validated")
     list_display = ("name", "cnes_id", "municipality", "is_validated")
     layout = Layout(
-        Fieldset("Características do estabelecimento", "name", Row("cnes_id", "municipality"),),
         Fieldset(
-            "Responsável principal por preenchimento de cadastro", "contact", Row("email", "phone"),
+            "Características do estabelecimento",
+            "name",
+            Row("cnes_id", "municipality"),
         ),
+        "notifiers",
     )
