@@ -15,22 +15,6 @@ def db(ctx):
 
 
 @task
-def db_fake(ctx, force=False, app=True, users=True):
-    """
-    Adds fake data to the database for development tests
-    """
-    if force or os.environ.get("FAKE_DB") == "true":
-        print("Creating fake data...")
-    else:
-        return print("FAKE_DB is False")
-
-    if users:
-        ctx.run("python manage.py createfakeusers")
-    if app:
-        ctx.run("python manage.py createfakeapp")
-
-
-@task
 def migrate(ctx):
     """Alias to Django's "migrate" command."""
     ctx.run("python manage.py migrate")
@@ -62,11 +46,10 @@ def test(ctx):
 
 
 @task
-def clean(ctx, all=False, yes=False):
+def clean(ctx, db=False, yes=False):
     import re
 
     auto_migration = re.compile(r"\d{4}_auto_\w+.py")
-    all_migration = re.compile(r"\d{4}\w+.py")
 
     remove_files = []
     for app in os.listdir("."):
@@ -75,10 +58,6 @@ def clean(ctx, all=False, yes=False):
             migrations = os.listdir(migrations_path)
             if "__pycache__" in migrations:
                 migrations.remove("__pycache__")
-            if all:
-                remove_files.extend(
-                    [f"{migrations_path}{f}" for f in migrations if all_migration.fullmatch(f)]
-                )
             elif sorted(migrations) == ["__init__.py", "0001_initial.py"]:
                 remove_files.append(f"{migrations_path}/0001_initial.py")
             else:
@@ -90,14 +69,18 @@ def clean(ctx, all=False, yes=False):
         print("Listing migrations:")
         for file in remove_files:
             print(f"* {file}")
-
-        if all:
-            print("REMOVING ALL MIGRATIONS IS DANGEROUS AND SHOULD ONLY BE " "USED IN TESTING")
         if yes or input("Remove those files? (y/N)").lower() == "y":
             for file in remove_files:
                 os.remove(file)
     else:
-        print("No auto migrations found. If you want to delete all migrations use `--all`")
+        print("No auto migrations found.")
+
+    if db:
+        try:
+            os.remove("db.sqlite3")
+            print("Removed db.sqlite3")
+        except FileNotFoundError:
+            print("No sqlite db to remove")
 
 
 #
