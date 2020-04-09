@@ -6,11 +6,13 @@ import os
 # Database
 #
 
+
 @task
 def db(ctx):
     """Make migrations and then migrate."""
     ctx.run("python manage.py makemigrations")
     ctx.run("python manage.py migrate")
+
 
 @task
 def db_fake(ctx, force=False, app=True, users=True):
@@ -27,6 +29,7 @@ def db_fake(ctx, force=False, app=True, users=True):
     if app:
         ctx.run("python manage.py createfakeapp")
 
+
 @task
 def migrate(ctx):
     """Alias to Django's "migrate" command."""
@@ -42,6 +45,7 @@ def migrations(ctx):
 #
 # Development
 #
+
 
 @task
 def run(ctx):
@@ -95,9 +99,11 @@ def clean(ctx, all=False, yes=False):
     else:
         print("No auto migrations found. If you want to delete all migrations use `--all`")
 
+
 #
 # Production
 #
+
 
 @task
 def collectstatic(ctx):

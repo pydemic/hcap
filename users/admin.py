@@ -11,14 +11,7 @@ class EmailAddressInline(admin.TabularInline):
 
 @admin.register(get_user_model())
 class UserAdmin(DjangoUserAdmin):
-    list_display = (
-        "id",
-        "name",
-        "email",
-        "is_active",
-        "is_staff",
-        "state",
-    )
+    list_display = ("id", "name", "email", "is_active", "is_staff", "state")
 
     list_filter = ("is_active", "is_staff", "state")
     search_fields = ("id", "name", "email")
@@ -26,19 +19,16 @@ class UserAdmin(DjangoUserAdmin):
     fieldsets = (
         (None, {"fields": ("id",)}),
         ("Informações pessoais", {"fields": ("name", "email", "cpf")}),
-        ("Permissões", {"fields": ("is_active", "is_staff", "is_verified_notifier", "is_state_manager")}),
+        (
+            "Permissões",
+            {"fields": ("is_active", "is_staff", "is_verified_notifier", "is_state_manager")},
+        ),
         ("Atuação", {"fields": ("state",)}),
         ("Datas importantes", {"fields": ("last_login", "date_joined")}),
     )
 
     add_fieldsets = (
-        (
-            "Informações pessiais",
-            {
-                "fields": (
-                    "name", "email", "cpf", "password1", "password2")
-            },
-        ),
+        ("Informações pessiais", {"fields": ("name", "email", "cpf", "password1", "password2")}),
         ("Permissões", {"fields": ("is_active", "is_staff")}),
         ("Atuação", {"fields": ("state",)}),
     )

@@ -19,14 +19,13 @@ class HealthcareUnity(models.Model):
         verbose_name="Município",
     )
     cnes_id = models.CharField(
-        "Registro CNES", max_length=15, validators=[validators.RegexValidator(r"[0-9]+")],
+        "Registro CNES", max_length=15, validators=[validators.RegexValidator(r"[0-9]+")]
     )
-    is_active = models.BooleanField("Unidade está ativa?", default=True, )
+    is_active = models.BooleanField("Unidade está ativa?", default=True)
     name = models.CharField(
         "Estabelecimento", max_length=100, help_text="Nome do estabelecimento de saúde"
     )
-    notifiers = models.ManyToManyField(get_user_model(),
-                                       related_name="healthcare_unities")
+    notifiers = models.ManyToManyField(get_user_model(), related_name="healthcare_unities")
 
     class Meta:
         verbose_name = "Estabelecimento de Saúde"
@@ -50,20 +49,14 @@ class Capacity(TimeStampedModel):
         related_name="capacity_notifications",
     )
     date = models.DateField(
-        "Data",
-        default=now,
-        help_text="Quando ocorreu a alteração na capacidade hospitalar?",
+        "Data", default=now, help_text="Quando ocorreu a alteração na capacidade hospitalar?"
     )
-    beds_adults = HospitalBedsField("Adulto",
-                                    help_text="Quantos leitos deste tipo você tem?", )
+    beds_adults = HospitalBedsField("Adulto", help_text="Quantos leitos deste tipo você tem?")
     beds_pediatric = HospitalBedsField(
-        "Pediátrico", help_text="Quantos leitos deste tipo você tem?",
+        "Pediátrico", help_text="Quantos leitos deste tipo você tem?"
     )
-    icu_adults = HospitalBedsField("Adulto",
-                                   help_text="Quantos leitos deste tipo você tem?", )
-    icu_pediatric = HospitalBedsField(
-        "Pediátrico", help_text="Quantos leitos deste tipo você tem?",
-    )
+    icu_adults = HospitalBedsField("Adulto", help_text="Quantos leitos deste tipo você tem?")
+    icu_pediatric = HospitalBedsField("Pediátrico", help_text="Quantos leitos deste tipo você tem?")
     created_date = property(lambda self: to_date(self.created))
 
     @property
@@ -77,8 +70,7 @@ class Capacity(TimeStampedModel):
 
     @property
     def icu_and_beds_total(self):
-        return self.beds_adults + self.beds_pediatric + self.icu_adults + \
-               self.icu_pediatric
+        return self.beds_adults + self.beds_pediatric + self.icu_adults + self.icu_pediatric
 
     @property
     def icu_total(self):
@@ -104,11 +96,10 @@ class LogEntry(TimeStampedModel):
         verbose_name="Usuário notificador",
         related_name="daily_notifications",
     )
-    date = models.DateField("Data", help_text="De quando é este dado?", default=now, )
+    date = models.DateField("Data", help_text="De quando é este dado?", default=now)
 
     # SARI - adults
-    sari_cases_adults = HospitalBedsField("Adulto",
-                                          help_text="Informe total de pacientes SRAG", )
+    sari_cases_adults = HospitalBedsField("Adulto", help_text="Informe total de pacientes SRAG")
     covid_cases_adults = HospitalBedsField(
         "Casos COVID confirmados",
         blank=True,
@@ -117,7 +108,7 @@ class LogEntry(TimeStampedModel):
 
     # SARI - pediatric
     sari_cases_pediatric = HospitalBedsField(
-        "Pediátrico", help_text="Informe total de pacientes SRAG",
+        "Pediátrico", help_text="Informe total de pacientes SRAG"
     )
     covid_cases_pediatric = HospitalBedsField(
         "Casos COVID confirmados",
@@ -126,9 +117,7 @@ class LogEntry(TimeStampedModel):
     )
 
     # SARI - ICU adults
-    icu_sari_cases_adults = HospitalBedsField(
-        "Adulto", help_text="Informe total de pacientes SRAG",
-    )
+    icu_sari_cases_adults = HospitalBedsField("Adulto", help_text="Informe total de pacientes SRAG")
     icu_covid_cases_adults = HospitalBedsField(
         "Casos COVID confirmados",
         blank=True,
@@ -137,7 +126,7 @@ class LogEntry(TimeStampedModel):
 
     # SARI - ICU pediatric
     icu_sari_cases_pediatric = HospitalBedsField(
-        "Pediátrico", help_text="Informe total de pacientes para SRAG",
+        "Pediátrico", help_text="Informe total de pacientes para SRAG"
     )
     icu_covid_cases_pediatric = HospitalBedsField(
         "Casos COVID confirmados",
@@ -146,15 +135,13 @@ class LogEntry(TimeStampedModel):
     )
 
     # Regular
-    regular_cases_adults = HospitalBedsField("Adulto",
-                                             help_text="Informe o total de pacientes.", )
+    regular_cases_adults = HospitalBedsField("Adulto", help_text="Informe o total de pacientes.")
     regular_cases_pediatric = HospitalBedsField(
-        "Pediátrico", help_text="Informe o total de pacientes.",
+        "Pediátrico", help_text="Informe o total de pacientes."
     )
-    regular_icu_adults = HospitalBedsField("Adulto",
-                                           help_text="Informe o total de pacientes.", )
+    regular_icu_adults = HospitalBedsField("Adulto", help_text="Informe o total de pacientes.")
     regular_icu_pediatric = HospitalBedsField(
-        "Pediátrico", help_text="Informe o total de pacientes.",
+        "Pediátrico", help_text="Informe o total de pacientes."
     )
 
     class Meta:

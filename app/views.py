@@ -43,11 +43,11 @@ class CreateCapacityView(NotifierMixin, CreateModelView):
         return form
 
     def prepare_form_for_unity(self, form, unity):
-        form.initial['unity'] = unity
-        field: forms.Field = form.fields['unity']
+        form.initial["unity"] = unity
+        field: forms.Field = form.fields["unity"]
         field.disabled = True
 
-        capacity = unity.capacity_notifications.order_by('date').last()
+        capacity = unity.capacity_notifications.order_by("date").last()
         if capacity:
             for k, v in capacity.capacities.items():
                 form.initial.setdefault(k, v)

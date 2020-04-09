@@ -26,8 +26,7 @@ class LogEntryViewSet(ModelViewSet):
             "Leitos Clínicos (outras causas)",
             Row("regular_cases_adults", "regular_cases_pediatric"),
         ),
-        Fieldset("Leitos UTI (outras causas)",
-                 Row("regular_icu_adults", "regular_icu_pediatric"), ),
+        Fieldset("Leitos UTI (outras causas)", Row("regular_icu_adults", "regular_icu_pediatric")),
     )
 
 
@@ -37,20 +36,20 @@ class CapacityViewSet(ModelViewSet):
     layout = Layout(
         "unity",
         "date",
-        Fieldset("Leitos clínicos/enfermaria", Row("beds_adults", "beds_pediatric"), ),
-        Fieldset("Leitos UTI", Row("icu_adults", "icu_pediatric"), ),
+        Fieldset("Leitos clínicos/enfermaria", Row("beds_adults", "beds_pediatric")),
+        Fieldset("Leitos UTI", Row("icu_adults", "icu_pediatric")),
     )
     create_view_class = views.CreateCapacityView
 
     def icu_total_(self, obj):
         return obj.icu_total
 
-    icu_total_.short_description = 'Leitos UTI'
+    icu_total_.short_description = "Leitos UTI"
 
     def beds_total_(self, obj):
         return obj.beds_total
 
-    beds_total_.short_description = 'Leitos Clínicos'
+    beds_total_.short_description = "Leitos Clínicos"
 
 
 class HealthcareUnityViewSet(ModelViewSet):
@@ -59,7 +58,6 @@ class HealthcareUnityViewSet(ModelViewSet):
     filters = ("municipality", "is_validated")
     list_display = ("name", "cnes_id", "municipality", "is_validated")
     layout = Layout(
-        Fieldset("Características do estabelecimento", "name",
-                 Row("cnes_id", "municipality"), ),
+        Fieldset("Características do estabelecimento", "name", Row("cnes_id", "municipality")),
         "notifiers",
     )
