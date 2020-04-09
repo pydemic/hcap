@@ -36,8 +36,9 @@ ALLOWED_HOSTS = env("DJANGO_ALLOWED_HOSTS", default=[])
 
 INSTALLED_APPS = [
     # Local
-    "app.apps.AppConfig",
-    "locations.apps.LocationsConfig",
+    "project",
+    "app",
+    "locations",
     # Material
     # 'viewflow',
     # 'viewflow.frontend',
@@ -107,6 +108,8 @@ DATABASES = {
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
+AUTH_USER_MODEL = "app.User"
+
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",},
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",},
@@ -140,15 +143,13 @@ SITE_ID = 1
 
 # Allauth configuration
 
-# ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_USER_MODEL_USERNAME_FIELD = "username"
 ACCOUNT_USERNAME_REQUIRED = True
 ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 LOGIN_REDIRECT_URL = "/"
 SOCIALACCOUNT_QUERY_EMAIL = True
-# ACCOUNT_EMAIL_VERIFICATION = (
-#     "mandatory"  # Verifying the email address will be compulsory
-# )
 ACCOUNT_USERNAME_BLACKLIST = [
     "administrator",
     "help",
@@ -164,6 +165,8 @@ ACCOUNT_USERNAME_BLACKLIST = [
     "blog",
     "master",
 ]
+ACCOUNT_ADAPTER = "app.adapters.AccountAdapter"
+ACCOUNT_FORMS = {"signup": "app.forms.SignupForm"}
 
 # Email
 

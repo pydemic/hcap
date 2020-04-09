@@ -12,6 +12,7 @@ class State(models.Model):
     class Meta:
         verbose_name = "Estado"
         verbose_name_plural = "Estados"
+        ordering = ("name",)
         permissions = [("fill", "Pode adicionar lista de estados no banco")]
 
     def __str__(self):
@@ -20,7 +21,7 @@ class State(models.Model):
 
 class Municipality(models.Model):
     id = models.IntegerField(primary_key=True)
-    state = models.ForeignKey("State", on_delete=models.CASCADE, related_name='cities')
+    state = models.ForeignKey("State", on_delete=models.CASCADE, related_name="cities")
     name = models.CharField(max_length=50)
 
     class Meta:
