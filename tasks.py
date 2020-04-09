@@ -2,9 +2,9 @@ import os
 from invoke import task
 import os
 
-
+#
 # Database
-
+#
 
 @task
 def db(ctx):
@@ -25,8 +25,9 @@ def migrations(ctx):
     ctx.run("python manage.py makemigrations")
 
 
+#
 # Development
-
+#
 
 @task
 def run(ctx):
@@ -80,9 +81,9 @@ def clean(ctx, all=False, yes=False):
     else:
         print("No auto migrations found. If you want to delete all migrations use `--all`")
 
-
+#
 # Production
-
+#
 
 @task
 def collectstatic(ctx):

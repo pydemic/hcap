@@ -36,9 +36,7 @@ ALLOWED_HOSTS = env("DJANGO_ALLOWED_HOSTS", default=[])
 
 INSTALLED_APPS = [
     # Local
-    "project",
     "app",
-    "locations",
     # Material
     # 'viewflow',
     # 'viewflow.frontend',
@@ -46,14 +44,14 @@ INSTALLED_APPS = [
     "material.frontend",
     "material.admin",
     # All auth
-    # 'allauth_bootstrap4',
-    "compressor",
-    "crispy_forms",
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
-    # 'allauth.socialaccount.providers.facebook',
-    # 'allauth.socialaccount.providers.google',
+    "compressor",
+    "crispy_forms",
+    # User apps depends on locations and must migrate before allauth.account
+    "users",
+    "locations",
     # Django
     "django.contrib.admin",
     "django.contrib.auth",
@@ -108,7 +106,7 @@ DATABASES = {
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
-AUTH_USER_MODEL = "app.User"
+AUTH_USER_MODEL = "users.User"
 
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",},
