@@ -66,3 +66,6 @@ class User(AbstractUser):
         self.email = self.email.lower()
         self.username = self.username.lower()
         super().clean()
+
+    def get_full_name(self):
+        return self.name

@@ -6,13 +6,13 @@
 {% block content %}
 <form action="{{ app_path }}" method="post" id="signup-form">{% csrf_token %}
     {% form %}
+    {% part form.name prefix %}<i class="material-icons prefix">short_text</i>{% endpart %}
     {% part form.cpf prefix %}<i class="material-icons prefix">perm_contact_calendar</i>{% endpart %}
+    {% attr form.state 'group' style %}text-align: start;{% endattr %}
+    {% part form.state prefix %}<i class="material-icons prefix" style="text-align: center;">place</i>{% endpart %}
     {% part form.email prefix %}<i class="material-icons prefix">email</i>{% endpart %}
-    {% part form.first_name prefix %}<i class="material-icons prefix">short_text</i>{% endpart %}
-    {% part form.last_name prefix %}<i class="material-icons prefix">short_text</i>{% endpart %}
     {% part form.password1 prefix %}<i class="material-icons prefix">lock</i>{% endpart %}
     {% part form.password2 prefix %}<i class="material-icons prefix">lock</i>{% endpart %}
-    {% attr form.state 'group' style %}text-align: start;{% endattr %}
     {% part form.state errors %}
     {% if form.state.errors %}
     <div class="errors" style="text-align: center; margin-left: 3rem;">
@@ -20,7 +20,6 @@
     </div>
     {% endif %}
     {% endpart %}
-    {% part form.state prefix %}<i class="material-icons prefix" style="text-align: center;">place</i>{% endpart %}
     {% part form.username prefix %}<i class="material-icons prefix">account_box</i>{% endpart %}
     {% endform %}
     <div class="action right-align">
