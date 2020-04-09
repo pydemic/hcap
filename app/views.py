@@ -31,8 +31,6 @@ class NotifierMixin(CreateModelView):
         form.save = save
         return super().form_valid(form, *args, **kwargs)
 
-
-class CreateCapacityView(NotifierMixin, CreateModelView):
     def get_form(self, form_class=None):
         form = super().get_form(form_class=None)
         user = self.request.user
@@ -51,3 +49,11 @@ class CreateCapacityView(NotifierMixin, CreateModelView):
         if capacity:
             for k, v in capacity.capacities.items():
                 form.initial.setdefault(k, v)
+
+
+class CreateCapacityView(NotifierMixin, CreateModelView):
+    pass
+
+
+class CreateLogEntryView(NotifierMixin, CreateModelView):
+    pass

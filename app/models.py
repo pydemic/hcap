@@ -139,10 +139,41 @@ class LogEntry(TimeStampedModel):
     regular_cases_pediatric = HospitalBedsField(
         "Pediátrico", help_text="Informe o total de pacientes."
     )
-    regular_icu_adults = HospitalBedsField("Adulto", help_text="Informe o total de pacientes.")
-    regular_icu_pediatric = HospitalBedsField(
+    icu_regular_adults = HospitalBedsField("Adulto", help_text="Informe o total de pacientes.")
+    icu_regular_pediatric = HospitalBedsField(
         "Pediátrico", help_text="Informe o total de pacientes."
     )
+
+    @property
+    def icu_and_cases_total(self):
+        return self.icu_total + self.cases_total
+
+    @property
+    def icu_total(self):
+        return (
+            self.icu_sari_cases_adults
+            + self.icu_sari_cases_pediatric
+            + self.icu_regular_adults
+            + self.icu_regular_pediatric
+        )
+
+    @property
+    def cases_total(self):
+        return (
+            self.sari_cases_adults
+            + self.sari_cases_pediatric
+            + self.regular_cases_adults
+            + self.regular_cases_pediatric
+        )
+
+    @property
+    def covid_total(self):
+        return (
+            self.covid_cases_adults
+            + self.covid_cases_pediatric
+            + self.icu_covid_cases_adults
+            + self.icu_covid_cases_pediatric
+        )
 
     class Meta:
         verbose_name = "Informe diário"

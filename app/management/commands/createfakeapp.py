@@ -53,8 +53,8 @@ class Command(BaseCommand):
                     icu_covid_cases_pediatric=fake.random_int(),
                     regular_cases_adults=fake.random_int(),
                     regular_cases_pediatric=fake.random_int(),
-                    regular_icu_adults=fake.random_int(),
-                    regular_icu_pediatric=fake.random_int(),
+                    icu_regular_adults=fake.random_int(),
+                    icu_regular_pediatric=fake.random_int(),
                 )
 
         print(f"Created {desired_units} fake healthcare units")

@@ -5,10 +5,26 @@ from . import models
 from . import views
 
 
-class LogEntryViewSet(ModelViewSet):
-    model = models.LogEntry
+class HealthcareUnityStateMixin(ModelViewSet):
+    create_view_class = views.CreateLogEntryView
+    list_display = ("unity", "date", "icu_total_", "clinic_total_")
 
-    list_display = ("unity", "date")
+    def icu_total_(self, obj):
+        return obj.icu_total
+
+    icu_total_.short_description = "Total UTI"
+
+    def clinic_total_(self, obj):
+        try:
+            return obj.beds_total
+        except AttributeError:
+            return obj.cases_total
+
+    clinic_total_.short_description = "Total Clínicos"
+
+
+class LogEntryViewSet(HealthcareUnityStateMixin, ModelViewSet):
+    model = models.LogEntry
     layout = Layout(
         "unity",
         "date",
@@ -26,30 +42,19 @@ class LogEntryViewSet(ModelViewSet):
             "Leitos Clínicos (outras causas)",
             Row("regular_cases_adults", "regular_cases_pediatric"),
         ),
-        Fieldset("Leitos UTI (outras causas)", Row("regular_icu_adults", "regular_icu_pediatric")),
+        Fieldset("Leitos UTI (outras causas)", Row("icu_regular_adults", "icu_regular_pediatric")),
     )
 
 
-class CapacityViewSet(ModelViewSet):
+class CapacityViewSet(HealthcareUnityStateMixin, ModelViewSet):
     model = models.Capacity
-    list_display = ("unity", "date", "icu_total_", "beds_total_")
+    create_view_class = views.CreateCapacityView
     layout = Layout(
         "unity",
         "date",
         Fieldset("Leitos clínicos/enfermaria", Row("beds_adults", "beds_pediatric")),
         Fieldset("Leitos UTI", Row("icu_adults", "icu_pediatric")),
     )
-    create_view_class = views.CreateCapacityView
-
-    def icu_total_(self, obj):
-        return obj.icu_total
-
-    icu_total_.short_description = "Leitos UTI"
-
-    def beds_total_(self, obj):
-        return obj.beds_total
-
-    beds_total_.short_description = "Leitos Clínicos"
 
 
 class HealthcareUnityViewSet(ModelViewSet):
