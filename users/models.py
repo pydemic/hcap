@@ -6,12 +6,18 @@ from .validators import CPFValidator
 
 class User(AbstractUser):
     email = models.EmailField("E-mail", unique=True, help_text="Informe o e-mail.")
-    first_name = models.CharField("Nome", max_length=100, help_text="Informe o nome.")
-    last_name = models.CharField("Sobrenome", max_length=100, help_text="Informe o sobrenome.")
+    name = models.CharField("Nome completo", max_length=150,
+                            help_text="Informe o nome completo.")
     is_verified_notifier = models.BooleanField(
         "Notificador válido?",
-        default=None,
-        help_text="ATENÇÃO! O usuário terá permissões para notificar alterações de leitos e utilização hospitalar.",
+        default=False,
+        help_text="ATENÇÃO! O usuário terá permissões para notificar alterações de "
+                  "leitos e utilização hospitalar.",
+    )
+    is_state_manager = models.BooleanField(
+        "Gestor estadual?",
+        default=False,
+        help_text="Marque explicitamente os gestores estaduais.",
     )
     cpf = models.CharField(
         "CPF",
@@ -28,6 +34,25 @@ class User(AbstractUser):
         on_delete=models.SET_NULL,
         help_text="É necessário informar o estado.",
     )
+
+    @property
+    def first_name(self):
+        return (self.name.split() or ('',))[0]
+
+    @property
+    def last_name(self):
+        return ' '.join(self.name.split()[1:])
+
+    @first_name.setter
+    def first_name(self, value):
+        parts = self.name.split(maxsplit=1) or ['']
+        parts[0] = value or ''
+        self.name = ' '.join(parts)
+
+    @last_name.setter
+    def last_name(self, value):
+        parts = self.name.split(maxsplit=1) or ['']
+        self.name = parts[0] + (value or '')
 
     @property
     def has_verified_email(self):
