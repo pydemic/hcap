@@ -1,57 +1,53 @@
-from material import Layout, Row, Fieldset
-from material.frontend.views import ModelViewSet
-
-from . import models
-
-
-class LogEntryViewSet(ModelViewSet):
-    model = models.LogEntry
-
-    list_display = ("unity", "date")
-    layout = Layout(
-        "unity",
-        "date",
-        Fieldset(
-            "Leitos Clínicos ocupados com pacientes SRAG",
-            Row("sari_cases_adults", "covid_cases_adults"),
-            Row("sari_cases_pediatric", "covid_cases_pediatric"),
-        ),
-        Fieldset(
-            "Leitos UTI ocupados com pacientes SRAG",
-            Row("icu_sari_cases_adults", "icu_covid_cases_adults"),
-            Row("icu_sari_cases_pediatric", "icu_covid_cases_pediatric"),
-        ),
-        Fieldset(
-            "Leitos Clínicos (outras causas)",
-            Row("regular_cases_adults", "regular_cases_pediatric"),
-        ),
-        Fieldset("Leitos UTI (outras causas)", Row("regular_icu_adults", "regular_icu_pediatric"),),
-    )
+from django import forms
+from django.conf import settings
+from django.utils.timezone import now
+from material.frontend.views import CreateModelView
 
 
-class CapacityViewSet(ModelViewSet):
-    model = models.Capacity
-    list_display = (
-        "unity",
-        "beds_adults",
-        "beds_pediatric",
-        "icu_adults",
-        "icu_pediatric",
-    )
-    layout = Layout(
-        "unity",
-        "date",
-        Fieldset("Leitos clínicos/enfermaria", Row("beds_adults", "beds_pediatric"),),
-        Fieldset("Leitos UTI", Row("icu_adults", "icu_pediatric"),),
-    )
+class NotifierMixin(CreateModelView):
+    def has_add_permission(self, request):
+        user = request.user
+        if not (user.is_verified_notifier or settings.DEBUG and user.is_superuser):
+            return False
+        return user.healthcare_unities.exists()
+
+    def has_object_permission(self, request, obj):
+        if not self.has_add_permission(request):
+            return False
+        elif obj.notifier != request.user:
+            return False
+        return (obj.created - now()).hours < 20
+
+    def form_valid(self, form: forms.ModelForm, *args, **kwargs):
+        save_fn = form.save
+
+        def save():
+            obj = save_fn(commit=False)
+            obj.notifier = self.request.user
+            obj.save()
+            form.save_m2m()
+            return obj
+
+        form.save = save
+        return super().form_valid(form, *args, **kwargs)
 
 
-class HealthcareUnityViewSet(ModelViewSet):
-    model = models.HealthcareUnity
+class CreateCapacityView(NotifierMixin, CreateModelView):
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class=None)
+        user = self.request.user
+        unities = list(user.healthcare_unities.all())
 
-    filters = ("municipality", "is_validated")
-    list_display = ("name", "cnes_id", "municipality", "is_validated")
-    layout = Layout(
-        Fieldset("Características do estabelecimento", "name", Row("cnes_id", "municipality"),),
-        "notifiers",
-    )
+        if len(unities) == 1:
+            self.prepare_form_for_unity(form, unities[0])
+        return form
+
+    def prepare_form_for_unity(self, form, unity):
+        form.initial['unity'] = unity
+        field: forms.Field = form.fields['unity']
+        field.disabled = True
+
+        capacity = unity.capacity_notifications.order_by('date').last()
+        if capacity:
+            for k, v in capacity.capacities.items():
+                form.initial.setdefault(k, v)

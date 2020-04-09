@@ -2,6 +2,7 @@ import re
 
 from django.core.exceptions import ValidationError
 from django.utils.deconstruct import deconstructible
+from django.conf import settings
 
 CPFRegex = r"^[0-9]{3}.[0-9]{3}.[0-9]{3}-[0-9]{2}$"
 
@@ -15,6 +16,8 @@ class CPFValidator:
             )
 
         value = list(re.sub(r"[^0-9]", "", value))
+        if not settings.VALIDATE_CPF:
+            return
 
         if (
             len(set(value)) == 1

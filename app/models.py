@@ -1,12 +1,12 @@
 import datetime
 
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core import validators
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.timezone import now
 from model_utils.models import TimeStampedModel
-from django.conf import settings
 
 from app.fields import HospitalBedsField
 
@@ -25,7 +25,8 @@ class HealthcareUnity(models.Model):
     name = models.CharField(
         "Estabelecimento", max_length=100, help_text="Nome do estabelecimento de saúde"
     )
-    notifiers = models.ManyToManyField(get_user_model(), related_name="unities")
+    notifiers = models.ManyToManyField(get_user_model(),
+                                       related_name="healthcare_unities")
 
     class Meta:
         verbose_name = "Estabelecimento de Saúde"
@@ -64,6 +65,28 @@ class Capacity(TimeStampedModel):
         "Pediátrico", help_text="Quantos leitos deste tipo você tem?",
     )
     created_date = property(lambda self: to_date(self.created))
+
+    @property
+    def capacities(self):
+        return dict(
+            beds_adults=self.beds_adults,
+            beds_pediatric=self.beds_pediatric,
+            icu_adults=self.icu_adults,
+            icu_pediatric=self.icu_pediatric,
+        )
+
+    @property
+    def icu_and_beds_total(self):
+        return self.beds_adults + self.beds_pediatric + self.icu_adults + \
+               self.icu_pediatric
+
+    @property
+    def icu_total(self):
+        return self.icu_adults + self.icu_pediatric
+
+    @property
+    def beds_total(self):
+        return self.beds_adults + self.beds_pediatric
 
     class Meta:
         verbose_name = "Alteração na capacidade"

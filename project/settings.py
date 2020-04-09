@@ -173,6 +173,8 @@ EMAIL_BACKEND = env(
     "DJANGO_EMAIL_BACKEND", default="django.core.mail.backends.console.EmailBackend"
 )
 
+VALIDATE_CPF = env("VALIDATE_CPF", default=True)
+
 if DEBUG:
     INSTALLED_APPS = INSTALLED_APPS + ["debug_toolbar", "django_extensions"]
     INTERNAL_IPS = ["127.0.0.1", "localhost"]

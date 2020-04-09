@@ -1,4 +1,5 @@
 from django.db import models
+from project.managers import CleanManager
 
 
 class HealthcareUnityQuerySet(models.QuerySet):
@@ -16,6 +17,6 @@ class CapacityQuerySet(models.QuerySet):
         return self.filter(user.all())
 
 
-HealthcareUnityManager = models.Manager.from_queryset(HealthcareUnityQuerySet)
-LogEntryManager = models.Manager.from_queryset(LogEntryQuerySet)
-CapacityManager = models.Manager.from_queryset(CapacityQuerySet)
+HealthcareUnityManager = CleanManager.from_queryset(HealthcareUnityQuerySet)
+LogEntryManager = CleanManager.from_queryset(LogEntryQuerySet)
+CapacityManager = CleanManager.from_queryset(CapacityQuerySet)
