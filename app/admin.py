@@ -52,4 +52,4 @@ class UserAdmin(DjangoUserAdmin):
     readonly_fields = ("id", "date_joined", "last_login")
 
     def verified(self, user):
-        return user.verified()
+        return user.has_verified_email

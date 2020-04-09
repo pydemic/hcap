@@ -1,5 +1,5 @@
 from allauth.account.forms import SignupForm as AllauthSignupForm
-from app.validators import CPFValidator
+from users.validators import CPFValidator
 from django import forms
 from django.contrib.auth import get_user_model
 from locations.models import State
