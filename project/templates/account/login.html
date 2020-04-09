@@ -4,6 +4,8 @@
 {% block page_title %}{% trans 'Log in' %}{% endblock %}
 
 {% block content %}
+<p>{% blocktrans %}If you have not created an account yet, then please
+<a href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}</p>
 <form action="{{ app_path }}" method="post" id="login-form">{% csrf_token %}
     {% if 'username' in form.fields %}
         {% form %}
@@ -13,13 +15,7 @@
     {% else %}
         {% form %}{% endform %}
     {% endif %}
-    
-    {% url 'admin_password_reset' as password_reset_url %}
-    {% if password_reset_url %}
-    <div class="password-reset-link">
-        <a href="{{ password_reset_url }}">{% trans 'Forgotten your password or username?' %}</a>
-    </div>
-    {% endif %}
+    <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
     <div class="action">
         <button type="submit" class="btn btn-primary">{% trans 'Log in' %}</button>
     </div>
