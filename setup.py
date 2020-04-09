@@ -44,6 +44,7 @@ DEV_REQUIREMENTS = [
     "django-debug-toolbar==2.2",
     "django-extensions==2.2.9",
     "pycodestyle==2.5.0",
+    "faker==4.0.2",
     "pre-commit==2.2.0",
 ]
 
