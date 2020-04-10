@@ -15,6 +15,22 @@ def db(ctx):
 
 
 @task
+def db_fake(ctx, force=False, app=True, users=True):
+    """
+    Adds fake data to the database for development tests
+    """
+    if force or os.environ.get("FAKE_DB") == "true":
+        print("Creating fake data...")
+    else:
+        return print("FAKE_DB is False")
+
+    if users:
+        ctx.run("python manage.py createfakeusers")
+    if app:
+        ctx.run("python manage.py createfakeapp")
+
+
+@task
 def migrate(ctx):
     """Alias to Django's "migrate" command."""
     ctx.run("python manage.py migrate")
