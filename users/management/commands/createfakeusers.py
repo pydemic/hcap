@@ -1,4 +1,3 @@
-from allauth.account.models import EmailAddress
 from django.conf import settings
 from faker import Factory
 
@@ -37,9 +36,9 @@ class Command(BaseCommand):
         self,
         *files,
         admin=False,
-        admin_password=settings.FAKE_ADMIN_PASSWORD,
+        admin_password=None,
         user=True,
-        user_password=settings.FAKE_USER_PASSWORD,
+        user_password=None,
         state_managers=2,
         users=50,
         **options,
@@ -48,9 +47,9 @@ class Command(BaseCommand):
 
         users_created = 0
         fake = Factory.create("en-US")
-        blocked_usernames = {"admin", *User.objects.values_list("email", flat=True)}
-        usernames = set()
+        blocked_usernames = {"admin", "user", *User.objects.values_list("email", flat=True)}
 
+        usernames = set()
         while len(usernames) < state_managers + users:
             username = fake.user_name()
             if username not in blocked_usernames:
@@ -78,7 +77,6 @@ class Command(BaseCommand):
                 email=username + "@" + fake.domain_name(),
                 is_verified_notifier=True,
                 is_state_manager=True,
-                is_staff=True,
             )
             verify_email(user)
             users_created += 1
@@ -87,7 +85,10 @@ class Command(BaseCommand):
         for _ in range(users):
             username = usernames.pop()
             user = User.objects.create(
-                cpf=cpfs.pop(), name=fake.name(), email=username + "@" + fake.domain_name()
+                cpf=cpfs.pop(),
+                name=fake.name(),
+                email=username + "@" + fake.domain_name(),
+                is_verified_notifier=True,
             )
             verify_email(user)
             users_created += 1
@@ -96,7 +97,7 @@ class Command(BaseCommand):
         users_created = self.style.SUCCESS(str(users_created))
         self.inform(f"Created {users_created} fake users", depth=1)
 
-    def create_admin(self, admin_password):
+    def create_admin(self, password):
         if not User.objects.filter(email="admin@admin.com"):
             user = User.objects.create_superuser(
                 cpf="888.999.888-11",
@@ -104,23 +105,24 @@ class Command(BaseCommand):
                 email="admin@admin.com",
                 is_state_manager=True,
                 is_verified_notifier=True,
-                password=admin_password,
             )
+            user.set_password(password or settings.FAKE_ADMIN_PASSWORD)
+            user.save()
+            # verify_email(user)
             self.inform(self.style.SUCCESS("Admin") + " user created!", depth=1)
             return user
         else:
             self.inform(self.style.WARNING("Admin") + " user was already created!", depth=1)
             return None
 
-    def create_default_user(self, user_password):
+    def create_default_user(self, password):
         if not User.objects.filter(email="user@user.com"):
             user = User.objects.create_user(
-                cpf="111.111.111-11",
-                name="Joe User",
-                email="user@user.com",
-                password=user_password,
+                cpf="111.111.111-11", name="Joe User", email="user@user.com"
             )
-            verify_email(user)
+            user.set_password(password or settings.FAKE_USER_PASSWORD)
+            user.save()
+            # verify_email(user)
             self.inform(self.style.SUCCESS("Default") + " user created!", depth=1)
             return user
         else:
@@ -136,4 +138,4 @@ def fake_cpf(fake):
 
 
 def verify_email(user):
-    return user.emailaddress_set.create(email=user.email, verified=True, primary=True)
+    user.emailaddress_set.update_or_create(email=user.email, verified=True, primary=True)

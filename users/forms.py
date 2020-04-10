@@ -20,21 +20,15 @@ class SignupForm(AllauthSignupForm):
         validators=[CPFValidator()],
     )
 
-    first_name = forms.CharField(
-        label="Nome", min_length=3, max_length=100, widget=forms.TextInput()
-    )
-
-    last_name = forms.CharField(
-        label="Sobrenome", min_length=3, max_length=100, widget=forms.TextInput()
+    name = forms.CharField(
+        label="Nome completo", min_length=3, max_length=100, widget=forms.TextInput()
     )
 
     state = forms.ModelChoiceField(
         label="Estado", queryset=State.objects.all(), empty_label="Escolha um estado"
     )
 
-    layout = Layout(
-        "email", "cpf", Row("first_name", "last_name"), "state", "password1", "password2"
-    )
+    layout = Layout("name", "cpf", "email", "state", "password1", "password2")
 
     def clean(self):
         super().clean()
