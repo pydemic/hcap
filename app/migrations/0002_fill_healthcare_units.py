@@ -5,7 +5,7 @@ from django.db import migrations
 
 
 def fill_healthcare_units(apps, schema_editor):
-    HealthcareUnit = apps.get_model("app", "HealthcareUnity")
+    HealthcareUnit = apps.get_model("app", "HealthcareUnit")
     with open(Path(__file__).parent.parent / "data" / "healthcare_units.json") as fd:
         data = json.load(fd)
     healthcare_units = [HealthcareUnit(**data[st]) for st in data]
@@ -13,11 +13,6 @@ def fill_healthcare_units(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-    dependencies = [
-        ("app", "0003_auto_20200410_1420"),
-        ("locations", "0002_fill_states_and_cities"),
-    ]
+    dependencies = [("app", "0001_initial"), ("locations", "0002_fill_states_and_cities")]
 
-    operations = [
-        migrations.RunPython(fill_healthcare_units),
-    ]
+    operations = [migrations.RunPython(fill_healthcare_units)]
