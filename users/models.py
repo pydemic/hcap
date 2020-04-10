@@ -6,16 +6,22 @@ from .validators import CPFValidator
 
 
 class User(AbstractUser):
+    ROLE_NONE, ROLE_NOTIFIER, ROLE_MANAGER = range(3)
+    ROLE_CHOICES = [
+        (ROLE_NONE, "Nenhum"),
+        (ROLE_NOTIFIER, "Notificador"),
+        (ROLE_MANAGER, "Gestor local"),
+    ]
+
     email = models.EmailField("E-mail", unique=True, help_text="Informe o e-mail.")
     name = models.CharField("Nome completo", max_length=150, help_text="Informe o nome completo.")
-    is_verified_notifier = models.BooleanField(
-        "Notificador válido?",
-        default=False,
-        help_text="ATENÇÃO! O usuário terá permissões para notificar alterações de "
-        "leitos e utilização hospitalar.",
+    role = models.PositiveSmallIntegerField(
+        "Papel do usuário", choices=ROLE_CHOICES, help_text="O usuário é notificador ou gestor?"
     )
-    is_state_manager = models.BooleanField(
-        "Gestor estadual?", default=False, help_text="Marque explicitamente os gestores estaduais."
+    is_authorized = models.BooleanField(
+        "Autorizado?",
+        default=False,
+        help_text="Marque para usuários autorizados a operar dentro do seu papel.",
     )
     cpf = models.CharField(
         "CPF",

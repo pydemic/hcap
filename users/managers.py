@@ -14,6 +14,7 @@ class UserManager(DjangoUserManager):
     def create_superuser(self, **extra_fields):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
+        extra_fields.setdefault("is_authorized", True)
         user = self.create_user(**extra_fields)
         user.emailaddress_set.create(email=user.email, verified=True, primary=True)
         return user

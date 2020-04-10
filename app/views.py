@@ -9,7 +9,7 @@ class NotifierCreateModelView(CreateModelView):
         user = request.user
         if not (user.is_verified_notifier or settings.DEBUG and user.is_superuser):
             return False
-        return user.healthcare_unities.exists()
+        return user.healthcare_unities.filter(is_active=True).exists()
 
     def has_object_permission(self, request, obj):
         if not self.has_add_permission(request):
