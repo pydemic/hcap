@@ -1,9 +1,12 @@
+import datetime
+import random
 from functools import partial
 from random import randint
 
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
 from django.db.models.aggregates import Count
+from django.utils.timezone import now
 from faker import Factory
 
 from app.models import HealthcareUnity, Capacity, LogEntry
@@ -15,49 +18,126 @@ User = get_user_model()
 class Command(BaseCommand):
     help = "create fake app data"
 
-    def handle(self, *files, **options):
-        desired_units = 10
-        desired_capacities = 3
-        desired_entries = 2
+    def add_arguments(self, parser):
+        parser.add_argument(
+            "--unities", dest="unities", help="Number of healthcare unities to create"
+        )
+
+    def handle(self, unities, **kwargs):
+        for _ in range(unities or 10):
+            self.create_unity()
+        print(f"Created {unities} fake healthcare units")
+
+    def create_unity(self):
         fake = Factory.create("en-US")
+        self.unit = HealthcareUnity.objects.create(
+            municipality=random_municipality(),
+            cnes_id=fake.building_number(),
+            is_active=fake.boolean(),
+            name=fake.name(),
+        )
+        self.notifier = random_user()
+        date = now()
+        day = datetime.timedelta(days=1)
+        size = random.choice([10, 50, 100, 200, 500, 1000, 5000, 10000])
+        n_days = lambda: random.choice([1, 2, 3, 5, 10])
 
-        for _ in range(desired_units):
-            health_unit = HealthcareUnity.objects.create(
-                municipality=random_municipality(),
-                cnes_id=fake.building_number(),
-                is_active=fake.boolean(),
-                name=fake.name(),
-            )
-            for _ in range(desired_capacities):
-                Capacity.objects.create(
-                    unity=health_unit,
-                    notifier=random_user(),
-                    date=fake.date(),
-                    beds_adults=fake.random_int(),
-                    beds_pediatric=fake.random_int(),
-                    icu_adults=fake.random_int(),
-                    icu_pediatric=fake.random_int(),
-                )
-            for _ in range(desired_entries):
-                LogEntry.objects.create(
-                    unity=health_unit,
-                    notifier=random_user(),
-                    date=fake.date(),
-                    sari_cases_adults=fake.random_int(),
-                    covid_cases_adults=fake.random_int(),
-                    sari_cases_pediatric=fake.random_int(),
-                    covid_cases_pediatric=fake.random_int(),
-                    icu_sari_cases_adults=fake.random_int(),
-                    icu_covid_cases_adults=fake.random_int(),
-                    icu_sari_cases_pediatric=fake.random_int(),
-                    icu_covid_cases_pediatric=fake.random_int(),
-                    regular_cases_adults=fake.random_int(),
-                    regular_cases_pediatric=fake.random_int(),
-                    icu_regular_adults=fake.random_int(),
-                    icu_regular_pediatric=fake.random_int(),
-                )
+        ns = distribute_beds(size)
+        walker = Walker(*ns)
+        self.create_capacity(date, *ns)
+        for _ in range(n_days()):
+            self.create_log_entry(date, walker)
+            date += day
 
-        print(f"Created {desired_units} fake healthcare units")
+        for _ in range(n_days()):
+            size = int(size * random.choice([1.05, 1.25, 1.5, 2.0]))
+            self.create_capacity(date, *ns)
+            for _ in range(n_days()):
+                self.create_log_entry(date, walker)
+                date += day
+
+    def create_log_entry(self, date, walker):
+        kwargs = walker.next()
+        return LogEntry.objects.create_clean(
+            unity=self.unit, notifier=self.notifier, date=date, **kwargs
+        )
+
+    def create_capacity(self, date, a, b, c, d):
+        return Capacity.objects.create_clean(
+            unity=self.unit,
+            notifier=self.notifier,
+            date=date,
+            beds_adults=a,
+            beds_pediatric=b,
+            icu_adults=c,
+            icu_pediatric=d,
+        )
+
+
+def distribute_beds(n):
+    """
+    Distribute n beds into bins of beds_adult, beds_pediatric, icu_adult,
+    icu_pediatric.
+    """
+
+    r = min(0.05 + random.expovariate(0.1), 0.5)
+    icu = int(r * n)
+    beds = n - icu
+
+    r = min(0.2 + random.expovariate(0.2), 0.6)
+    a = int(r * beds)
+    b = beds - a
+
+    r = min(0.2 + random.expovariate(0.2), 0.6)
+    c = int(r * icu)
+    d = icu - a
+    return a, b, c, d
+
+
+class Walker:
+    def __init__(self, bed, bed_p, icu, icu_p):
+        self.bed = bed
+        self.bed_p = bed_p
+        self.icu = icu
+        self.icu_p = icu_p
+        self.sari = 0.15
+        self.covid = 0.01
+        self.overload = 0.7
+
+    def next(self):
+        def distrib(n, r):
+            a = int(n * r)
+            return a, n - a
+
+        self.sari = min(0.95, self.sari * random.uniform(0.8, 1.1) + 0.1)
+        self.covid = min(0.95, self.covid * random.uniform(0.8, 1.1) + 0.005)
+        self.overload = max(min(0.5, self.covid * random.uniform(0.8, 1.2) + 0.05), 2.0)
+        fn = lambda x: int(self.overload * x)
+
+        sari_cases_adults, regular_cases_adults = distrib(fn(self.bed), self.sari)
+        sari_cases_pediatric, regular_cases_pediatric = distrib(fn(self.bed_p), self.sari)
+        icu_sari_cases_adults, icu_regular_adults = distrib(fn(self.icu), self.sari)
+        icu_sari_cases_pediatric, icu_regular_pediatric = distrib(fn(self.icu_p), self.sari)
+
+        covid_cases_adults = int(self.covid * sari_cases_adults)
+        covid_cases_pediatric = int(self.covid * sari_cases_pediatric)
+        icu_covid_cases_adults = int(self.covid * icu_sari_cases_adults)
+        icu_covid_cases_pediatric = int(self.covid * icu_sari_cases_pediatric)
+
+        return dict(
+            sari_cases_adults=sari_cases_adults,
+            covid_cases_adults=covid_cases_adults,
+            sari_cases_pediatric=sari_cases_pediatric,
+            covid_cases_pediatric=covid_cases_pediatric,
+            icu_sari_cases_adults=icu_sari_cases_adults,
+            icu_covid_cases_adults=icu_covid_cases_adults,
+            icu_sari_cases_pediatric=icu_sari_cases_pediatric,
+            icu_covid_cases_pediatric=icu_covid_cases_pediatric,
+            regular_cases_adults=regular_cases_adults,
+            regular_cases_pediatric=regular_cases_pediatric,
+            icu_regular_adults=icu_regular_adults,
+            icu_regular_pediatric=icu_regular_pediatric,
+        )
 
 
 def random_objects(qs, size=None):

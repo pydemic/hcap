@@ -1,6 +1,7 @@
 import os
+
 from invoke import task
-import os
+
 
 #
 # Database
@@ -12,6 +13,13 @@ def db(ctx):
     """Make migrations and then migrate."""
     ctx.run("python manage.py makemigrations")
     ctx.run("python manage.py migrate")
+
+
+@task
+def db_fake(ctx):
+    """Populate with fake data."""
+    ctx.run("python manage.py createfakeusers")
+    ctx.run("python manage.py createfakeapp")
 
 
 @task

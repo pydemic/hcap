@@ -1,10 +1,8 @@
 import os
-from random import random, choice
 
-from django.apps import apps
-from allauth.account.models import EmailAddress
 from django.core.management.base import BaseCommand
 from faker import Factory
+
 from users.models import User
 
 
@@ -71,7 +69,6 @@ class Command(BaseCommand):
         for _ in range(state_manager):
             username = usernames.pop()
             user = User.objects.create(
-                username=username,
                 name=fake.name(),
                 cpf=cpfs.pop(),
                 email=username + "@" + fake.domain_name(),
@@ -87,7 +84,6 @@ class Command(BaseCommand):
         for _ in range(users):
             username = usernames.pop()
             user = User.objects.create(
-                username=username,
                 cpf=cpfs.pop(),
                 name=fake.name(),
                 email=username + "@" + fake.domain_name(),
@@ -117,7 +113,6 @@ def verify_email(user):
 def create_admin(admin_password):
     if not User.objects.filter(email="admin@admin.com"):
         user = User.objects.create(
-            username="admin",
             cpf="888.999.888-11",
             name="Maurice Moss",
             email="admin@admin.com",
@@ -138,7 +133,6 @@ def create_admin(admin_password):
 def create_default_user(user_password):
     if not User.objects.filter(email="user@user.com"):
         user = User.objects.create(
-            username="user",
             cpf="111.111.111-11",
             name="Joe User",
             email="user@user.com",

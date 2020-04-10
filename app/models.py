@@ -8,7 +8,8 @@ from django.db import models
 from django.utils.timezone import now
 from model_utils.models import TimeStampedModel
 
-from app.fields import HospitalBedsField
+from .fields import HospitalBedsField
+from .managers import HealthcareUnityManager, CapacityManager, LogEntryManager
 
 
 class HealthcareUnity(models.Model):
@@ -26,6 +27,7 @@ class HealthcareUnity(models.Model):
         "Estabelecimento", max_length=100, help_text="Nome do estabelecimento de saúde"
     )
     notifiers = models.ManyToManyField(get_user_model(), related_name="healthcare_unities")
+    objects = HealthcareUnityManager()
 
     class Meta:
         verbose_name = "Estabelecimento de Saúde"
@@ -58,6 +60,7 @@ class Capacity(TimeStampedModel):
     icu_adults = HospitalBedsField("Adulto", help_text="Quantos leitos deste tipo você tem?")
     icu_pediatric = HospitalBedsField("Pediátrico", help_text="Quantos leitos deste tipo você tem?")
     created_date = property(lambda self: to_date(self.created))
+    objects = CapacityManager()
 
     @property
     def capacities(self):
@@ -174,6 +177,8 @@ class LogEntry(TimeStampedModel):
             + self.icu_covid_cases_adults
             + self.icu_covid_cases_pediatric
         )
+
+    objects = LogEntryManager()
 
     class Meta:
         verbose_name = "Informe diário"
