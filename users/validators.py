@@ -4,25 +4,25 @@ from django.core.exceptions import ValidationError
 from django.utils.deconstruct import deconstructible
 from django.conf import settings
 
-CPFRegex = r"^[0-9]{3}.[0-9]{3}.[0-9]{3}-[0-9]{2}$"
+CPF_REGEX = re.compile(r"^([0-9]{3})\.?([0-9]{3})\.?([0-9]{3})-?([0-9]{2})$")
 
 
 @deconstructible
 class CPFValidator:
     def __call__(self, value):
-        if re.fullmatch(CPFRegex, value) is None:
+        m = CPF_REGEX.fullmatch(value)
+        if m is None:
             raise ValidationError(
                 "CPF deve seguir a formatação xxx.xxx.xxx-xx, substituindo x por números."
             )
-
-        value = list(re.sub(r"[^0-9]", "", value))
         if not settings.VALIDATE_CPF:
             return
 
+        data = "".join(m.groups())
         if (
             len(set(value)) == 1
-            or (not self.is_valid_digit(value, 9))
-            or (not self.is_valid_digit(value, 10))
+            or (not self.is_valid_digit(data, 9))
+            or (not self.is_valid_digit(data, 10))
         ):
             raise ValidationError("CPF deve ser válido.")
 

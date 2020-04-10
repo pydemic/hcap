@@ -1,5 +1,4 @@
 from allauth.account.forms import SignupForm as AllauthSignupForm
-from allauth.utils import set_form_field_order
 
 from users.validators import CPFValidator
 from django import forms
@@ -21,7 +20,7 @@ class SignupForm(AllauthSignupForm):
     state = forms.ModelChoiceField(
         label="Estado", queryset=State.objects.all(), empty_label="Escolha um estado"
     )
-    field_order = ["name", "cpf", "state", "email", "username", "password1", "password2"]
+    field_order = ["name", "cpf", "state", "email", "password1", "password2"]
 
     def __init__(self, *args, **kwargs):
         super(SignupForm, self).__init__(*args, **kwargs)

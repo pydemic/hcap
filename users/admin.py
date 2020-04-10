@@ -12,7 +12,7 @@ class EmailAddressInline(admin.TabularInline):
 @admin.register(get_user_model())
 class UserAdmin(DjangoUserAdmin):
     list_display = ("id", "name", "email", "is_active", "is_staff", "state")
-
+    ordering = ("name", "email")
     list_filter = ("is_active", "is_staff", "state")
     search_fields = ("id", "name", "email")
 

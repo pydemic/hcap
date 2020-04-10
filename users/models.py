@@ -31,6 +31,12 @@ class User(AbstractUser):
         on_delete=models.SET_NULL,
         help_text="É necessário informar o estado.",
     )
+    username = None
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = "name", "cpf", "state"
+
+    class Meta(AbstractUser.Meta):
+        ordering = ("name", "email")
 
     @property
     def first_name(self):
@@ -64,7 +70,6 @@ class User(AbstractUser):
 
     def clean(self):
         self.email = self.email.lower()
-        self.username = self.username.lower()
         super().clean()
 
     def get_full_name(self):
