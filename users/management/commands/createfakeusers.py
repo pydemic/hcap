@@ -124,7 +124,7 @@ def create_default_user(user_password):
             cpf="111.111.111-11",
             name="Joe User",
             email="user@user.com",
-            user=user_password or os.environ.get("FAKE_USER_PASSWORD", "user"),
+            password=user_password or os.environ.get("FAKE_USER_PASSWORD", "user"),
         )
         verify_email(user)
         return user
