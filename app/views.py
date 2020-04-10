@@ -1,10 +1,10 @@
 from django import forms
 from django.conf import settings
 from django.utils.timezone import now
-from material.frontend.views import CreateModelView
+from material.frontend.views import CreateModelView, ListModelView
 
 
-class NotifierMixin(CreateModelView):
+class NotifierCreateModelView(CreateModelView):
     def has_add_permission(self, request):
         user = request.user
         if not (user.is_verified_notifier or settings.DEBUG and user.is_superuser):
@@ -37,10 +37,10 @@ class NotifierMixin(CreateModelView):
         unities = list(user.healthcare_unities.all())
 
         if len(unities) == 1:
-            self.prepare_form_for_unit(form, unities[0])
+            self.prepare_form_for_single_unit(form, unities[0])
         return form
 
-    def prepare_form_for_unit(self, form, unit):
+    def prepare_form_for_single_unit(self, form, unit):
         form.initial["unit"] = unit
         field: forms.Field = form.fields["unit"]
         field.disabled = True
@@ -51,9 +51,8 @@ class NotifierMixin(CreateModelView):
                 form.initial.setdefault(k, v)
 
 
-class CreateCapacityView(NotifierMixin, CreateModelView):
-    pass
-
-
-class CreateLogEntryView(NotifierMixin, CreateModelView):
-    pass
+class NotifierListModelView(ListModelView):
+    def get_queryset(self):
+        user = self.request.user
+        qs = super().get_queryset()
+        return qs.filter(notifier=user)

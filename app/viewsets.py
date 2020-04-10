@@ -6,7 +6,8 @@ from . import views
 
 
 class HealthcareUnitStateMixin(ModelViewSet):
-    create_view_class = views.CreateLogEntryView
+    create_view_class = views.NotifierCreateModelView
+    list_view_class = views.NotifierListModelView
     list_display = ("unit", "date", "icu_total_", "clinic_total_")
 
     def icu_total_(self, obj):
@@ -48,7 +49,6 @@ class LogEntryViewSet(HealthcareUnitStateMixin, ModelViewSet):
 
 class CapacityViewSet(HealthcareUnitStateMixin, ModelViewSet):
     model = models.Capacity
-    create_view_class = views.CreateCapacityView
     layout = Layout(
         "unit",
         "date",
