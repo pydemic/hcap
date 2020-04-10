@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+from .managers import UserManager
 from .validators import CPFValidator
 
 
@@ -26,6 +27,7 @@ class User(AbstractUser):
     state = models.ForeignKey(
         "locations.State",
         verbose_name="Estado",
+        default=53,  # Distrito Federal
         blank=True,
         null=True,
         on_delete=models.SET_NULL,
@@ -33,7 +35,9 @@ class User(AbstractUser):
     )
     username = None
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = "name", "cpf", "state"
+    REQUIRED_FIELDS = "name", "cpf"
+
+    objects = UserManager()
 
     class Meta(AbstractUser.Meta):
         ordering = ("name", "email")
@@ -60,6 +64,11 @@ class User(AbstractUser):
     @property
     def has_verified_email(self):
         return self.emailaddress_set.filter(verified=True).exists()
+
+    def __init__(self, *args, username=None, email=None, **kwargs):
+        email = email or username
+        kwargs["email"] = email
+        super().__init__(*args, **kwargs)
 
     def __str__(self):
         return self.get_full_name()

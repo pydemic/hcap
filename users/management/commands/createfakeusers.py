@@ -1,5 +1,6 @@
 import os
 
+from allauth.account.models import EmailAddress
 from django.core.management.base import BaseCommand
 from faker import Factory
 
@@ -60,10 +61,11 @@ class Command(BaseCommand):
                 cpfs.add(cpf)
 
         # Create special users with known passwords
+        n_users = lambda x: 1 if x else 0
         if admin:
-            users_created += create_admin(admin_password)
+            users_created += n_users(create_admin(admin_password))
         if user:
-            users_created += create_default_user(user_password)
+            users_created += n_users(create_default_user(user_password))
 
         # Create state_manager users
         for _ in range(state_manager):
@@ -105,11 +107,6 @@ def fake_cpf(fake):
     return cpf
 
 
-def verify_email(user):
-    pass
-    # TODO: Magic to verify the user email with some verified=True
-
-
 def create_admin(admin_password):
     if not User.objects.filter(email="admin@admin.com"):
         user = User.objects.create(
@@ -119,15 +116,16 @@ def create_admin(admin_password):
             is_state_manager=True,
             is_verified_notifier=True,
             is_superuser=True,
+            is_staff=True,
         )
         verify_email(user)
-        user.set_password(admin_password or os.environ.get("ADMIN_PASSWORD", "admin"))
+        user.set_password(admin_password or os.environ.get("FAKE_ADMIN_PASSWORD", "admin"))
         user.save()
         print("Admin user created!")
-        return 1
+        return user
     else:
         print("Admin user was already created!")
-        return 0
+        return None
 
 
 def create_default_user(user_password):
@@ -141,9 +139,13 @@ def create_default_user(user_password):
             is_superuser=False,
         )
         verify_email(user)
-        user.set_password(user_password or os.environ.get("USER_PASSWORD", "user"))
+        user.set_password(user_password or os.environ.get("FAKE_USER_PASSWORD", "user"))
         user.save()
-        return 1
+        return user
     else:
         print("Default user was already created!")
-        return 0
+        return None
+
+
+def verify_email(user):
+    return EmailAddress.objects.create(user=user, email=user.email, verified=True, primary=True)
