@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name="HealthcareUnity",
+            name="HealthcareUnit",
             fields=[
                 (
                     "id",
@@ -185,9 +185,9 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 (
-                    "unity",
+                    "unit",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to="app.HealthcareUnity"
+                        on_delete=django.db.models.deletion.CASCADE, to="app.HealthcareUnit"
                     ),
                 ),
             ],
@@ -256,11 +256,11 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 (
-                    "unity",
+                    "unit",
                     models.ForeignKey(
                         on_delete=django.db.models.deletion.CASCADE,
                         related_name="capacity_notifications",
-                        to="app.HealthcareUnity",
+                        to="app.HealthcareUnit",
                         verbose_name="Unidade de saúde",
                     ),
                 ),

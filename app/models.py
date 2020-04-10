@@ -9,10 +9,10 @@ from django.utils.timezone import now
 from model_utils.models import TimeStampedModel
 
 from .fields import HospitalBedsField
-from .managers import HealthcareUnityManager, CapacityManager, LogEntryManager
+from .managers import HealthcareUnitManager, CapacityManager, LogEntryManager
 
 
-class HealthcareUnity(models.Model):
+class HealthcareUnit(models.Model):
     municipality = models.ForeignKey(
         "locations.Municipality",
         on_delete=models.CASCADE,
@@ -27,7 +27,7 @@ class HealthcareUnity(models.Model):
         "Estabelecimento", max_length=100, help_text="Nome do estabelecimento de saúde"
     )
     notifiers = models.ManyToManyField(get_user_model(), related_name="healthcare_unities")
-    objects = HealthcareUnityManager()
+    objects = HealthcareUnitManager()
 
     class Meta:
         verbose_name = "Estabelecimento de Saúde"
@@ -38,8 +38,8 @@ class HealthcareUnity(models.Model):
 
 
 class Capacity(TimeStampedModel):
-    unity = models.ForeignKey(
-        "HealthcareUnity",
+    unit = models.ForeignKey(
+        "HealthcareUnit",
         on_delete=models.CASCADE,
         verbose_name="Unidade de saúde",
         related_name="capacity_notifications",
@@ -91,11 +91,11 @@ class Capacity(TimeStampedModel):
         verbose_name_plural = "Alterações de capacidade hospitalar"
 
     def __str__(self):
-        return f"{self.unity} ({self.created_date})"
+        return f"{self.unit} ({self.created_date})"
 
 
 class LogEntry(TimeStampedModel):
-    unity = models.ForeignKey("HealthcareUnity", on_delete=models.CASCADE)
+    unit = models.ForeignKey("HealthcareUnit", on_delete=models.CASCADE)
     notifier = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -188,7 +188,7 @@ class LogEntry(TimeStampedModel):
         verbose_name_plural = "Informes diários"
 
     def __str__(self):
-        return f"{self.unity} - {self.date.strftime('%x')}"
+        return f"{self.unit} - {self.date.strftime('%x')}"
 
     def clean_fields(self, exclude=None):
         if "covid_cases_adults" not in exclude:

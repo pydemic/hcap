@@ -37,15 +37,15 @@ class NotifierMixin(CreateModelView):
         unities = list(user.healthcare_unities.all())
 
         if len(unities) == 1:
-            self.prepare_form_for_unity(form, unities[0])
+            self.prepare_form_for_unit(form, unities[0])
         return form
 
-    def prepare_form_for_unity(self, form, unity):
-        form.initial["unity"] = unity
-        field: forms.Field = form.fields["unity"]
+    def prepare_form_for_unit(self, form, unit):
+        form.initial["unit"] = unit
+        field: forms.Field = form.fields["unit"]
         field.disabled = True
 
-        capacity = unity.capacity_notifications.order_by("date").last()
+        capacity = unit.capacity_notifications.order_by("date").last()
         if capacity:
             for k, v in capacity.capacities.items():
                 form.initial.setdefault(k, v)

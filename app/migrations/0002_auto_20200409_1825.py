@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
             new_name="icu_regular_pediatric",
         ),
         migrations.AlterField(
-            model_name="healthcareunity",
+            model_name="healthcareunit",
             name="notifiers",
             field=models.ManyToManyField(
                 related_name="healthcare_unities", to=settings.AUTH_USER_MODEL

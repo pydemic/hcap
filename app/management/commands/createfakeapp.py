@@ -8,7 +8,7 @@ from django.db.models.aggregates import Count
 from django.utils.timezone import now
 from faker import Factory
 
-from app.models import HealthcareUnity, Capacity, LogEntry
+from app.models import HealthcareUnit, Capacity, LogEntry
 from locations.models import Municipality
 from project.management import BaseCommand
 
@@ -30,20 +30,20 @@ class Command(BaseCommand):
         n = unities = unities or 10
         try:
             user = User.objects.get(email="user@user.com")
-            self.create_unity(user)
+            self.create_unit(user)
             n -= 1
         except User.DoesNotExist:
             pass
         for _ in range(n):
-            self.create_unity()
+            self.create_unit()
 
         unities = self.style.SUCCESS(str(unities))
         self.inform(f"Created {unities} fake healthcare units", depth=1)
 
-    def create_unity(self, notifier=None):
+    def create_unit(self, notifier=None):
         fake = Factory.create("en-US")
         day = datetime.timedelta(days=1)
-        unit = HealthcareUnity.objects.create(
+        unit = HealthcareUnit.objects.create(
             municipality=random_municipality(),
             cnes_id=fake.building_number(),
             is_active=fake.boolean(),
@@ -73,12 +73,12 @@ class Command(BaseCommand):
 
     def create_log_entry(self, date, walker, unit, notifier):
         kwargs = walker.next()
-        return LogEntry.objects.create_clean(unity=unit, notifier=notifier, date=date, **kwargs)
+        return LogEntry.objects.create_clean(unit=unit, notifier=notifier, date=date, **kwargs)
 
     def create_capacity(self, date, a, b, c, d, unit, notifier):
         assert a >= 0 and b >= 0 and c >= 0 and d >= 0, (a, b, c, d)
         return Capacity.objects.create_clean(
-            unity=unit,
+            unit=unit,
             notifier=notifier,
             date=date,
             beds_adults=min(a, SMALL_INT_LIMIT),

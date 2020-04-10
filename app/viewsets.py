@@ -5,9 +5,9 @@ from . import models
 from . import views
 
 
-class HealthcareUnityStateMixin(ModelViewSet):
+class HealthcareUnitStateMixin(ModelViewSet):
     create_view_class = views.CreateLogEntryView
-    list_display = ("unity", "date", "icu_total_", "clinic_total_")
+    list_display = ("unit", "date", "icu_total_", "clinic_total_")
 
     def icu_total_(self, obj):
         return obj.icu_total
@@ -23,10 +23,10 @@ class HealthcareUnityStateMixin(ModelViewSet):
     clinic_total_.short_description = "Total Clínicos"
 
 
-class LogEntryViewSet(HealthcareUnityStateMixin, ModelViewSet):
+class LogEntryViewSet(HealthcareUnitStateMixin, ModelViewSet):
     model = models.LogEntry
     layout = Layout(
-        "unity",
+        "unit",
         "date",
         Fieldset(
             "Leitos Clínicos ocupados com pacientes SRAG",
@@ -46,19 +46,19 @@ class LogEntryViewSet(HealthcareUnityStateMixin, ModelViewSet):
     )
 
 
-class CapacityViewSet(HealthcareUnityStateMixin, ModelViewSet):
+class CapacityViewSet(HealthcareUnitStateMixin, ModelViewSet):
     model = models.Capacity
     create_view_class = views.CreateCapacityView
     layout = Layout(
-        "unity",
+        "unit",
         "date",
         Fieldset("Leitos clínicos/enfermaria", Row("beds_adults", "beds_pediatric")),
         Fieldset("Leitos UTI", Row("icu_adults", "icu_pediatric")),
     )
 
 
-class HealthcareUnityViewSet(ModelViewSet):
-    model = models.HealthcareUnity
+class HealthcareUnitViewSet(ModelViewSet):
+    model = models.HealthcareUnit
 
     filters = ("municipality", "is_validated")
     list_display = ("name", "cnes_id", "municipality", "is_validated")
