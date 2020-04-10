@@ -16,7 +16,10 @@ class User(AbstractUser):
     email = models.EmailField("E-mail", unique=True, help_text="Informe o e-mail.")
     name = models.CharField("Nome completo", max_length=150, help_text="Informe o nome completo.")
     role = models.PositiveSmallIntegerField(
-        "Papel do usuário", choices=ROLE_CHOICES, help_text="O usuário é notificador ou gestor?"
+        "Papel do usuário",
+        choices=ROLE_CHOICES,
+        default=ROLE_NONE,
+        help_text="O usuário é notificador ou gestor?",
     )
     is_authorized = models.BooleanField(
         "Autorizado?",
