@@ -118,9 +118,9 @@ Examples of usage:
 
 ### Secrets
 
-| Name         | Default    | Pattern | Description                    |
-| :----------- | :--------- | :------ | :----------------------------- |
-| `SECRET_KEY` | `changeme` | String  | Django's security entropy hash |
+| Name             | Default    | Pattern | Description                    |
+| :--------------- | :--------- | :------ | :----------------------------- |
+| `HC__SECRET_KEY` | `changeme` | String  | Django's security entropy hash |
 
 ### Server
 
