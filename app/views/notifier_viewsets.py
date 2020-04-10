@@ -1,13 +1,13 @@
-from material import Layout, Row, Fieldset
+from material import Layout, Fieldset, Row
 from material.frontend.views import ModelViewSet
 
-from . import models
-from . import views
+from .notifier_views import NotifierCreateModelView, NotifierListModelView
+from .. import models
 
 
-class HealthcareUnitStateMixin(ModelViewSet):
-    create_view_class = views.NotifierCreateModelView
-    list_view_class = views.NotifierListModelView
+class NotifierBaseViewSet(ModelViewSet):
+    create_view_class = NotifierCreateModelView
+    list_view_class = NotifierListModelView
     list_display = ("unit", "date", "icu_total_", "clinic_total_")
 
     def icu_total_(self, obj):
@@ -24,7 +24,7 @@ class HealthcareUnitStateMixin(ModelViewSet):
     clinic_total_.short_description = "Total Clínicos"
 
 
-class LogEntryViewSet(HealthcareUnitStateMixin, ModelViewSet):
+class LogEntryViewSet(NotifierBaseViewSet):
     model = models.LogEntry
     layout = Layout(
         "unit",
@@ -47,22 +47,11 @@ class LogEntryViewSet(HealthcareUnitStateMixin, ModelViewSet):
     )
 
 
-class CapacityViewSet(HealthcareUnitStateMixin, ModelViewSet):
+class CapacityViewSet(NotifierBaseViewSet):
     model = models.Capacity
     layout = Layout(
         "unit",
         "date",
         Fieldset("Leitos clínicos/enfermaria", Row("beds_adults", "beds_pediatric")),
         Fieldset("Leitos UTI", Row("icu_adults", "icu_pediatric")),
-    )
-
-
-class HealthcareUnitViewSet(ModelViewSet):
-    model = models.HealthcareUnit
-
-    filters = ("municipality", "is_validated")
-    list_display = ("name", "cnes_id", "municipality", "is_validated")
-    layout = Layout(
-        Fieldset("Características do estabelecimento", "name", Row("cnes_id", "municipality")),
-        "notifiers",
     )
