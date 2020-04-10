@@ -30,20 +30,5 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 LOGIN_REDIRECT_URL = "/"
 SOCIALACCOUNT_QUERY_EMAIL = True
-ACCOUNT_USERNAME_BLACKLIST = [
-    "administrator",
-    "help",
-    "helpdesk",
-    "operator",
-    "root",
-    "superadmin",
-    "superuser",
-    "info",
-    "admin",
-    "webmaster",
-    "areariservata",
-    "blog",
-    "master",
-]
 ACCOUNT_ADAPTER = "users.adapters.AccountAdapter"
 ACCOUNT_FORMS = {"signup": "users.forms.SignupForm"}
