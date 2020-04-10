@@ -8,11 +8,12 @@ from django.db.models.aggregates import Count
 from django.utils.timezone import now
 from faker import Factory
 
-from app.models import HealthcareUnity, Capacity, LogEntry
+from app.models import HealthcareUnit, Capacity, LogEntry
 from locations.models import Municipality
 from project.management import BaseCommand
 
 User = get_user_model()
+SMALL_INT_LIMIT = 32760
 
 
 class Command(BaseCommand):
@@ -29,20 +30,20 @@ class Command(BaseCommand):
         n = unities = unities or 10
         try:
             user = User.objects.get(email="user@user.com")
-            self.create_unity(user)
+            self.create_unit(user)
             n -= 1
         except User.DoesNotExist:
             pass
         for _ in range(n):
-            self.create_unity()
+            self.create_unit()
 
         unities = self.style.SUCCESS(str(unities))
         self.inform(f"Created {unities} fake healthcare units", depth=1)
 
-    def create_unity(self, notifier=None):
+    def create_unit(self, notifier=None):
         fake = Factory.create("en-US")
         day = datetime.timedelta(days=1)
-        unit = HealthcareUnity.objects.create(
+        unit = HealthcareUnit.objects.create(
             municipality=random_municipality(),
             cnes_id=fake.building_number(),
             is_active=fake.boolean(),
@@ -72,18 +73,18 @@ class Command(BaseCommand):
 
     def create_log_entry(self, date, walker, unit, notifier):
         kwargs = walker.next()
-        return LogEntry.objects.create_clean(unity=unit, notifier=notifier, date=date, **kwargs)
+        return LogEntry.objects.create_clean(unit=unit, notifier=notifier, date=date, **kwargs)
 
     def create_capacity(self, date, a, b, c, d, unit, notifier):
         assert a >= 0 and b >= 0 and c >= 0 and d >= 0, (a, b, c, d)
         return Capacity.objects.create_clean(
-            unity=unit,
+            unit=unit,
             notifier=notifier,
             date=date,
-            beds_adults=a,
-            beds_pediatric=b,
-            icu_adults=c,
-            icu_pediatric=d,
+            beds_adults=min(a, SMALL_INT_LIMIT),
+            beds_pediatric=min(b, SMALL_INT_LIMIT),
+            icu_adults=min(c, SMALL_INT_LIMIT),
+            icu_pediatric=min(d, SMALL_INT_LIMIT),
         )
 
 
@@ -138,18 +139,18 @@ class Walker:
         icu_covid_cases_pediatric = int(self.covid * icu_sari_cases_pediatric)
 
         return dict(
-            sari_cases_adults=sari_cases_adults,
-            covid_cases_adults=covid_cases_adults,
-            sari_cases_pediatric=sari_cases_pediatric,
-            covid_cases_pediatric=covid_cases_pediatric,
-            icu_sari_cases_adults=icu_sari_cases_adults,
-            icu_covid_cases_adults=icu_covid_cases_adults,
-            icu_sari_cases_pediatric=icu_sari_cases_pediatric,
-            icu_covid_cases_pediatric=icu_covid_cases_pediatric,
-            regular_cases_adults=regular_cases_adults,
-            regular_cases_pediatric=regular_cases_pediatric,
-            icu_regular_adults=icu_regular_adults,
-            icu_regular_pediatric=icu_regular_pediatric,
+            sari_cases_adults=min(sari_cases_adults, SMALL_INT_LIMIT),
+            covid_cases_adults=min(covid_cases_adults, SMALL_INT_LIMIT),
+            sari_cases_pediatric=min(sari_cases_pediatric, SMALL_INT_LIMIT),
+            covid_cases_pediatric=min(covid_cases_pediatric, SMALL_INT_LIMIT),
+            icu_sari_cases_adults=min(icu_sari_cases_adults, SMALL_INT_LIMIT),
+            icu_covid_cases_adults=min(icu_covid_cases_adults, SMALL_INT_LIMIT),
+            icu_sari_cases_pediatric=min(icu_sari_cases_pediatric, SMALL_INT_LIMIT),
+            icu_covid_cases_pediatric=min(icu_covid_cases_pediatric, SMALL_INT_LIMIT),
+            regular_cases_adults=min(regular_cases_adults, SMALL_INT_LIMIT),
+            regular_cases_pediatric=min(regular_cases_pediatric, SMALL_INT_LIMIT),
+            icu_regular_adults=min(icu_regular_adults, SMALL_INT_LIMIT),
+            icu_regular_pediatric=min(icu_regular_pediatric, SMALL_INT_LIMIT),
         )
 
 

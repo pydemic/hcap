@@ -20,6 +20,8 @@ def fill_cities(apps, schema_editor):
 
     def fix(d):
         del d["state_code"]
+        if len(str(d["id"])) == 7:
+            d["id"] = int(str(d["id"])[0:6])
         return d
 
     cities = [Municipality(**fix(st)) for st in data]

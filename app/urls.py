@@ -8,5 +8,5 @@ urlpatterns = [
     path("", RedirectView.as_view(url="./diario/"), name="index"),
     path("diario/", include(viewsets.LogEntryViewSet().urls)),
     path("capacidade/", include(viewsets.CapacityViewSet().urls)),
-    path("unidade-de-saude/", include(viewsets.HealthcareUnityViewSet().urls)),
+    path("unidade-de-saude/", include(viewsets.HealthcareUnitViewSet().urls)),
 ]
