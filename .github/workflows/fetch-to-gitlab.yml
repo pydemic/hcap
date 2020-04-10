@@ -7,9 +7,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Add remote
-      with:
-        USER: ${{ secrets.GITLAB_USER }}
-        PASS: ${{ secrets.GITLAB_PASSWORD }}
-      run: git remote add gitlab https://${USER}:${PASS}@gitlab.com/pydemic/capacidade_hospitalar.git
+      run: git remote add gitlab https://${{ secrets.GITLAB_USER }}:${{ secrets.GITLAB_PASSWORD }}@gitlab.com/pydemic/capacidade_hospitalar.git
     - name: Push
       run: git push --force gitlab ${GITHUB_REF##*/}
