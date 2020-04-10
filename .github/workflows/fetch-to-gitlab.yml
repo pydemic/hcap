@@ -1,0 +1,15 @@
+name: Push commits to GitLab
+on: [push]
+
+jobs:
+  push:
+    name: Push to GitLab
+    runs-on: ubuntu-latest
+    steps:
+    - name: Add remote
+      with:
+        USER: ${{ secrets.GITLAB_USER }}
+        PASS: ${{ secrets.GITLAB_PASSWORD }}
+      run: git remote add gitlab https://${USER}:${PASS}@gitlab.com/pydemic/capacidade_hospitalar.git
+    - name: Push
+      run: git push --force gitlab ${GITHUB_REF##*/}
