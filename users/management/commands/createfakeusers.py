@@ -70,14 +70,13 @@ class Command(BaseCommand):
         # Create state_manager users
         for _ in range(state_manager):
             username = usernames.pop()
-            user = User.objects.create(
+            user = User.objects.create_user(
                 name=fake.name(),
                 cpf=cpfs.pop(),
                 email=username + "@" + fake.domain_name(),
                 is_verified_notifier=True,
                 is_state_manager=True,
                 is_staff=True,
-                is_superuser=False,
             )
             verify_email(user)
             users_created += 1
@@ -86,12 +85,7 @@ class Command(BaseCommand):
         for _ in range(users):
             username = usernames.pop()
             user = User.objects.create(
-                cpf=cpfs.pop(),
-                name=fake.name(),
-                email=username + "@" + fake.domain_name(),
-                is_verified_notifier=False,
-                is_state_manager=False,
-                is_superuser=False,
+                cpf=cpfs.pop(), name=fake.name(), email=username + "@" + fake.domain_name()
             )
             verify_email(user)
             users_created += 1
@@ -109,18 +103,14 @@ def fake_cpf(fake):
 
 def create_admin(admin_password):
     if not User.objects.filter(email="admin@admin.com"):
-        user = User.objects.create(
+        user = User.objects.create_superuser(
             cpf="888.999.888-11",
             name="Maurice Moss",
             email="admin@admin.com",
             is_state_manager=True,
             is_verified_notifier=True,
-            is_superuser=True,
-            is_staff=True,
+            password=admin_password or os.environ.get("FAKE_ADMIN_PASSWORD", "admin"),
         )
-        verify_email(user)
-        user.set_password(admin_password or os.environ.get("FAKE_ADMIN_PASSWORD", "admin"))
-        user.save()
         print("Admin user created!")
         return user
     else:
@@ -130,17 +120,13 @@ def create_admin(admin_password):
 
 def create_default_user(user_password):
     if not User.objects.filter(email="user@user.com"):
-        user = User.objects.create(
+        user = User.objects.create_user(
             cpf="111.111.111-11",
             name="Joe User",
             email="user@user.com",
-            is_state_manager=False,
-            is_verified_notifier=False,
-            is_superuser=False,
+            user=user_password or os.environ.get("FAKE_USER_PASSWORD", "user"),
         )
         verify_email(user)
-        user.set_password(user_password or os.environ.get("FAKE_USER_PASSWORD", "user"))
-        user.save()
         return user
     else:
         print("Default user was already created!")
@@ -148,4 +134,4 @@ def create_default_user(user_password):
 
 
 def verify_email(user):
-    return EmailAddress.objects.create(user=user, email=user.email, verified=True, primary=True)
+    return user.emailaddress_set.create(email=user.email, verified=True, primary=True)

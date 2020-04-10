@@ -45,5 +45,5 @@ ACCOUNT_USERNAME_BLACKLIST = [
     "blog",
     "master",
 ]
-ACCOUNT_ADAPTER = "app.adapters.AccountAdapter"
-ACCOUNT_FORMS = {"signup": "app.forms.SignupForm"}
+ACCOUNT_ADAPTER = "users.adapters.AccountAdapter"
+ACCOUNT_FORMS = {"signup": "users.forms.SignupForm"}
