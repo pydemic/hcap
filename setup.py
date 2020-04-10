@@ -26,6 +26,7 @@ REQUIREMENTS = [
     "Jinja2==2.11.1",
     "MarkupSafe==1.1.1",
     "oauthlib==3.1.0",
+    "psycopg2-binary==2.8.4",
     "python3-openid==3.1.0",
     "pytz==2019.3",
     "rcssmin==1.0.6",
@@ -43,9 +44,9 @@ DEV_REQUIREMENTS = [
     "coverage==5.0.4",
     "django-debug-toolbar==2.2",
     "django-extensions==2.2.9",
-    "pycodestyle==2.5.0",
     "faker==4.0.2",
     "pre-commit==2.2.0",
+    "pycodestyle==2.5.0",
 ]
 
 PROD_REQUIREMENTS = ["gunicorn==20.0.4"]
@@ -58,4 +59,5 @@ setup(
     install_requires=REQUIREMENTS,
     extras_require={"dev": DEV_REQUIREMENTS, "prod": PROD_REQUIREMENTS},
     zip_safe=False,
+    entry_points={"console_scripts": ["hc = manage:main"]},
 )

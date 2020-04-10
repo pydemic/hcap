@@ -1,0 +1,16 @@
+name: Trigger GitLab CI
+on: [push]
+
+jobs:
+  trigger:
+    name: Trigger
+    runs-on: ubuntu-latest
+    steps:
+    - name: Trigger Job
+      uses: appleboy/gitlab-ci-action@master
+      with:
+        url: "https://gitlab.com"
+        token: ${{ secrets.TOKEN }}
+        debug: true
+        project_id: 18009514
+        ref: ${GITHUB_REF##*/}

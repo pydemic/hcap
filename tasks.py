@@ -1,6 +1,7 @@
 import os
+
 from invoke import task
-import os
+
 
 #
 # Database
@@ -15,19 +16,11 @@ def db(ctx):
 
 
 @task
-def db_fake(ctx, force=False, app=True, users=True):
-    """
-    Adds fake data to the database for development tests
-    """
-    if force or os.environ.get("FAKE_DB") == "true":
-        print("Creating fake data...")
-    else:
-        return print("FAKE_DB is False")
-
-    if users:
-        ctx.run("python manage.py createfakeusers")
-    if app:
-        ctx.run("python manage.py createfakeapp")
+def db_fake(ctx):
+    """Populate with fake data."""
+    ctx.run("python manage.py migrate")
+    ctx.run("python manage.py createfakeusers --admin --user")
+    ctx.run("python manage.py createfakeapp")
 
 
 @task
@@ -43,22 +36,24 @@ def migrations(ctx):
 
 
 #
-# Development
+# Server
 #
+
+
+@task
+def collectstatic(ctx):
+    ctx.run("python manage.py collectstatic --clear --no-input")
 
 
 @task
 def run(ctx):
     """Alias to Django's "runserver" command."""
-    ctx.run("python manage.py runserver")
+    ctx.run("python manage.py start")
 
 
-@task
-def test(ctx):
-    ctx.run("black --check .")
-    ctx.run("pycodestyle")
-    ctx.run("coverage run --source='.' manage.py test")
-    ctx.run("coverage report --show-missing")
+#
+# Development
+#
 
 
 @task
@@ -99,22 +94,6 @@ def clean(ctx, db=False, yes=False):
             print("No sqlite db to remove")
 
 
-#
-# Production
-#
-
-
 @task
-def collectstatic(ctx):
-    ctx.run("python manage.py collectstatic --clear --no-input")
-
-
-@task
-def serve(ctx):
-    """Migrate and serve the system using gunicorn."""
-    migrate(ctx)
-
-    port = os.environ.get("SERVER_PORT", "8000")
-    workers = os.environ.get("SERVER_WORKERS", "1")
-
-    ctx.run(f"gunicorn project.wsgi -w {workers} -b 0.0.0.0:{port}")
+def test(ctx):
+    ctx.run("python manage.py test_all")

@@ -4,15 +4,21 @@
 __pycache__
 .coverage
 db.sqlite3
-collect
+
+# Email messages if filebased backend
+email_messages/
+
+# Collected static files
+/static/
+
+# Media files
+media/
 
 # docker-compose
 docker-compose*
 
 # VSCode
 .devcontainer*
-.vscode
-
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
