@@ -7,18 +7,28 @@ import django.utils.timezone
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('app', '0002_auto_20200409_1825'),
+        ("app", "0002_auto_20200409_1825"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='capacity',
-            name='date',
-            field=models.DateField(db_index=True, default=django.utils.timezone.now, help_text='Quando ocorreu a alteração na capacidade hospitalar?', verbose_name='Data'),
+            model_name="capacity",
+            name="date",
+            field=models.DateField(
+                db_index=True,
+                default=django.utils.timezone.now,
+                help_text="Quando ocorreu a alteração na capacidade hospitalar?",
+                verbose_name="Data",
+            ),
         ),
         migrations.AlterField(
-            model_name='logentry',
-            name='date',
-            field=models.DateField(db_index=True, default=django.utils.timezone.now, help_text='De quando é este dado?', verbose_name='Data'),
+            model_name="logentry",
+            name="date",
+            field=models.DateField(
+                db_index=True,
+                default=django.utils.timezone.now,
+                help_text="De quando é este dado?",
+                verbose_name="Data",
+            ),
         ),
     ]
