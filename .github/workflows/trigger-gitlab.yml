@@ -1,13 +1,19 @@
-name: Trigger GitLab CI
+name: Mirror and run GitLab CI
+
 on: [push]
 
 jobs:
-  push:
-    - name: Trigger Job
-      uses: appleboy/gitlab-ci-action@master
-      with:
-        url: "https://gitlab.com"
-        token: ${{ secrets.TOKEN }}
-        debug: true
-        project_id: 18009514
-        ref: ${GITHUB_REF##*/}
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Mirror and trigger CI
+        uses: SvanBoxel/gitlab-mirror-and-ci-action@master
+        with:
+          args: https://gitlab.com/pydemic/capacidade_hospitalar
+        env:
+          GITLAB_HOSTNAME: gitlab.com
+          GITLAB_USERNAME: ${{ secrets.GITLAB_USERNAME }}
+          GITLAB_PASSWORD: ${{ secrets.GITLAB_PASSWORD }}
+          GITLAB_PROJECT_ID: '18009514'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
