@@ -2,7 +2,10 @@ name: Trigger GitLab CI
 on: [push]
 
 jobs:
-  push:
+  trigger:
+    name: Trigger
+    runs-on: ubuntu-latest
+    steps:
     - name: Trigger Job
       uses: appleboy/gitlab-ci-action@master
       with:
