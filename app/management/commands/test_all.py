@@ -3,6 +3,7 @@ import sys
 
 from django.conf import settings
 from django.core.management import call_command
+from django.core.management.base import CommandError
 
 from project.management import BaseCommand
 
@@ -10,7 +11,7 @@ from project.management import BaseCommand
 def safe_run(command):
     code = os.system(command)
     if code != 0:
-        sys.exit(code)
+        raise CommandError(f"'{command}' failed")
 
 
 class Command(BaseCommand):

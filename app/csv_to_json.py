@@ -1,7 +1,7 @@
 """
-Code to specifically convert tbEstabelecimento2020 
+Code to specifically convert tbEstabelecimento2020
 into a more useful and filtered json
-be careful with reuse. 
+be careful with reuse.
 """
 import csv
 import json
