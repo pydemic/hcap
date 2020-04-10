@@ -26,6 +26,7 @@ REQUIREMENTS = [
     "Jinja2==2.11.1",
     "MarkupSafe==1.1.1",
     "oauthlib==3.1.0",
+    "psycopg2-binary==2.8.4",
     "python3-openid==3.1.0",
     "pytz==2019.3",
     "rcssmin==1.0.6",

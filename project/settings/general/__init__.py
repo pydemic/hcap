@@ -7,6 +7,7 @@ from .installed_apps import *
 from .middleware import *
 from .paths import *
 from .secrets import *
+from .server import *
 from .sites import *
 from .templates import *
 from .urls import *

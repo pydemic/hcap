@@ -4,19 +4,19 @@ from functools import partial
 from random import randint
 
 from django.contrib.auth import get_user_model
-from django.core.management.base import BaseCommand
 from django.db.models.aggregates import Count
 from django.utils.timezone import now
 from faker import Factory
 
 from app.models import HealthcareUnity, Capacity, LogEntry
 from locations.models import Municipality
+from project.management import BaseCommand
 
 User = get_user_model()
 
 
 class Command(BaseCommand):
-    help = "create fake app data"
+    help = "Create fake app data"
 
     def add_arguments(self, parser):
         parser.add_argument(
@@ -24,6 +24,8 @@ class Command(BaseCommand):
         )
 
     def handle(self, unities, **kwargs):
+        self.inform("Creating fake healthcare units", topic=True)
+
         n = unities = unities or 10
         try:
             user = User.objects.get(email="user@user.com")
@@ -33,7 +35,9 @@ class Command(BaseCommand):
             pass
         for _ in range(n):
             self.create_unity()
-        print(f"Created {unities} fake healthcare units")
+
+        unities = self.style.SUCCESS(str(unities))
+        self.inform(f"Created {unities} fake healthcare units", depth=1)
 
     def create_unity(self, notifier=None):
         fake = Factory.create("en-US")

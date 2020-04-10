@@ -1,9 +1,8 @@
-import os
-
 from allauth.account.models import EmailAddress
-from django.core.management.base import BaseCommand
+from django.conf import settings
 from faker import Factory
 
+from project.management import BaseCommand
 from users.models import User
 
 
@@ -30,7 +29,7 @@ class Command(BaseCommand):
             help="Sets the user password",
         )
         parser.add_argument(
-            "--state-manager", type=int, default=2, help="Number of state-manager members"
+            "--state-managers", type=int, default=2, help="Number of state-manager members"
         )
         parser.add_argument("--users", type=int, default=50, help="Number of regular users")
 
@@ -38,24 +37,27 @@ class Command(BaseCommand):
         self,
         *files,
         admin=False,
-        admin_password=None,
+        admin_password=settings.FAKE_ADMIN_PASSWORD,
         user=True,
-        user_password=None,
-        state_manager=2,
+        user_password=settings.FAKE_USER_PASSWORD,
+        state_managers=2,
         users=50,
         **options,
     ):
+        self.inform("Creating fake users", topic=True)
+
         users_created = 0
         fake = Factory.create("en-US")
         blocked_usernames = {"admin", *User.objects.values_list("email", flat=True)}
         usernames = set()
-        while len(usernames) < state_manager + users:
+
+        while len(usernames) < state_managers + users:
             username = fake.user_name()
             if username not in blocked_usernames:
                 usernames.add(username)
 
         cpfs = set()
-        while len(cpfs) < state_manager + users:
+        while len(cpfs) < state_managers + users:
             cpf = fake_cpf(fake)
             if cpf not in cpfs:
                 cpfs.add(cpf)
@@ -63,12 +65,12 @@ class Command(BaseCommand):
         # Create special users with known passwords
         n_users = lambda x: 1 if x else 0
         if admin:
-            users_created += n_users(create_admin(admin_password))
+            users_created += n_users(self.create_admin(admin_password))
         if user:
-            users_created += n_users(create_default_user(user_password))
+            users_created += n_users(self.create_default_user(user_password))
 
         # Create state_manager users
-        for _ in range(state_manager):
+        for _ in range(state_managers):
             username = usernames.pop()
             user = User.objects.create_user(
                 name=fake.name(),
@@ -91,7 +93,39 @@ class Command(BaseCommand):
             users_created += 1
 
         # Feedback
-        print(f"Created {users_created} fake users")
+        users_created = self.style.SUCCESS(str(users_created))
+        self.inform(f"Created {users_created} fake users", depth=1)
+
+    def create_admin(self, admin_password):
+        if not User.objects.filter(email="admin@admin.com"):
+            user = User.objects.create_superuser(
+                cpf="888.999.888-11",
+                name="Maurice Moss",
+                email="admin@admin.com",
+                is_state_manager=True,
+                is_verified_notifier=True,
+                password=admin_password,
+            )
+            self.inform(self.style.SUCCESS("Admin") + " user created!", depth=1)
+            return user
+        else:
+            self.inform(self.style.WARNING("Admin") + " user was already created!", depth=1)
+            return None
+
+    def create_default_user(self, user_password):
+        if not User.objects.filter(email="user@user.com"):
+            user = User.objects.create_user(
+                cpf="111.111.111-11",
+                name="Joe User",
+                email="user@user.com",
+                password=user_password,
+            )
+            verify_email(user)
+            self.inform(self.style.SUCCESS("Default") + " user created!", depth=1)
+            return user
+        else:
+            self.inform(self.style.WARNING("Default") + " user was already created!", depth=1)
+            return None
 
 
 def fake_cpf(fake):
@@ -99,38 +133,6 @@ def fake_cpf(fake):
     three_digits = lambda: digit() + digit() + digit()
     cpf = three_digits() + "." + three_digits() + "." + three_digits() + "-" + digit() + digit()
     return cpf
-
-
-def create_admin(admin_password):
-    if not User.objects.filter(email="admin@admin.com"):
-        user = User.objects.create_superuser(
-            cpf="888.999.888-11",
-            name="Maurice Moss",
-            email="admin@admin.com",
-            is_state_manager=True,
-            is_verified_notifier=True,
-            password=admin_password or os.environ.get("FAKE_ADMIN_PASSWORD", "admin"),
-        )
-        print("Admin user created!")
-        return user
-    else:
-        print("Admin user was already created!")
-        return None
-
-
-def create_default_user(user_password):
-    if not User.objects.filter(email="user@user.com"):
-        user = User.objects.create_user(
-            cpf="111.111.111-11",
-            name="Joe User",
-            email="user@user.com",
-            password=user_password or os.environ.get("FAKE_USER_PASSWORD", "user"),
-        )
-        verify_email(user)
-        return user
-    else:
-        print("Default user was already created!")
-        return None
 
 
 def verify_email(user):
