@@ -51,7 +51,10 @@ class Capacity(TimeStampedModel):
         related_name="capacity_notifications",
     )
     date = models.DateField(
-        "Data", default=now, help_text="Quando ocorreu a alteração na capacidade hospitalar?"
+        "Data",
+        default=now,
+        help_text="Quando ocorreu a alteração na capacidade hospitalar?",
+        db_index=True,
     )
     beds_adults = HospitalBedsField("Adulto", help_text="Quantos leitos deste tipo você tem?")
     beds_pediatric = HospitalBedsField(
@@ -99,7 +102,7 @@ class LogEntry(TimeStampedModel):
         verbose_name="Usuário notificador",
         related_name="daily_notifications",
     )
-    date = models.DateField("Data", help_text="De quando é este dado?", default=now)
+    date = models.DateField("Data", help_text="De quando é este dado?", default=now, db_index=True)
 
     # SARI - adults
     sari_cases_adults = HospitalBedsField("Adulto", help_text="Informe total de pacientes SRAG")

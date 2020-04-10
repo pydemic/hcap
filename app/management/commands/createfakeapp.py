@@ -24,48 +24,57 @@ class Command(BaseCommand):
         )
 
     def handle(self, unities, **kwargs):
-        for _ in range(unities or 10):
+        n = unities = unities or 10
+        try:
+            user = User.objects.get(email="user@user.com")
+            self.create_unity(user)
+            n -= 1
+        except User.DoesNotExist:
+            pass
+        for _ in range(n):
             self.create_unity()
         print(f"Created {unities} fake healthcare units")
 
-    def create_unity(self):
+    def create_unity(self, notifier=None):
         fake = Factory.create("en-US")
-        self.unit = HealthcareUnity.objects.create(
+        day = datetime.timedelta(days=1)
+        unit = HealthcareUnity.objects.create(
             municipality=random_municipality(),
             cnes_id=fake.building_number(),
             is_active=fake.boolean(),
             name=fake.name(),
         )
-        self.notifier = random_user()
+        notifier = notifier or random_user()
+        kwargs = {"notifier": notifier, "unit": unit}
+
         date = now()
-        day = datetime.timedelta(days=1)
         size = random.choice([10, 50, 100, 200, 500, 1000, 5000, 10000])
         n_days = lambda: random.choice([1, 2, 3, 5, 10])
 
         ns = distribute_beds(size)
         walker = Walker(*ns)
-        self.create_capacity(date, *ns)
+        self.create_capacity(date, *ns, **kwargs)
         for _ in range(n_days()):
-            self.create_log_entry(date, walker)
+            self.create_log_entry(date, walker, **kwargs)
             date += day
 
         for _ in range(n_days()):
             size = int(size * random.choice([1.05, 1.25, 1.5, 2.0]))
-            self.create_capacity(date, *ns)
+            ns = distribute_beds(size)
+            self.create_capacity(date, *ns, **kwargs)
             for _ in range(n_days()):
-                self.create_log_entry(date, walker)
+                self.create_log_entry(date, walker, **kwargs)
                 date += day
 
-    def create_log_entry(self, date, walker):
+    def create_log_entry(self, date, walker, unit, notifier):
         kwargs = walker.next()
-        return LogEntry.objects.create_clean(
-            unity=self.unit, notifier=self.notifier, date=date, **kwargs
-        )
+        return LogEntry.objects.create_clean(unity=unit, notifier=notifier, date=date, **kwargs)
 
-    def create_capacity(self, date, a, b, c, d):
+    def create_capacity(self, date, a, b, c, d, unit, notifier):
+        assert a >= 0 and b >= 0 and c >= 0 and d >= 0, (a, b, c, d)
         return Capacity.objects.create_clean(
-            unity=self.unit,
-            notifier=self.notifier,
+            unity=unit,
+            notifier=notifier,
             date=date,
             beds_adults=a,
             beds_pediatric=b,
@@ -90,7 +99,7 @@ def distribute_beds(n):
 
     r = min(0.2 + random.expovariate(0.2), 0.6)
     c = int(r * icu)
-    d = icu - a
+    d = icu - c
     return a, b, c, d
 
 

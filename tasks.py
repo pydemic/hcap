@@ -18,7 +18,8 @@ def db(ctx):
 @task
 def db_fake(ctx):
     """Populate with fake data."""
-    ctx.run("python manage.py createfakeusers")
+    ctx.run("python manage.py migrate")
+    ctx.run("python manage.py createfakeusers --admin --user")
     ctx.run("python manage.py createfakeapp")
 
 
