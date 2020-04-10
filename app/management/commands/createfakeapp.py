@@ -13,6 +13,7 @@ from locations.models import Municipality
 from project.management import BaseCommand
 
 User = get_user_model()
+SMALL_INT_LIMIT = 32760
 
 
 class Command(BaseCommand):
@@ -80,10 +81,10 @@ class Command(BaseCommand):
             unity=unit,
             notifier=notifier,
             date=date,
-            beds_adults=a,
-            beds_pediatric=b,
-            icu_adults=c,
-            icu_pediatric=d,
+            beds_adults=min(a, SMALL_INT_LIMIT),
+            beds_pediatric=min(b, SMALL_INT_LIMIT),
+            icu_adults=min(c, SMALL_INT_LIMIT),
+            icu_pediatric=min(d, SMALL_INT_LIMIT),
         )
 
 
@@ -138,18 +139,18 @@ class Walker:
         icu_covid_cases_pediatric = int(self.covid * icu_sari_cases_pediatric)
 
         return dict(
-            sari_cases_adults=sari_cases_adults,
-            covid_cases_adults=covid_cases_adults,
-            sari_cases_pediatric=sari_cases_pediatric,
-            covid_cases_pediatric=covid_cases_pediatric,
-            icu_sari_cases_adults=icu_sari_cases_adults,
-            icu_covid_cases_adults=icu_covid_cases_adults,
-            icu_sari_cases_pediatric=icu_sari_cases_pediatric,
-            icu_covid_cases_pediatric=icu_covid_cases_pediatric,
-            regular_cases_adults=regular_cases_adults,
-            regular_cases_pediatric=regular_cases_pediatric,
-            icu_regular_adults=icu_regular_adults,
-            icu_regular_pediatric=icu_regular_pediatric,
+            sari_cases_adults=min(sari_cases_adults, SMALL_INT_LIMIT),
+            covid_cases_adults=min(covid_cases_adults, SMALL_INT_LIMIT),
+            sari_cases_pediatric=min(sari_cases_pediatric, SMALL_INT_LIMIT),
+            covid_cases_pediatric=min(covid_cases_pediatric, SMALL_INT_LIMIT),
+            icu_sari_cases_adults=min(icu_sari_cases_adults, SMALL_INT_LIMIT),
+            icu_covid_cases_adults=min(icu_covid_cases_adults, SMALL_INT_LIMIT),
+            icu_sari_cases_pediatric=min(icu_sari_cases_pediatric, SMALL_INT_LIMIT),
+            icu_covid_cases_pediatric=min(icu_covid_cases_pediatric, SMALL_INT_LIMIT),
+            regular_cases_adults=min(regular_cases_adults, SMALL_INT_LIMIT),
+            regular_cases_pediatric=min(regular_cases_pediatric, SMALL_INT_LIMIT),
+            icu_regular_adults=min(icu_regular_adults, SMALL_INT_LIMIT),
+            icu_regular_pediatric=min(icu_regular_pediatric, SMALL_INT_LIMIT),
         )
 
 
