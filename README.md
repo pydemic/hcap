@@ -110,14 +110,14 @@ Examples of usage:
 
 ### Database
 
-| Name                      | Default     | Pattern                | Description                                                              |
-| :------------------------ | :---------- | :--------------------- | :----------------------------------------------------------------------- |
-| `HCAP__DATABASE_TYPE`     | `sqlite`    | `sqlite`, `postgresql` | Set project DBMS                                                         |
-| `HCAP__POSTGRES_DB`       | `hcapacity` | String                 | If `HCAP__DATABASE_TYPE` is `postgresql`, set database name              |
-| `HCAP__POSTGRES_HOST`     | `postgres`  | String                 | If `HCAP__DATABASE_TYPE` is `postgresql`, set database hostname          |
-| `HCAP__POSTGRES_PASSWORD` | `hcapacity` | String                 | If `HCAP__DATABASE_TYPE` is `postgresql`, set database username password |
-| `HCAP__POSTGRES_PORT`     | `5432`      | Integer                | If `HCAP__DATABASE_TYPE` is `postgresql`, set database port              |
-| `HCAP__POSTGRES_USER`     | `hcapacity` | String                 | If `HCAP__DATABASE_TYPE` is `postgresql`, set database username          |
+| Name                      | Default    | Pattern                | Description                                                              |
+| :------------------------ | :--------- | :--------------------- | :----------------------------------------------------------------------- |
+| `HCAP__DATABASE_TYPE`     | `sqlite`   | `sqlite`, `postgresql` | Set project DBMS                                                         |
+| `HCAP__POSTGRES_DB`       | `hcap`     | String                 | If `HCAP__DATABASE_TYPE` is `postgresql`, set database name              |
+| `HCAP__POSTGRES_HOST`     | `postgres` | String                 | If `HCAP__DATABASE_TYPE` is `postgresql`, set database hostname          |
+| `HCAP__POSTGRES_PASSWORD` | `pydemic`  | String                 | If `HCAP__DATABASE_TYPE` is `postgresql`, set database username password |
+| `HCAP__POSTGRES_PORT`     | `5432`     | Integer                | If `HCAP__DATABASE_TYPE` is `postgresql`, set database port              |
+| `HCAP__POSTGRES_USER`     | `pydemic`  | String                 | If `HCAP__DATABASE_TYPE` is `postgresql`, set database username          |
 
 ### Email
 

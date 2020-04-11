@@ -15,9 +15,9 @@ elif DATABASE_TYPE == "postgresql":
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
-            "NAME": env("HCAP__POSTGRES_DB", default="hcapacity"),
-            "USER": env("HCAP__POSTGRES_USER", default="hcapacity"),
-            "PASSWORD": env("HCAP__POSTGRES_PASSWORD", default="hcapacity"),
+            "NAME": env("HCAP__POSTGRES_DB", default="hcap"),
+            "USER": env("HCAP__POSTGRES_USER", default="pydemic"),
+            "PASSWORD": env("HCAP__POSTGRES_PASSWORD", default="pydemic"),
             "HOST": env("HCAP__POSTGRES_HOST", default="postgres"),
             "PORT": env("HCAP__POSTGRES_PORT", default=5432),
         }

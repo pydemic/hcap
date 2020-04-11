@@ -2,7 +2,7 @@ image: ritproject/cli:docker
 services:
   - docker:dind
 variables:
-  RIT_TUNNEL_RUN: rit --log on_error tunnel --input disabled run apps hospital_capacity
+  RIT_TUNNEL_RUN: rit --log on_error tunnel --input disabled run apps hcap
   GIT_SUBMODULE_STRATEGY: recursive
 stages:
   - test
