@@ -15,7 +15,7 @@ class HealthcareUnit(models.Model):
     municipality = models.ForeignKey(
         "locations.Municipality",
         on_delete=models.CASCADE,
-        related_name="healthcare_unities",
+        related_name="healthcare_units",
         verbose_name="Município",
     )
     cnes_id = models.CharField(
@@ -37,6 +37,15 @@ class HealthcareUnit(models.Model):
 
     def __str__(self):
         return self.name
+
+    def register_notifier(self, user):
+        """
+        Register user as a valid notifier.
+        """
+        user.is_authorized = True
+        user.role = user.ROLE_NOTIFIER
+        user.save()
+        authorize_notifier(user, self)
 
 
 class Capacity(TimeStampedModel):
