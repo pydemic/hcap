@@ -35,14 +35,14 @@ your tunnel repo:
 - Remotely:
 
   ```bash
-  rit config tunnel add repo https://github.com/pydemic/tunnel --name pydemic
+  rit config tunnel add repo https://gitlab.com/pydemic/tunnel --name pydemic
   rit config tunnel default set pydemic --path .
   ```
 
 - Locally:
 
   ```bash
-  git clone https://github.com/pydemic/tunnel ../tunnel
+  git clone https://gitlab.com/pydemic/tunnel ../tunnel
   rit config tunnel add local ../tunnel --name pydemic
   rit config tunnel default set pydemic --path .
   ```
