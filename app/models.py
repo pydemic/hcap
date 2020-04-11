@@ -1,7 +1,6 @@
 import datetime
 
 from django.conf import settings
-from django.contrib.auth import get_user_model
 from django.core import validators
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -223,6 +222,17 @@ class NotifierForHealthcareUnit(models.Model):
     notifier = models.ForeignKey(settings.AUTH_USER_MODEL, models.CASCADE)
     unit = models.ForeignKey(HealthcareUnit, models.CASCADE)
     is_approved = models.BooleanField(default=False)
+
+    class Meta:
+        unique_together = [("notifier", "unit")]
+
+
+def authorize_notifier(user, unit):
+    NotifierForHealthcareUnit.objects.update_or_create(notifier=user, unit=unit, is_approved=True)
+
+
+def associate_notifier(user, unit):
+    NotifierForHealthcareUnit.objects.update_or_create(notifier=user, unit=unit, is_approved=False)
 
 
 def to_date(dt):

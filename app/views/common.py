@@ -15,7 +15,7 @@ def index_view(request):
             return redirect("app:logentry_list")
 
     cnes_form = forms.CNESForm()
-    cities_form = forms.FillCitiesForm(user.state)
+    cities_form = forms.FillCitiesForm()
     active = "cnes"
 
     if request.method == "POST" and request.POST["action"] not in ("cnes", "cities"):
@@ -27,9 +27,9 @@ def index_view(request):
             cnes_form.save(user)
     elif request.method == "POST" and request.POST["action"] == "cities":
         active = "cities"
-        cities_form = forms.FillCitiesForm(user, request.POST)
+        cities_form = forms.FillCitiesForm(request.POST)
         if cities_form.is_valid():
-            cities_form.save()
+            cities_form.save(user)
 
     ctx = {"cnes_form": cnes_form, "cities_form": cities_form, "active": active}
     return render(request, "app/index.html", ctx)
