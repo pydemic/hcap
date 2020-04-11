@@ -17,25 +17,16 @@ class Command(BaseCommand):
     help = "Creates fake users"
 
     def add_arguments(self, parser):
-        parser.add_argument(
-            "--admin", action="store_true", dest="admin", help="Create an admin@admin.com user"
-        )
-        parser.add_argument(
-            "--admin-password",
-            action="store_true",
-            dest="admin_password",
-            help="Sets the admin password",
-        )
-        parser.add_argument(
-            "--roles", action="store_true", dest="user", help="Create users with default roles"
-        )
+        parser.add_argument("--admin", action="store_true", help="Create an admin@admin.com user")
+        parser.add_argument("--admin-password", action="store_true", help="Sets the admin password")
+        parser.add_argument("--roles", action="store_true", help="Create users with default roles")
         parser.add_argument("--users", type=int, default=10, help="Number of regular users")
 
     def handle(self, *files, admin=False, admin_password=None, roles=False, users=None, **options):
         self.inform("Creating fake users", topic=True)
 
         fake = Factory.create("en-US")
-        size = users + bool(admin) + bool(roles) * 3
+        size = users + int(admin) + int(roles) * 3
         emails = User.objects.values_list("email", flat=True)
         emails = [email.split("@")[0] for email in emails]
         blocked_usernames = {"admin", "user", *emails}

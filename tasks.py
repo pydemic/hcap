@@ -97,3 +97,8 @@ def clean(ctx, db=False, yes=False):
 @task
 def test(ctx):
     ctx.run("python manage.py test_all")
+
+
+@task
+def shell(ctx):
+    ctx.run("python manage.py shell", pty=True)
