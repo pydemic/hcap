@@ -29,11 +29,6 @@ def fill_cities(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-    dependencies = [
-        ("locations", "0001_initial"),
-    ]
+    dependencies = [("locations", "0002_add_fields")]
 
-    operations = [
-        migrations.RunPython(fill_states),
-        migrations.RunPython(fill_cities),
-    ]
+    operations = [migrations.RunPython(fill_states), migrations.RunPython(fill_cities)]
