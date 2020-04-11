@@ -1,6 +1,6 @@
-from django.apps import AppConfig
+from django.apps import AppConfig as DjangoAppConfig
 
 
-class LocationsConfig(AppConfig):
+class AppConfig(DjangoAppConfig):
     name = "locations"
-    verbose_name = "Lugares"
+    verbose_name = "Localidade"

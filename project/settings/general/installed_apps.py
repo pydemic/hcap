@@ -37,4 +37,5 @@ INSTALLED_APPS = [
     # Others
     "compressor",
     "crispy_forms",
+    "utils",
 ]

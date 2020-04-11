@@ -1,7 +1,7 @@
-from django.contrib import admin
+from django.contrib.admin import AdminSite, site
 
 from . import models
 
-admin.site.register(models.HealthcareUnit)
-admin.site.register(models.Capacity)
-admin.site.register(models.LogEntry)
+site.register(models.HealthcareUnit)
+site.register(models.Capacity)
+site.register(models.LogEntry)

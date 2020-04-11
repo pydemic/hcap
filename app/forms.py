@@ -62,12 +62,19 @@ class NotifierPendingApprovalForm(forms.ModelForm):
         model = models.NotifierForHealthcareUnit
         fields = ("notifier", "unit", "is_approved")
 
+    def save(self, commit=True):
+        obj = super().save(commit)
+        if obj.is_approved and not obj.notifier.is_authorized:
+            obj.notifier.is_authorized = True
+            obj.notifier.save()
+        return obj
+
     def __init__(self, manager=None, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         if manager is not None:
             self.fields["notifier"].queryset = get_user_model().objects.filter(
-                state_id=manager.state_id, role=get_user_model().ROLE_NOTIFIER, is_authorized=True
+                state_id=manager.state_id, role=get_user_model().ROLE_NOTIFIER
             )
             self.fields["unit"].queryset = models.HealthcareUnit.objects.filter(
                 municipality__state_id=manager.state_id
