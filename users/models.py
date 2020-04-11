@@ -74,6 +74,9 @@ class User(AbstractUser):
     def has_verified_email(self):
         return self.emailaddress_set.filter(verified=True).exists()
 
+    is_notifier = property(lambda self: self.is_authorized and self.role == self.ROLE_NOTIFIER)
+    is_manager = property(lambda self: self.is_authorized and self.role == self.ROLE_MANAGER)
+
     def __init__(self, *args, username=None, email=None, **kwargs):
         email = email or username
         kwargs["email"] = email
