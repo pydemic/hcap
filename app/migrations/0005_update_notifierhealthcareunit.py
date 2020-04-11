@@ -9,31 +9,41 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('app', '0004_remove_healthcareunit_notifiers'),
+        ("app", "0004_remove_healthcareunit_notifiers"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='notifierforhealthcareunit',
-            options={'verbose_name': 'Notificador de Estabelecimento de Saúde', 'verbose_name_plural': 'Notificadores de Estabelecimento de Saúde'},
+            name="notifierforhealthcareunit",
+            options={
+                "verbose_name": "Notificador de Estabelecimento de Saúde",
+                "verbose_name_plural": "Notificadores de Estabelecimento de Saúde",
+            },
         ),
         migrations.AlterField(
-            model_name='notifierforhealthcareunit',
-            name='is_approved',
-            field=models.BooleanField(default=False, verbose_name='Aprovado'),
+            model_name="notifierforhealthcareunit",
+            name="is_approved",
+            field=models.BooleanField(default=False, verbose_name="Aprovado"),
         ),
         migrations.AlterField(
-            model_name='notifierforhealthcareunit',
-            name='notifier',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, verbose_name='Notificador'),
+            model_name="notifierforhealthcareunit",
+            name="notifier",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                to=settings.AUTH_USER_MODEL,
+                verbose_name="Notificador",
+            ),
         ),
         migrations.AlterField(
-            model_name='notifierforhealthcareunit',
-            name='unit',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='app.HealthcareUnit', verbose_name='Estabelecimento de Saúde'),
+            model_name="notifierforhealthcareunit",
+            name="unit",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                to="app.HealthcareUnit",
+                verbose_name="Estabelecimento de Saúde",
+            ),
         ),
         migrations.AlterUniqueTogether(
-            name='notifierforhealthcareunit',
-            unique_together={('notifier', 'unit')},
+            name="notifierforhealthcareunit", unique_together={("notifier", "unit")},
         ),
     ]
