@@ -21,10 +21,12 @@ class NotifierCreateModelView(CreateModelView):
     def get_form(self, form_class=None):
         form = super().get_form(form_class=None)
         user = self.request.user
-        unities = list(user.healthcare_units.all())
+        unities = user.healthcare_units.all()
 
         if len(unities) == 1:
             self.prepare_form_for_single_unit(form, unities[0])
+        field: forms.Field = form.fields["unit"]
+        field.queryset = unities
         return form
 
     def prepare_form_for_single_unit(self, form, unit):

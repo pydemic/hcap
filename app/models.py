@@ -107,7 +107,12 @@ class Capacity(TimeStampedModel):
 
 
 class LogEntry(TimeStampedModel):
-    unit = models.ForeignKey("HealthcareUnit", on_delete=models.CASCADE)
+    unit = models.ForeignKey(
+        "HealthcareUnit",
+        on_delete=models.CASCADE,
+        verbose_name="Estabelecimento de Saúde",
+        related_name="notifications",
+    )
     notifier = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -265,7 +270,11 @@ def to_date(dt):
 def healthcare_units(user):
     m2m = NotifierForHealthcareUnit.objects
     pks = m2m.filter(notifier=user, is_approved=True).values_list("notifier_id", flat=True)
-    return HealthcareUnit.objects.filter(pk__in=pks)
+    pks = list(pks)
+    if len(pks) == 1:
+        return HealthcareUnit.objects.filter(pk=pks[0])
+    else:
+        return HealthcareUnit.objects.filter(pk__in=pks)
 
 
 get_user_model().healthcare_units = healthcare_units
