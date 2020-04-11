@@ -1,0 +1,17 @@
+{% extends 'app/base_module.html' %}
+{% load i18n material_form material_frontend %}
+
+{% block content %}
+    <div class="left-panel">
+        <div class="card">
+            <div class="card-content">
+                <div class="card-title">Obrigado!</div>
+                <h5>Aguarde a autorização do admistrador.</h5>
+                <p>Em breve a sua conta estará habilitada. Nós enviaremos um e-mail de confirmação
+                    quando a autorização for concedida.
+                </p>
+                <a class="btn" href="{% url "app:index" %}">Voltar</a>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

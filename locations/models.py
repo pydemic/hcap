@@ -1,6 +1,7 @@
 import json
 from pathlib import Path
 
+from django.conf import settings
 from django.db import models
 
 
@@ -30,3 +31,25 @@ class Municipality(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class ManagerForMunicipality(models.Model):
+    manager = models.ForeignKey(
+        settings.AUTH_USER_MODEL, models.CASCADE, related_name="m2m_municipalities_as_manager"
+    )
+    municipality = models.ForeignKey(Municipality, models.CASCADE, related_name="m2m_managers")
+    is_approved = models.BooleanField(default=True)
+
+    def all_managers(self, only_approved=False):
+        qs = ManagerForMunicipality.objects.filter(municipality=self.municipality)
+        if only_approved:
+            qs = qs.filter(is_approved=True)
+        return type(self.manager).objects.filter(id__in=qs.values("manager_id"), flat=True)
+
+    def all_municipalities(self, only_approved=False):
+        qs = ManagerForMunicipality.objects.filter(manager=self.manager)
+        if only_approved:
+            qs = qs.filter(is_approved=True)
+        return type(self.municipality).objects.filter(
+            id__in=qs.values("municipality_id"), flat=True
+        )

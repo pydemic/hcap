@@ -26,8 +26,11 @@ class HealthcareUnit(models.Model):
     name = models.CharField(
         "Estabelecimento", max_length=100, help_text="Nome do estabelecimento de saúde"
     )
-    notifiers = models.ManyToManyField(get_user_model(), related_name="healthcare_unities")
     objects = HealthcareUnitManager()
+
+    @property
+    def notifiers(self):
+        return NotifierForHealthcareUnit.objects.filter(unit=self, is_approved=True)
 
     class Meta:
         verbose_name = "Estabelecimento de Saúde"
@@ -214,6 +217,12 @@ class LogEntry(TimeStampedModel):
             errors["icu_covid_cases_pediatric"] = msg
         if errors:
             raise ValidationError(errors)
+
+
+class NotifierForHealthcareUnit(models.Model):
+    notifier = models.ForeignKey(settings.AUTH_USER_MODEL, models.CASCADE)
+    unit = models.ForeignKey(HealthcareUnit, models.CASCADE)
+    is_approved = models.BooleanField(default=False)
 
 
 def to_date(dt):
