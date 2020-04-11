@@ -35,16 +35,13 @@ class UserAdmin(DjangoUserAdmin):
     fieldsets = (
         (None, {"fields": ("id",)}),
         ("Informações pessoais", {"fields": ("name", "email", "cpf")}),
-        (
-            "Permissões",
-            {"fields": ("is_active", "is_staff", "is_verified_notifier", "is_state_manager")},
-        ),
-        ("Atuação", {"fields": ("state",)}),
+        ("Atuação", {"fields": ("role", "state",)}),
+        ("Permissões", {"fields": ("is_active", "is_staff", "is_authorized")},),
         ("Datas importantes", {"fields": ("last_login", "date_joined")}),
     )
 
     add_fieldsets = (
-        ("Informações pessiais", {"fields": ("name", "email", "cpf", "password1", "password2")}),
+        ("Informações pessoais", {"fields": ("name", "email", "cpf", "password1", "password2")}),
         ("Permissões", {"fields": ("is_active", "is_staff")}),
         ("Atuação", {"fields": ("state",)}),
     )

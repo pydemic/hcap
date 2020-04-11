@@ -75,8 +75,8 @@ class Command(BaseCommand):
                 name=fake.name(),
                 cpf=cpfs.pop(),
                 email=username + "@" + fake.domain_name(),
-                is_verified_notifier=True,
-                is_state_manager=True,
+                role=User.ROLE_MANAGER,
+                is_authorized=True,
             )
             verify_email(user)
             users_created += 1
@@ -88,7 +88,7 @@ class Command(BaseCommand):
                 cpf=cpfs.pop(),
                 name=fake.name(),
                 email=username + "@" + fake.domain_name(),
-                is_verified_notifier=True,
+                role=User.ROLE_NOTIFIER,
             )
             verify_email(user)
             users_created += 1
@@ -103,8 +103,8 @@ class Command(BaseCommand):
                 cpf="888.999.888-11",
                 name="Maurice Moss",
                 email="admin@admin.com",
-                is_state_manager=True,
-                is_verified_notifier=True,
+                role=User.ROLE_MANAGER,
+                is_authorized=True,
             )
             user.set_password(password or settings.FAKE_ADMIN_PASSWORD)
             user.save()

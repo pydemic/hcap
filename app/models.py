@@ -219,11 +219,20 @@ class LogEntry(TimeStampedModel):
 
 
 class NotifierForHealthcareUnit(models.Model):
-    notifier = models.ForeignKey(settings.AUTH_USER_MODEL, models.CASCADE)
-    unit = models.ForeignKey(HealthcareUnit, models.CASCADE)
-    is_approved = models.BooleanField(default=False)
+    notifier = models.ForeignKey(
+        settings.AUTH_USER_MODEL, models.CASCADE, verbose_name="Notificador"
+    )
+    unit = models.ForeignKey(
+        HealthcareUnit, models.CASCADE, verbose_name="Estabelecimento de Saúde"
+    )
+    is_approved = models.BooleanField("Aprovado", default=False)
+
+    def __str__(self):
+        return f"{self.notifier} de {self.unit}"
 
     class Meta:
+        verbose_name = "Notificador de Estabelecimento de Saúde"
+        verbose_name_plural = "Notificadores de Estabelecimento de Saúde"
         unique_together = [("notifier", "unit")]
 
 

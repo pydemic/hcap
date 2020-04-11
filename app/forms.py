@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth import get_user_model
 
 from . import models
 from locations import models as location_models
@@ -54,3 +55,20 @@ class FillCitiesForm(forms.Form):
                     city_name = c.title()
                     municipality = location_models.Municipality.objects.get(name=city_name)
                     location_models.associate_manager_municipality(user, municipality)
+
+
+class NotifierPendingApprovalForm(forms.ModelForm):
+    class Meta:
+        model = models.NotifierForHealthcareUnit
+        fields = ("notifier", "unit", "is_approved")
+
+    def __init__(self, manager=None, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        if manager is not None:
+            self.fields["notifier"].queryset = get_user_model().objects.filter(
+                state_id=manager.state_id, role=get_user_model().ROLE_NOTIFIER, is_authorized=True
+            )
+            self.fields["unit"].queryset = models.HealthcareUnit.objects.filter(
+                municipality__state_id=manager.state_id
+            )

@@ -1,7 +1,8 @@
+from django.contrib.auth import get_user_model
 from material import Layout, Fieldset, Row
 from material.frontend.views import ModelViewSet
 
-from app import models
+from app import models, views
 
 
 class HealthcareUnitViewSet(ModelViewSet):
@@ -13,3 +14,35 @@ class HealthcareUnitViewSet(ModelViewSet):
         Fieldset("Características do estabelecimento", "name", Row("cnes_id", "municipality")),
         "notifiers",
     )
+
+
+class NotifierPendingApprovalViewSet(ModelViewSet):
+    model = models.NotifierForHealthcareUnit
+    create_view_class = views.NotifierPendingApprovalCreateModelView
+    update_view_class = views.NotifierPendingApprovalUpdateModelView
+    list_display = ("notifier", "unit")
+
+    def get_queryset(self, request):
+        state_id = request.user.state_id
+        return self.model.objects.filter(unit__municipality__state_id=state_id, is_approved=False)
+
+    def has_add_permission(self, request):
+        user = request.user
+        return is_admin(user) or is_authorized_manager(user)
+
+    def has_view_permission(self, request, obj=None):
+        return self.has_add_permission(request)
+
+    def has_change_permission(self, request, obj=None):
+        return self.has_add_permission(request)
+
+    def has_delete_permission(self, request, obj=None):
+        return self.has_add_permission(request)
+
+
+def is_admin(user):
+    return user.is_staff or user.is_superuser
+
+
+def is_authorized_manager(user):
+    return user.is_authorized and user.role == get_user_model().ROLE_MANAGER
