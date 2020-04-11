@@ -9,29 +9,34 @@ from .models import User
 fake = Factory.create("pt-BR")
 
 
-def create_user(email=None, password=None, validate_email=True, **kwargs):
+def create_user(email=None, password=None, validate_email=True, force=False, **kwargs):
     """
     Generic function for creating users.
 
     It creates user, sets password and register e-mail in allauth.
     """
+    new = True
     try:
-        return User.objects.get(email=email), False
+        user = User.objects.get(email=email)
+        if not force:
+            return user, False
+        else:
+            user.delete()
     except User.DoesNotExist:
-        kwargs = {
-            "email": email or fake.email(),
-            "cpf": kwargs.get("cpf") or random_cpf(),
-            "name": kwargs.get("name") or fake.name(),
-            "is_active": kwargs.pop("is_active", True),
-            **kwargs,
-        }
-        user = User(**kwargs)
-        if password:
-            user.set_password(password)
-        user.save()
-        if validate_email:
-            verify_email(user)
-        return user, True
+        pass
+    kwargs = {
+        "email": email or fake.email(),
+        "cpf": kwargs.get("cpf") or random_cpf(),
+        "name": kwargs.get("name") or fake.name(),
+        "is_active": kwargs.pop("is_active", True),
+        **kwargs,
+    }
+    user = User(**kwargs)
+    user.set_password(password)
+    user.save()
+    if validate_email:
+        verify_email(user)
+    return user, new
 
 
 def create_notifier(**kwargs):
@@ -67,9 +72,9 @@ def create_manager(**kwargs):
 
 def create_admin(**kwargs):
     kwargs = {
-        "password": "user",
         "name": "Maurice Moss",
         "email": "admin@admin.com",
+        "password": "admin",
         "role": User.ROLE_MANAGER,
         "is_authorized": True,
         "is_superuser": True,
@@ -129,17 +134,17 @@ def random_set(fn, size, blocked=(), max_tries=25, args=(), kwargs=frozendict({}
     return res
 
 
-def healthcare_unit(**kwargs):
+def healthcare_unit(**kwargs) -> "app.models.HealthcareUnit":
     from app.models import HealthcareUnit
 
     kwargs.setdefault("is_active", True)
-    try:
-        return HealthcareUnit.objects.filter(**kwargs).first()
-    except HealthcareUnit.DoesNotExist:
-        kwargs = {
-            "cnes": 1234,
-            "municipality": kwargs.get("municipality") or random_city(),
-            "name": "Foo Bar Hospital",
-            **kwargs,
-        }
-        return HealthcareUnit.objects.create(**kwargs)
+    obj = HealthcareUnit.objects.filter(**kwargs).first()
+    if obj is not None:
+        return obj
+    kwargs = {
+        "cnes_id": 1234,
+        "municipality": kwargs.get("municipality") or random_city(),
+        "name": "Foo Bar Hospital",
+        **kwargs,
+    }
+    return HealthcareUnit.objects.create(**kwargs)

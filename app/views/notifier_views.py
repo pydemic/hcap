@@ -1,23 +1,10 @@
 from django import forms
-from django.conf import settings
-from django.utils.timezone import now
 from material.frontend.views import CreateModelView, ListModelView
+
+__all__ = ["NotifierListModelView", "NotifierCreateModelView"]
 
 
 class NotifierCreateModelView(CreateModelView):
-    def has_add_permission(self, request):
-        user = request.user
-        if not (user.is_verified_notifier or settings.DEBUG and user.is_superuser):
-            return False
-        return user.healthcare_unities.filter(is_active=True).exists()
-
-    def has_object_permission(self, request, obj):
-        if not self.has_add_permission(request):
-            return False
-        elif obj.notifier != request.user:
-            return False
-        return (obj.created - now()).hours < 20
-
     def form_valid(self, form: forms.ModelForm, *args, **kwargs):
         save_fn = form.save
 
@@ -34,7 +21,7 @@ class NotifierCreateModelView(CreateModelView):
     def get_form(self, form_class=None):
         form = super().get_form(form_class=None)
         user = self.request.user
-        unities = list(user.healthcare_unities.all())
+        unities = list(user.healthcare_units.all())
 
         if len(unities) == 1:
             self.prepare_form_for_single_unit(form, unities[0])

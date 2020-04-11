@@ -47,7 +47,7 @@ class Command(BaseCommand):
             municipality=random_municipality(),
             cnes_id=fake.building_number(),
             is_active=fake.boolean(),
-            name=fake.name(),
+            name=fake.name() + " Hospital",
         )
         notifier = notifier or random_user()
         kwargs = {"notifier": notifier, "unit": unit}

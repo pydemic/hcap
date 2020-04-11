@@ -1,6 +1,7 @@
 import datetime
 
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.core import validators
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -255,3 +256,16 @@ def associate_notifier(user, unit):
 
 def to_date(dt):
     return datetime.date(dt.year, dt.month, dt.day)
+
+
+#
+# Modify user to have the healthcare_units property
+#
+@property
+def healthcare_units(user):
+    m2m = NotifierForHealthcareUnit.objects
+    pks = m2m.filter(notifier=user, is_approved=True).values_list("notifier_id", flat=True)
+    return HealthcareUnit.objects.filter(pk__in=pks)
+
+
+get_user_model().healthcare_units = healthcare_units

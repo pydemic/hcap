@@ -4,6 +4,8 @@ from material.frontend.views import ModelViewSet
 from .notifier_views import NotifierCreateModelView, NotifierListModelView
 from .. import models
 
+__all__ = ["LogEntryViewSet", "CapacityViewSet"]
+
 
 class NotifierBaseViewSet(ModelViewSet):
     create_view_class = NotifierCreateModelView
@@ -22,6 +24,32 @@ class NotifierBaseViewSet(ModelViewSet):
             return obj.cases_total
 
     clinic_total_.short_description = "Total Clínicos"
+
+    #
+    # Permissions
+    #
+    def has_view_permission(self, request, obj=None):
+        if super().has_view_permission(request, obj=obj):
+            return True
+
+        user = request.user
+        if obj is None:
+            return user.is_notifier
+        elif user.is_notifier:
+            return obj.notifier == user
+
+    def has_add_permission(self, request):
+        if super().has_add_permission(request):
+            return True
+        return request.user.is_notifier
+
+    # def has_object_permission(self, request, obj):
+    #     return True
+    #     if not self.has_add_permission(request):
+    #         return False
+    #     elif obj.notifier != request.user:
+    #         return False
+    #     return (obj.created - now()).hours < 20
 
 
 class LogEntryViewSet(NotifierBaseViewSet):
