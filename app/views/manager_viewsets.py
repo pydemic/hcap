@@ -28,7 +28,7 @@ class NotifierPendingApprovalViewSet(ModelViewSet):
 
     def has_add_permission(self, request):
         user = request.user
-        return is_admin(user) or is_authorized_manager(user)
+        return user.is_manager or user.is_staff or user.is_superuser
 
     def has_view_permission(self, request, obj=None):
         return self.has_add_permission(request)
@@ -38,11 +38,3 @@ class NotifierPendingApprovalViewSet(ModelViewSet):
 
     def has_delete_permission(self, request, obj=None):
         return self.has_add_permission(request)
-
-
-def is_admin(user):
-    return user.is_staff or user.is_superuser
-
-
-def is_authorized_manager(user):
-    return user.is_authorized and user.role == get_user_model().ROLE_MANAGER

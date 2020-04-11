@@ -4,8 +4,16 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin
 
 
+from app.models import NotifierForHealthcareUnit
+
+
 class EmailAddressInline(admin.TabularInline):
     model = EmailAddress
+    extra = 0
+
+
+class NotifierForHealthcareUnitInline(admin.TabularInline):
+    model = NotifierForHealthcareUnit
     extra = 0
 
 
@@ -27,9 +35,16 @@ class HasVerifiedEmailFilter(admin.SimpleListFilter):
 
 @admin.register(get_user_model())
 class UserAdmin(DjangoUserAdmin):
-    list_display = ("id", "name", "email", "is_active", "is_staff", "has_verified_email", "state")
+    list_display = ("id", "name", "email", "role", "state", "is_authorized")
     ordering = ("name", "email")
-    list_filter = ("is_active", "is_staff", HasVerifiedEmailFilter, "state")
+    list_filter = (
+        "is_active",
+        "is_authorized",
+        "is_staff",
+        HasVerifiedEmailFilter,
+        "role",
+        "state",
+    )
     search_fields = ("id", "name", "email")
 
     fieldsets = (
@@ -46,7 +61,10 @@ class UserAdmin(DjangoUserAdmin):
         ("Atuação", {"fields": ("state",)}),
     )
 
-    inlines = (EmailAddressInline,)
+    inlines = (
+        NotifierForHealthcareUnitInline,
+        EmailAddressInline,
+    )
 
     readonly_fields = ("id", "date_joined", "last_login")
 
