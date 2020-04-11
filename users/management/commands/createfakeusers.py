@@ -108,7 +108,7 @@ class Command(BaseCommand):
             )
             user.set_password(password or settings.FAKE_ADMIN_PASSWORD)
             user.save()
-            # verify_email(user)
+            verify_email(user)
             self.inform(self.style.SUCCESS("Admin") + " user created!", depth=1)
             return user
         else:
@@ -122,7 +122,7 @@ class Command(BaseCommand):
             )
             user.set_password(password or settings.FAKE_USER_PASSWORD)
             user.save()
-            # verify_email(user)
+            verify_email(user)
             self.inform(self.style.SUCCESS("Default") + " user created!", depth=1)
             return user
         else:
