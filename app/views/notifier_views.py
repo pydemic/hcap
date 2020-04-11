@@ -1,10 +1,10 @@
 from django import forms
-from material.frontend.views import CreateModelView, ListModelView
+from material.frontend.views import CreateModelView, ListModelView, UpdateModelView
 
-__all__ = ["NotifierListModelView", "NotifierCreateModelView"]
+__all__ = ["NotifierListModelView", "NotifierUpdateModelView", "NotifierCreateModelView"]
 
 
-class NotifierCreateModelView(CreateModelView):
+class NotifierCreateOrUpdateMixin:
     def form_valid(self, form: forms.ModelForm, *args, **kwargs):
         save_fn = form.save
 
@@ -38,6 +38,14 @@ class NotifierCreateModelView(CreateModelView):
         if capacity:
             for k, v in capacity.capacities.items():
                 form.initial.setdefault(k, v)
+
+
+class NotifierCreateModelView(NotifierCreateOrUpdateMixin, CreateModelView):
+    pass
+
+
+class NotifierUpdateModelView(NotifierCreateOrUpdateMixin, UpdateModelView):
+    pass
 
 
 class NotifierListModelView(ListModelView):

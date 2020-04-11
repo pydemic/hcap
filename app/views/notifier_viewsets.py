@@ -1,7 +1,8 @@
-from material import Layout, Fieldset, Row
+from django.utils.timezone import now
+from material import Layout, Fieldset, Row, Span
 from material.frontend.views import ModelViewSet
 
-from .notifier_views import NotifierCreateModelView, NotifierListModelView
+from .notifier_views import NotifierCreateModelView, NotifierListModelView, NotifierUpdateModelView
 from .. import models
 
 __all__ = ["LogEntryViewSet", "CapacityViewSet"]
@@ -10,6 +11,7 @@ __all__ = ["LogEntryViewSet", "CapacityViewSet"]
 class NotifierBaseViewSet(ModelViewSet):
     create_view_class = NotifierCreateModelView
     list_view_class = NotifierListModelView
+    update_view_class = NotifierUpdateModelView
     list_display = ("unit", "date", "icu_total_", "clinic_total_")
 
     def icu_total_(self, obj):
@@ -28,7 +30,7 @@ class NotifierBaseViewSet(ModelViewSet):
     #
     # Permissions
     #
-    def has_view_permission(self, request, obj=None):
+    def has_view_permission(self, request, obj=None) -> bool:
         if super().has_view_permission(request, obj=obj):
             return True
 
@@ -37,19 +39,23 @@ class NotifierBaseViewSet(ModelViewSet):
             return user.is_notifier
         elif user.is_notifier:
             return obj.notifier == user
+        return False
 
-    def has_add_permission(self, request):
+    def has_add_permission(self, request) -> bool:
         if super().has_add_permission(request):
             return True
         return request.user.is_notifier
 
-    # def has_object_permission(self, request, obj):
-    #     return True
-    #     if not self.has_add_permission(request):
-    #         return False
-    #     elif obj.notifier != request.user:
-    #         return False
-    #     return (obj.created - now()).hours < 20
+    def has_change_permission(self, request, obj=None) -> bool:
+        if super().has_change_permission(request, obj):
+            return True
+
+        user = request.user
+        if obj is None:
+            return user.is_notifier
+        elif user.is_notifier:
+            return obj.notifier == user and (obj.created - now()).total_seconds() / 3600 < 20
+        return False
 
 
 class LogEntryViewSet(NotifierBaseViewSet):
