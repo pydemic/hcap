@@ -7,7 +7,7 @@ from ..env import env
 from .paths import SQLITE_PATH
 
 
-DATABASE_TYPE = env("HC__DATABASE_TYPE", default="sqlite")
+DATABASE_TYPE = env("HCAP__DATABASE_TYPE", default="sqlite")
 
 if DATABASE_TYPE == "sqlite":
     DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": str(SQLITE_PATH)}}
@@ -15,10 +15,10 @@ elif DATABASE_TYPE == "postgresql":
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
-            "NAME": env("HC__POSTGRES_DB", default="hcapacity"),
-            "USER": env("HC__POSTGRES_USER", default="hcapacity"),
-            "PASSWORD": env("HC__POSTGRES_PASSWORD", default="hcapacity"),
-            "HOST": env("HC__POSTGRES_HOST", default="postgres"),
-            "PORT": env("HC__POSTGRES_PORT", default=5432),
+            "NAME": env("HCAP__POSTGRES_DB", default="hcapacity"),
+            "USER": env("HCAP__POSTGRES_USER", default="hcapacity"),
+            "PASSWORD": env("HCAP__POSTGRES_PASSWORD", default="hcapacity"),
+            "HOST": env("HCAP__POSTGRES_HOST", default="postgres"),
+            "PORT": env("HCAP__POSTGRES_PORT", default=5432),
         }
     }

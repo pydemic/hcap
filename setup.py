@@ -59,5 +59,5 @@ setup(
     install_requires=REQUIREMENTS,
     extras_require={"dev": DEV_REQUIREMENTS, "prod": PROD_REQUIREMENTS},
     zip_safe=False,
-    entry_points={"console_scripts": ["hc = manage:main"]},
+    entry_points={"console_scripts": ["hcap = manage:main"]},
 )

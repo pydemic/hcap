@@ -5,4 +5,4 @@ django:
 
 from project.settings import env
 
-SECRET_KEY = env("HC__SECRET_KEY", default="changeme")
+SECRET_KEY = env("HCAP__SECRET_KEY", default="changeme")

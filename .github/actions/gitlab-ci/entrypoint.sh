@@ -1,12 +1,12 @@
 #!/bin/sh
 
-# https://github.com/SvanBoxel/gitlab-mirror-and-ci-action/blob/master/Dockerfile
+# https://github.com/SvanBoxel/gitlab-mirror-and-ci-action/blob/master
 set -u
 
 DEFAULT_POLL_TIMEOUT=10
 POLL_TIMEOUT=${POLL_TIMEOUT:-$DEFAULT_POLL_TIMEOUT}
 
-sh -c "git clone --single-branch --branch ${GITHUB_REF:11} https://github.com/pydemic/capacidade_hospitalar ../repo"
+sh -c "git clone --single-branch --branch ${GITHUB_REF:11} https://github.com/pydemic/hcap ../repo"
 
 cd ../repo
 
@@ -15,7 +15,7 @@ branch=$(git symbolic-ref --short HEAD)
 sh -c "git config --global credential.username $GITLAB_USERNAME"
 sh -c "git config --global core.askPass /cred-helper.sh"
 sh -c "git config --global credential.helper cache"
-sh -c "git remote add mirror https://gitlab.com/pydemic/capacidade_hospitalar"
+sh -c "git remote add mirror https://gitlab.com/pydemic/hcap"
 sh -c "git push --force mirror $branch"
 
 sleep $POLL_TIMEOUT
