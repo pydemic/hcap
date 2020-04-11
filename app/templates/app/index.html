@@ -57,6 +57,11 @@
                                     </button>
                                 </div>
                             </form>
+                            <script defer>
+                                $("#id_state_manager").on("change", function(){
+                                    $("#id_cities").prop("disabled", function(i, v){return !v})
+                                })
+                            </script>
                         </div>
                     </li>
                 </ul>

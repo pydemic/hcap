@@ -53,3 +53,7 @@ class ManagerForMunicipality(models.Model):
         return type(self.municipality).objects.filter(
             id__in=qs.values("municipality_id"), flat=True
         )
+
+
+def associate_manager_municipality(user, municipality):
+    ManagerForMunicipality.objects.update_or_create(manager=user, municipality=municipality)
