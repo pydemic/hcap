@@ -151,3 +151,11 @@ dmypy.json
 .pyre/
 
 .vscode/
+
+# vim
+*.swp
+*.swo
+
+# docker
+docker-compose.yml
+Dockerfile

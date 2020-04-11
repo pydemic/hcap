@@ -34,6 +34,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # Monitoring
+    "django_prometheus",
     # Others
     "compressor",
     "crispy_forms",

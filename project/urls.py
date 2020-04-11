@@ -22,6 +22,7 @@ urlpatterns = [
     path("accounts/", include("allauth.urls")),
     path("", RedirectView.as_view(url="./app/"), name="home"),
     path("", include(frontend_urls)),
+    path("", include('django_prometheus.urls'))
 ]
 
 if settings.DEBUG:
