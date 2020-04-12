@@ -4,13 +4,16 @@
 {% block content %}
     <div class="left-panel">
         <div class="card">
-            <div class="card-content">
+            <div class="card-content container">
                 <div class="card-title">Obrigado!</div>
                 <h5>Aguarde a autorização do admistrador.</h5>
                 <p>Em breve a sua conta estará habilitada. Nós enviaremos um e-mail de confirmação
                     quando a autorização for concedida.
                 </p>
-                <a class="btn" href="{% url "app:index" %}">Voltar</a>
+                <div class="center-align" style="margin: 3rem 0;">
+                    <i class="material-icons"
+                       style="font-size: 6rem; color: white; display: block; background: gray; padding: 2rem; border-radius: 50%; margin: auto; width: 10rem;">hourglass_empty</i>
+                </div>
             </div>
         </div>
     </div>

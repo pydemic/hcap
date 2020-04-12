@@ -1,8 +1,8 @@
 from django import forms
 from django.contrib.auth import get_user_model
 
-from . import models
 from locations import models as location_models
+from . import models
 from .validators import existing_cnes_validator
 
 
@@ -17,7 +17,7 @@ class CNESForm(forms.Form):
     def save(self, user):
         cnes = self.cleaned_data["cnes"]
         unit = models.HealthcareUnit.objects.get(cnes_id=cnes)
-        models.associate_notifier(user, unit)
+        unit.register_notifier(user, authorize=False)
 
 
 class FillCitiesForm(forms.Form):
