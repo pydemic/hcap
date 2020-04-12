@@ -1,0 +1,15 @@
+apiVersion: 1
+
+deleteDatasources:
+  - name: "HCAP"
+    orgId: 1
+
+datasources:
+- name: "HCAP"
+  type: "prometheus"
+  url: "http://prometheus:9090"
+  basicAuth: false
+  isDefault: true
+  editable: true
+  ordId: 1
+  access: proxy
