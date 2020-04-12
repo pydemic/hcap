@@ -41,7 +41,8 @@ you may use invoke tasks to execute the most common chores
 | `inv db-fake`         | Seed database with users and fake data |
 | `inv run`             | Start application                      |
 
-You can list all options with `inv -l`.
+You can list all options with `inv -l`. Like make, invoke chains commands, so
+if you're eager to get started, just run `inv db db-fake run`
 
 The `inv db-fake` command creates a few useful users that you can use to interact
 with the platform under different roles.
