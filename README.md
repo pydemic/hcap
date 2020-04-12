@@ -74,15 +74,15 @@ rit config tunnel default set pydemic --path .
 If you use docker and docker-compose, you use `rit` commands to automate several
 processes. The table list the main options.
 
-| Description                          | Commands                                                                                                                                                                                             |
-| :----------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Build the development image          | `rit tunnel run apps hcap development build`                                                                                                                                                         |
-| Fetch the development docker-compose | `rit tunnel run apps hcap development fetch compose`                                                                                                                                                 |
-| Run the test pipeline                | `rit tunnel run apps hcap development test up<br>rit tunnel run apps hcap development test sync<br>rit tunnel run apps hcap development test all<br>>rit tunnel run apps hcap development test down` |
-| Start or shutdown PostgreSQL service | `rit tunnel run services postgres up<br>rit tunnel run services postgres down`                                                                                                                       |
-| Start or shutdown PostGis service    | `rit tunnel run services postgis up<br>rit tunnel run services postgis down`                                                                                                                         |
-| Build the production image           | `rit tunnel run apps hcap production build`                                                                                                                                                          |
-| Fetch the production docker-compose  | `rit tunnel run apps hcap production fetch compose`                                                                                                                                                  |
+| Description                          | Commands |
+| :----------------------------------- | :------- |
+| Build the development image          | `rit tunnel run apps hcap development build` |
+| Fetch the development docker-compose | `rit tunnel run apps hcap development fetch compose` |
+| Run the test pipeline                | `rit tunnel run apps hcap development test up`<br>`rit tunnel run apps hcap development test sync`<br>`rit tunnel run apps hcap development test all`<br>`rit tunnel run apps hcap development test down` |
+| Start or shutdown PostgreSQL service | `rit tunnel run services postgres up`<br>`rit tunnel run services postgres down` |
+| Start or shutdown PostGis service    | `rit tunnel run services postgis up`<br>`rit tunnel run services postgis down` |
+| Build the production image           | `rit tunnel run apps hcap production build` |
+| Fetch the production docker-compose  | `rit tunnel run apps hcap production fetch compose` |
 
 ## Production Environment Variables
 
