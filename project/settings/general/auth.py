@@ -32,4 +32,9 @@ LOGIN_REDIRECT_URL = "/"
 SOCIALACCOUNT_QUERY_EMAIL = True
 ACCOUNT_USERNAME_BLACKLIST = []
 ACCOUNT_ADAPTER = "users.adapters.AccountAdapter"
-ACCOUNT_FORMS = {"signup": "users.forms.SignupForm"}
+ACCOUNT_FORMS = {
+    "change_password": "users.forms.ChangePasswordForm",
+    "login": "users.forms.LoginForm",
+    "reset_password": "users.forms.ResetPasswordForm",
+    "signup": "users.forms.SignupForm",
+}

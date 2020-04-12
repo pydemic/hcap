@@ -1,4 +1,9 @@
-from allauth.account.forms import SignupForm as AllauthSignupForm
+from allauth.account.forms import (
+    ChangePasswordForm as AllauthChangePasswordForm,
+    LoginForm as AllauthLoginForm,
+    ResetPasswordForm as AllauthResetPasswordForm,
+    SignupForm as AllauthSignupForm,
+)
 from users.validators import CPFValidator
 from material import Layout, Row
 from django import forms
@@ -6,9 +11,31 @@ from django.contrib.auth import get_user_model
 from locations.models import State
 
 
+class ChangePasswordForm(AllauthChangePasswordForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        del self.fields["oldpassword"].widget.attrs["placeholder"]
+        del self.fields["password1"].widget.attrs["placeholder"]
+        del self.fields["password2"].widget.attrs["placeholder"]
+
+
+class LoginForm(AllauthLoginForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        del self.fields["login"].widget.attrs["placeholder"]
+        del self.fields["password"].widget.attrs["placeholder"]
+
+
+class ResetPasswordForm(AllauthResetPasswordForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        del self.fields["email"].widget.attrs["placeholder"]
+
+
 class SignupForm(AllauthSignupForm):
     def __init__(self, *args, **kwargs):
-        super(SignupForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
+        del self.fields["password1"].widget.attrs["placeholder"]
         del self.fields["email"].widget.attrs["placeholder"]
         del self.fields["password2"].widget.attrs["placeholder"]
 

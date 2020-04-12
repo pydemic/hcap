@@ -4,5 +4,15 @@
     {% if user.is_manager %}
     <li><a href="{% url 'app:notifierforhealthcareunit_list' %}">Notificadores Pendentes</a></li>
     {% endif %}
-    <li><a href="{% url 'account_change_password' %}">Alterar senha</a></li>
 </ul>
+</div>
+<a href="" class="collapsible-header active" style="text-decoration: none; cursor: default;">
+    Minha Conta
+    <i class="material-icons">account_circle</i>
+</a>
+<div class="collapsible-body" style="display:block">
+    <ul>
+        <li><a href="{% url 'account_change_password' %}">Alterar senha</a></li>
+        <li><a href="{% url 'account_logout' %}">Sair</a></li>
+    </ul>
+</div>

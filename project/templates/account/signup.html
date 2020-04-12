@@ -1,11 +1,14 @@
 {% extends "frontend/base_lockscreen.html" %}
 {% load i18n material_form static%}
 
-{% block title %}{% trans 'Sign Up' %} - {{ block.super }}{% endblock %}
+{% block page_title %}{% trans 'Sign Up' %}{% endblock %}
 
 {% block content %}
-{% blocktrans %} If you already have an account
-{% endblocktrans %}<a href="{% url 'login' %}">{% trans 'Sign In' %}</a>
+<div class="row">
+    <div class="col s12">
+        {% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}
+    </div>
+</div>
 <form action="{{ app_path }}" method="post" id="signup-form">{% csrf_token %}
     {% form %}
     {% part form.cpf prefix %}<i class="material-icons prefix">perm_contact_calendar</i>{% endpart %}
@@ -23,10 +26,12 @@
     {% endpart %}
     {% part form.state prefix %}<i class="material-icons prefix" style="text-align: center;">place</i>{% endpart %}
     {% endform %}
-    <div class="action right-align">
-        <button type="submit" class="btn btn-primary">{% trans 'Sign Up' %}</button>
+
+    <div class="action">
+        <button type="submit" class="btn btn-success">{% trans 'Sign Up' %}</button>
     </div>
 </form>
+
 <script src="{% static 'js/jquery-mask-1.14.16.min.js' %}"></script>
 {% endblock %}
 

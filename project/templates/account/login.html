@@ -4,18 +4,22 @@
 {% block page_title %}{% trans 'Log in' %}{% endblock %}
 
 {% block content %}
-<p>{% blocktrans %}If you have not created an account yet, then please
-<a href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}</p>
+
+<div class="row">
+    <div class="col s12">
+{% blocktrans %}If you have not created an account yet, then please
+<a href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}
+    </div>
+</div>
+
 <form action="{{ app_path }}" method="post" id="login-form">{% csrf_token %}
-    {% if 'username' in form.fields %}
-        {% form %}
-            {% part form.username prefix %}<i class="material-icons prefix">account_box</i>{% endpart %}
-            {% part form.password prefix %}<i class="material-icons prefix">lock</i>{% endpart %}
-        {% endform %}
-    {% else %}
-        {% form %}{% endform %}
-    {% endif %}
+    {% form %}
+    {% part form.login prefix %}<i class="material-icons prefix">account_box</i>{% endpart %}
+    {% part form.password prefix %}<i class="material-icons prefix">lock</i>{% endpart %}
+    {% endform %}
+
     <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
+
     <div class="action">
         <button type="submit" class="btn btn-primary">{% trans 'Log in' %}</button>
     </div>
