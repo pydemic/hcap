@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AddField(
-            model_name="managerformunicipality",
+            model_name="managerforcity",
             name="manager",
             field=models.ForeignKey(
                 on_delete=django.db.models.deletion.CASCADE,
@@ -25,12 +25,12 @@ class Migration(migrations.Migration):
             ),
         ),
         migrations.AddField(
-            model_name="managerformunicipality",
-            name="municipality",
+            model_name="managerforcity",
+            name="city",
             field=models.ForeignKey(
                 on_delete=django.db.models.deletion.CASCADE,
                 related_name="m2m_managers",
-                to="locations.Municipality",
+                to="locations.City",
             ),
         ),
     ]

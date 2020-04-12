@@ -41,7 +41,7 @@ def create_user(email=None, password=None, validate_email=True, force=False, **k
 
 def create_notifier(**kwargs):
     state = kwargs.setdefault("state", random_state())
-    unit = healthcare_unit(municipality=random_city(state))
+    unit = healthcare_unit(city=random_city(state))
     kwargs = {
         "email": "notifier@notifier.com",
         "password": "notifier",
@@ -143,7 +143,7 @@ def healthcare_unit(**kwargs) -> "app.models.HealthcareUnit":
         return obj
     kwargs = {
         "cnes_id": 1234,
-        "municipality": kwargs.get("municipality") or random_city(),
+        "city": kwargs.get("city") or random_city(),
         "name": "Foo Bar Hospital",
         **kwargs,
     }

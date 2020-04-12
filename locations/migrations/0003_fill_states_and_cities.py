@@ -14,7 +14,7 @@ def fill_states(apps, schema_editor):
 
 
 def fill_cities(apps, schema_editor):
-    Municipality = apps.get_model("locations", "Municipality")
+    City = apps.get_model("locations", "City")
     with open(Path(__file__).parent.parent / "data" / "cities.json") as fd:
         data = json.load(fd)
 
@@ -24,8 +24,8 @@ def fill_cities(apps, schema_editor):
             d["id"] = int(str(d["id"])[0:6])
         return d
 
-    cities = [Municipality(**fix(st)) for st in data]
-    Municipality.objects.bulk_create(cities, batch_size=200)
+    cities = [City(**fix(st)) for st in data]
+    City.objects.bulk_create(cities, batch_size=200)
 
 
 class Migration(migrations.Migration):

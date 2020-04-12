@@ -8,11 +8,10 @@ from app import models, views
 class HealthcareUnitViewSet(ModelViewSet):
     model = models.HealthcareUnit
 
-    filters = ("municipality", "is_validated")
-    list_display = ("name", "cnes_id", "municipality", "is_validated")
+    filters = ("city", "is_validated")
+    list_display = ("name", "cnes_id", "city", "is_validated")
     layout = Layout(
-        Fieldset("Características do estabelecimento", "name", Row("cnes_id", "municipality")),
-        "notifiers",
+        Fieldset("Características do estabelecimento", "name", Row("cnes_id", "city")), "notifiers",
     )
 
 
@@ -24,7 +23,7 @@ class NotifierPendingApprovalViewSet(ModelViewSet):
 
     def get_queryset(self, request):
         state_id = request.user.state_id
-        return self.model.objects.filter(unit__municipality__state_id=state_id, is_approved=False)
+        return self.model.objects.filter(unit__city__state_id=state_id, is_approved=False)
 
     def has_add_permission(self, request):
         user = request.user

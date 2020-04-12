@@ -48,16 +48,19 @@ class Migration(migrations.Migration):
             model_name="logentry",
             name="unit",
             field=models.ForeignKey(
-                on_delete=django.db.models.deletion.CASCADE, to="app.HealthcareUnit"
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="notifications",
+                to="app.HealthcareUnit",
+                verbose_name="Estabelecimento de Saúde",
             ),
         ),
         migrations.AddField(
             model_name="healthcareunit",
-            name="municipality",
+            name="city",
             field=models.ForeignKey(
                 on_delete=django.db.models.deletion.CASCADE,
                 related_name="healthcare_units",
-                to="locations.Municipality",
+                to="locations.City",
                 verbose_name="Município",
             ),
         ),

@@ -17,7 +17,7 @@ def convert_csv_to_json(csv_file, json_file):
         fields = {
             "CO_CNES": "cnes_id",
             "NO_FANTASIA": "name",
-            "CO_MUNICIPIO_GESTOR": "municipality_id",
+            "CO_MUNICIPIO_GESTOR": "city_id",
         }
         for row in csvReader:
             get_fields_data(row, data, fields)

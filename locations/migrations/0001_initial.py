@@ -12,7 +12,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name="ManagerForMunicipality",
+            name="ManagerForCity",
             fields=[
                 (
                     "id",
@@ -38,7 +38,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name="Municipality",
+            name="City",
             fields=[
                 ("id", models.IntegerField(primary_key=True, serialize=False)),
                 ("name", models.CharField(max_length=50)),

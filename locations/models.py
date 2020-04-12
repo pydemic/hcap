@@ -23,12 +23,12 @@ class State(models.Model):
         user.is_authorized = True
         user.role = user.ROLE_MANAGER
         user.save()
-        create = ManagerForMunicipality.objects.update_or_create
+        create = ManagerForCity.objects.update_or_create
         for city in self.cities.all():
-            create(manager=user, municipality=city)
+            create(manager=user, city=city)
 
 
-class Municipality(models.Model):
+class City(models.Model):
     id = models.IntegerField(primary_key=True)
     state = models.ForeignKey("State", on_delete=models.CASCADE, related_name="cities")
     name = models.CharField(max_length=50)
@@ -47,31 +47,29 @@ class Municipality(models.Model):
         user.is_authorized = True
         user.role = user.ROLE_MANAGER
         user.save()
-        create = ManagerForMunicipality.objects.update_or_create
-        create(manager=user, municipality=self)
+        create = ManagerForCity.objects.update_or_create
+        create(manager=user, city=self)
 
 
-class ManagerForMunicipality(models.Model):
+class ManagerForCity(models.Model):
     manager = models.ForeignKey(
         settings.AUTH_USER_MODEL, models.CASCADE, related_name="m2m_municipalities_as_manager"
     )
-    municipality = models.ForeignKey(Municipality, models.CASCADE, related_name="m2m_managers")
+    city = models.ForeignKey(City, models.CASCADE, related_name="m2m_managers")
     is_approved = models.BooleanField(default=True)
 
     def all_managers(self, only_approved=False):
-        qs = ManagerForMunicipality.objects.filter(municipality=self.municipality)
+        qs = ManagerForCity.objects.filter(city=self.city)
         if only_approved:
             qs = qs.filter(is_approved=True)
         return type(self.manager).objects.filter(id__in=qs.values("manager_id"), flat=True)
 
     def all_municipalities(self, only_approved=False):
-        qs = ManagerForMunicipality.objects.filter(manager=self.manager)
+        qs = ManagerForCity.objects.filter(manager=self.manager)
         if only_approved:
             qs = qs.filter(is_approved=True)
-        return type(self.municipality).objects.filter(
-            id__in=qs.values("municipality_id"), flat=True
-        )
+        return type(self.city).objects.filter(id__in=qs.values("city_id"), flat=True)
 
 
-def associate_manager_municipality(user, municipality):
-    ManagerForMunicipality.objects.update_or_create(manager=user, municipality=municipality)
+def associate_manager_city(user, city):
+    ManagerForCity.objects.update_or_create(manager=user, city=city)

@@ -41,20 +41,20 @@ class FillCitiesForm(forms.Form):
 
     def save(self, user):
         if self.cleaned_data.get("state_manager"):
-            qs = location_models.Municipality.objects.filter(state=user.state)
-            for municipality in qs:
-                location_models.associate_manager_municipality(user, municipality)
+            qs = location_models.City.objects.filter(state=user.state)
+            for city in qs:
+                location_models.associate_manager_city(user, city)
         else:
             cities = self.cleaned_data["cities"]
             for c in cities.split(","):
                 try:
                     city_id = int(c)
-                    municipality = location_models.Municipality.objects.get(id=city_id)
-                    location_models.associate_manager_municipality(user, municipality)
+                    city = location_models.City.objects.get(id=city_id)
+                    location_models.associate_manager_city(user, city)
                 except ValueError:
                     city_name = c.title()
-                    municipality = location_models.Municipality.objects.get(name=city_name)
-                    location_models.associate_manager_municipality(user, municipality)
+                    city = location_models.City.objects.get(name=city_name)
+                    location_models.associate_manager_city(user, city)
 
 
 class NotifierPendingApprovalForm(forms.ModelForm):
@@ -77,5 +77,5 @@ class NotifierPendingApprovalForm(forms.ModelForm):
                 state_id=manager.state_id, role=get_user_model().ROLE_NOTIFIER
             )
             self.fields["unit"].queryset = models.HealthcareUnit.objects.filter(
-                municipality__state_id=manager.state_id
+                city__state_id=manager.state_id
             )

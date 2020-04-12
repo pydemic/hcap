@@ -11,11 +11,11 @@ site.register(models.LogEntry)
 @register(models.HealthcareUnit)
 class HealthcareUnitAdmin(ModelAdmin):
     search_fields = ["cnes_id", "name"]
-    list_display = ("cnes_id", "name", "get_municipality_name", "is_active")
-    list_filter = ("is_active", ("municipality__state__name", custom_titled_filter("Estado")))
+    list_display = ("cnes_id", "name", "get_city_name", "is_active")
+    list_filter = ("is_active", ("city__state__name", custom_titled_filter("Estado")))
 
-    def get_municipality_name(self, healthcare_unit):
-        return healthcare_unit.municipality.name
+    def get_city_name(self, healthcare_unit):
+        return healthcare_unit.city.name
 
-    get_municipality_name.short_description = "Município"
-    get_municipality_name.admin_order_field = "municipality__name"
+    get_city_name.short_description = "Município"
+    get_city_name.admin_order_field = "city__name"

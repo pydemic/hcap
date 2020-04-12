@@ -9,7 +9,7 @@ from django.utils.timezone import now
 from faker import Factory
 
 from app.models import HealthcareUnit, Capacity, LogEntry
-from locations.models import Municipality
+from locations.models import City
 from project.management import BaseCommand
 
 User = get_user_model()
@@ -44,7 +44,7 @@ class Command(BaseCommand):
         fake = Factory.create("en-US")
         day = datetime.timedelta(days=1)
         unit = HealthcareUnit.objects.create(
-            municipality=random_municipality(),
+            city=random_city(),
             cnes_id=fake.building_number(),
             is_active=fake.boolean(),
             name=fake.name() + " Hospital",
@@ -162,5 +162,5 @@ def random_objects(qs, size=None):
     return [qs[randint(0, count - 1)] for _ in range(size)]
 
 
-random_municipality = partial(random_objects, Municipality.objects.all())
+random_city = partial(random_objects, City.objects.all())
 random_user = partial(random_objects, User.objects.all())

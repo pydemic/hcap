@@ -13,8 +13,8 @@ from .managers import HealthcareUnitManager, CapacityManager, LogEntryManager
 
 
 class HealthcareUnit(models.Model):
-    municipality = models.ForeignKey(
-        "locations.Municipality",
+    city = models.ForeignKey(
+        "locations.City",
         on_delete=models.CASCADE,
         related_name="healthcare_units",
         verbose_name="Município",

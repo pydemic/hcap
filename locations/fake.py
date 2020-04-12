@@ -12,7 +12,7 @@ def random_state() -> models.State:
     return random.choice(states())
 
 
-def random_city(state=None) -> models.Municipality:
+def random_city(state=None) -> models.City:
     """
     Return a random city. If state is given, return a city within the given state.
     """
@@ -29,7 +29,7 @@ def states() -> Tuple[models.State]:
 
 
 @lru_cache(256)
-def cities(state=None) -> Tuple[models.Municipality]:
+def cities(state=None) -> Tuple[models.City]:
     """
     Return a list of all cities. This list is cached, so users should not
     modify the resulting state objects.
@@ -39,7 +39,7 @@ def cities(state=None) -> Tuple[models.Municipality]:
     if state is not None:
         state_id = normalize_state(state).id
         return tuple(c for c in cities() if c.state_id == state_id)
-    return tuple(models.Municipality.objects.select_related("state").all())
+    return tuple(models.City.objects.select_related("state").all())
 
 
 def normalize_state(state: Union[str, int, models.State]) -> models.State:
