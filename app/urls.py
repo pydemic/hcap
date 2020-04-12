@@ -4,6 +4,7 @@ from . import views
 
 urlpatterns = [
     path("", views.index_view, name="index"),
+    path("monitor", views.monitor_view),
     path("aguarde-confirmacao/", views.wait_authorization_message_view, name="wait_confirmation"),
     path("capacidade/", include(views.CapacityViewSet().urls)),
     path("diario/", include(views.LogEntryViewSet().urls)),
