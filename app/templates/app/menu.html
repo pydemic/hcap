@@ -2,7 +2,7 @@
     <li><a href="{% url 'app:logentry_list' %}">Informe diário</a></li>
     <li><a href="{% url 'app:capacity_list' %}">Capacidade hospitalar</a></li>
     {% if user.is_manager %}
-    <li><a href="{% url 'app:notifierforhealthcareunit_list' %}">Notificadores Pendentes</a></li>
+    <li><a href="{% url 'app:notifierforhealthcareunit_list' %}">Notificadores</a></li>
     {% endif %}
 </ul>
 </div>

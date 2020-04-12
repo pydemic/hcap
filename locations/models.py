@@ -1,6 +1,3 @@
-import json
-from pathlib import Path
-
 from django.conf import settings
 from django.db import models
 
@@ -19,6 +16,17 @@ class State(models.Model):
     def __str__(self):
         return self.name
 
+    def register_manager(self, user):
+        """
+        Register user as a valid manager for state.
+        """
+        user.is_authorized = True
+        user.role = user.ROLE_MANAGER
+        user.save()
+        create = ManagerForMunicipality.objects.update_or_create
+        for city in self.cities.all():
+            create(manager=user, municipality=city)
+
 
 class Municipality(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -31,6 +39,16 @@ class Municipality(models.Model):
 
     def __str__(self):
         return self.name
+
+    def register_manager(self, user):
+        """
+        Register user as a valid manager for state.
+        """
+        user.is_authorized = True
+        user.role = user.ROLE_MANAGER
+        user.save()
+        create = ManagerForMunicipality.objects.update_or_create
+        create(manager=user, municipality=self)
 
 
 class ManagerForMunicipality(models.Model):

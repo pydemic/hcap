@@ -4,12 +4,12 @@ from project.managers import CleanManager
 
 class HealthcareUnitQuerySet(models.QuerySet):
     def for_user(self, user):
-        return user.healthcare_unities.all()
+        return user.healthcare_units.all()
 
 
 class LogEntryQuerySet(models.QuerySet):
     def for_user(self, user):
-        return user.healthcare_unities.all()
+        return user.healthcare_units.all()
 
 
 class CapacityQuerySet(models.QuerySet):

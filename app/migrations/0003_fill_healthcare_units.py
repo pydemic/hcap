@@ -13,6 +13,6 @@ def fill_healthcare_units(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-    dependencies = [("app", "0001_initial"), ("locations", "0002_fill_states_and_cities")]
+    dependencies = [("app", "0002_add_fields"), ("locations", "0003_fill_states_and_cities")]
 
     operations = [migrations.RunPython(fill_healthcare_units)]

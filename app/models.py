@@ -1,6 +1,7 @@
 import datetime
 
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.core import validators
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -15,7 +16,7 @@ class HealthcareUnit(models.Model):
     municipality = models.ForeignKey(
         "locations.Municipality",
         on_delete=models.CASCADE,
-        related_name="healthcare_unities",
+        related_name="healthcare_units",
         verbose_name="Município",
     )
     cnes_id = models.CharField(
@@ -37,6 +38,15 @@ class HealthcareUnit(models.Model):
 
     def __str__(self):
         return self.name
+
+    def register_notifier(self, user):
+        """
+        Register user as a valid notifier.
+        """
+        user.is_authorized = True
+        user.role = user.ROLE_NOTIFIER
+        user.save()
+        authorize_notifier(user, self)
 
 
 class Capacity(TimeStampedModel):
@@ -97,7 +107,12 @@ class Capacity(TimeStampedModel):
 
 
 class LogEntry(TimeStampedModel):
-    unit = models.ForeignKey("HealthcareUnit", on_delete=models.CASCADE)
+    unit = models.ForeignKey(
+        "HealthcareUnit",
+        on_delete=models.CASCADE,
+        verbose_name="Estabelecimento de Saúde",
+        related_name="notifications",
+    )
     notifier = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -246,3 +261,20 @@ def associate_notifier(user, unit):
 
 def to_date(dt):
     return datetime.date(dt.year, dt.month, dt.day)
+
+
+#
+# Modify user to have the healthcare_units property
+#
+@property
+def healthcare_units(user):
+    m2m = NotifierForHealthcareUnit.objects
+    pks = m2m.filter(notifier=user, is_approved=True).values_list("notifier_id", flat=True)
+    pks = list(pks)
+    if len(pks) == 1:
+        return HealthcareUnit.objects.filter(pk=pks[0])
+    else:
+        return HealthcareUnit.objects.filter(pk__in=pks)
+
+
+get_user_model().healthcare_units = healthcare_units

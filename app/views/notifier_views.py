@@ -1,23 +1,10 @@
 from django import forms
-from django.conf import settings
-from django.utils.timezone import now
-from material.frontend.views import CreateModelView, ListModelView
+from material.frontend.views import CreateModelView, ListModelView, UpdateModelView
+
+__all__ = ["NotifierListModelView", "NotifierUpdateModelView", "NotifierCreateModelView"]
 
 
-class NotifierCreateModelView(CreateModelView):
-    def has_add_permission(self, request):
-        user = request.user
-        if not (user.is_verified_notifier or settings.DEBUG and user.is_superuser):
-            return False
-        return user.healthcare_unities.filter(is_active=True).exists()
-
-    def has_object_permission(self, request, obj):
-        if not self.has_add_permission(request):
-            return False
-        elif obj.notifier != request.user:
-            return False
-        return (obj.created - now()).hours < 20
-
+class NotifierCreateOrUpdateMixin:
     def form_valid(self, form: forms.ModelForm, *args, **kwargs):
         save_fn = form.save
 
@@ -34,10 +21,12 @@ class NotifierCreateModelView(CreateModelView):
     def get_form(self, form_class=None):
         form = super().get_form(form_class=None)
         user = self.request.user
-        unities = list(user.healthcare_unities.all())
+        unities = user.healthcare_units.all()
 
         if len(unities) == 1:
             self.prepare_form_for_single_unit(form, unities[0])
+        field: forms.Field = form.fields["unit"]
+        field.queryset = unities
         return form
 
     def prepare_form_for_single_unit(self, form, unit):
@@ -49,6 +38,14 @@ class NotifierCreateModelView(CreateModelView):
         if capacity:
             for k, v in capacity.capacities.items():
                 form.initial.setdefault(k, v)
+
+
+class NotifierCreateModelView(NotifierCreateOrUpdateMixin, CreateModelView):
+    pass
+
+
+class NotifierUpdateModelView(NotifierCreateOrUpdateMixin, UpdateModelView):
+    pass
 
 
 class NotifierListModelView(ListModelView):

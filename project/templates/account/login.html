@@ -18,7 +18,7 @@
     {% part form.password prefix %}<i class="material-icons prefix">lock</i>{% endpart %}
     {% endform %}
 
-    <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
+    <a href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
 
     <div class="action">
         <button type="submit" class="btn btn-primary">{% trans 'Log in' %}</button>

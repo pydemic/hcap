@@ -4,6 +4,8 @@ from django.shortcuts import render, redirect
 
 from .. import forms
 
+__all__ = ["index_view", "wait_authorization_message_view"]
+
 
 @login_required
 def index_view(request):

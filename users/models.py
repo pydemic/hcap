@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.db.models import Manager
 
 from .managers import UserManager
 from .validators import CPFValidator
@@ -37,16 +38,16 @@ class User(AbstractUser):
         "locations.State",
         verbose_name="Estado",
         default=53,  # Distrito Federal
-        blank=True,
-        null=True,
-        on_delete=models.SET_NULL,
+        related_name="users",
+        on_delete=models.CASCADE,
         help_text="É necessário informar o estado.",
     )
     username = None
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = "name", "cpf"
-
     objects = UserManager()
+
+    emailaddress_set: Manager
 
     class Meta(AbstractUser.Meta):
         ordering = ("name", "email")
