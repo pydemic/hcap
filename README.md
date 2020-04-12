@@ -43,6 +43,19 @@ you may use invoke tasks to execute the most common chores
 
 You can list all options with `inv -l`.
 
+The `inv db-fake` command creates a few useful users that you can use to interact
+with the platform under different roles.
+
+* **admin:** The superuser, e-mail: admin@admin.com, password: admin.
+* **user:** A regular user that just sign up, e-mail: user@user.com, password: user.
+* **notifier:** A user authorized to notify for a hospital, e-mail: notifier@notifier.com, password: notifier.
+* **manager:** A user authorized manage notifiers for a given state, e-mail: manager@manager.com, password: manager.
+
+It also populates the database with a few additional entries. The manager has a few
+authorized and non-authorized notifiers to play with. The notifier is registered to
+a healthcare unit and already has a small history of notifications.
+
+
 ### Getting started with Docker
 
 If you prefer Docker ask someone in the dev team to fill up this section ;-)
@@ -74,15 +87,15 @@ rit config tunnel default set pydemic --path .
 If you use docker and docker-compose, you use `rit` commands to automate several
 processes. The table list the main options.
 
-| Description                          | Commands |
-| :----------------------------------- | :------- |
-| Build the development image          | `rit tunnel run apps hcap development build` |
-| Fetch the development docker-compose | `rit tunnel run apps hcap development fetch compose` |
-| Run the test pipeline                | `rit tunnel run apps hcap development test up`<br>`rit tunnel run apps hcap development test sync`<br>`rit tunnel run apps hcap development test all`<br>`rit tunnel run apps hcap development test down` |
-| Start or shutdown PostgreSQL service | `rit tunnel run services postgres up`<br>`rit tunnel run services postgres down` |
-| Start or shutdown PostGis service    | `rit tunnel run services postgis up`<br>`rit tunnel run services postgis down` |
-| Build the production image           | `rit tunnel run apps hcap production build` |
-| Fetch the production docker-compose  | `rit tunnel run apps hcap production fetch compose` |
+| Description                          | Commands                                                                                                                                                                                             |
+| :----------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Build the development image          | `rit tunnel run apps hcap development build`                                                                                                                                                         |
+| Fetch the development docker-compose | `rit tunnel run apps hcap development fetch compose`                                                                                                                                                 |
+| Run the test pipeline                | `rit tunnel run apps hcap development test up<br>rit tunnel run apps hcap development test sync<br>rit tunnel run apps hcap development test all<br>>rit tunnel run apps hcap development test down` |
+| Start or shutdown PostgreSQL service | `rit tunnel run services postgres up<br>rit tunnel run services postgres down`                                                                                                                       |
+| Start or shutdown PostGis service    | `rit tunnel run services postgis up<br>rit tunnel run services postgis down`                                                                                                                         |
+| Build the production image           | `rit tunnel run apps hcap production build`                                                                                                                                                          |
+| Fetch the production docker-compose  | `rit tunnel run apps hcap production fetch compose`                                                                                                                                                  |
 
 ## Production Environment Variables
 
