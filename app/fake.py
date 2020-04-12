@@ -147,7 +147,10 @@ def notification_scenario(days=(7, 7, 14), **kwargs):
 
     notifications = []
     for period, capacity in zip(days, capacities):
-        notifications.extend(notification_progression(period, capacity=capacity, **kwargs))
+        date = capacity.date
+        notifications.extend(
+            notification_progression(period, capacity=capacity, date=date, **kwargs)
+        )
 
     return NotificationScenario(capacities, notifications)
 

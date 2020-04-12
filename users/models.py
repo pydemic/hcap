@@ -1,4 +1,4 @@
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, AnonymousUser
 from django.db import models
 from django.db.models import Manager
 
@@ -96,3 +96,13 @@ class User(AbstractUser):
 
     def get_full_name(self):
         return self.name
+
+
+AnonymousUser.is_manager = False
+AnonymousUser.is_notifier = False
+AnonymousUser.has_verified_email = False
+AnonymousUser.is_authorized = False
+AnonymousUser.role = User.ROLE_NONE
+AnonymousUser.name = "Usuário Anônimo"
+AnonymousUser.cpf = "000.000.000-00"
+AnonymousUser.state = None

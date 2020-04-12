@@ -13,6 +13,7 @@ class NotifierBaseViewSet(ModelViewSet):
     list_view_class = NotifierListModelView
     update_view_class = NotifierUpdateModelView
     list_display = ("unit", "date", "icu_total_", "clinic_total_")
+    ordering = ("-date", "unit")
 
     def icu_total_(self, obj):
         return obj.icu_total

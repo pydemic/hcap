@@ -1,18 +1,14 @@
+{% if user.is_notifier %}
 <ul>
     <li><a href="{% url 'app:logentry_list' %}">Informe diário</a></li>
     <li><a href="{% url 'app:capacity_list' %}">Capacidade hospitalar</a></li>
-    {% if user.is_manager %}
-    <li><a href="{% url 'app:notifierforhealthcareunit_list' %}">Notificadores</a></li>
-    {% endif %}
 </ul>
-</div>
-<a href="" class="collapsible-header active" style="text-decoration: none; cursor: default;">
-    Minha Conta
-    <i class="material-icons">account_circle</i>
-</a>
-<div class="collapsible-body" style="display:block">
-    <ul>
-        <li><a href="{% url 'account_change_password' %}">Alterar senha</a></li>
-        <li><a href="{% url 'account_logout' %}">Sair</a></li>
-    </ul>
-</div>
+{% elif user.is_manager %}
+<ul>
+    <li><a href="{% url 'app:notifierforhealthcareunit_list' %}">Notificadores</a></li>
+</ul>
+{% else %}
+<ul>
+    <li><a href="{% url 'app:wait_confirmation' %}">Aguardando confirmação</a></li>
+</ul>
+{% endif %}

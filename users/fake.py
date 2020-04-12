@@ -107,7 +107,7 @@ def create_default_user(**kwargs):
         "email": "user@user.com",
         "password": "user",
         "name": "Joe User Smith",
-        "is_authorized": True,
+        "is_authorized": False,
         **kwargs,
     }
     return create_user(**kwargs)

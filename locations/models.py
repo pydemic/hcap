@@ -54,7 +54,7 @@ class City(models.Model):
 
 class ManagerForCity(models.Model):
     manager = models.ForeignKey(
-        settings.AUTH_USER_MODEL, models.CASCADE, related_name="m2m_municipalities_as_manager"
+        settings.AUTH_USER_MODEL, models.CASCADE, related_name="m2m_cities_as_manager"
     )
     city = models.ForeignKey(City, models.CASCADE, related_name="m2m_managers")
     is_approved = models.BooleanField(default=True)
@@ -69,7 +69,7 @@ class ManagerForCity(models.Model):
         query = type(self.manager).objects
         return query.filter(id__in=qs.values("manager_id"), flat=True)
 
-    def all_municipalities(self, only_approved=False):
+    def all_cities(self, only_approved=False):
         qs = ManagerForCity.objects.filter(manager=self.manager)
         if only_approved:
             qs = qs.filter(is_approved=True)

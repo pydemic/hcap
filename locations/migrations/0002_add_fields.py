@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
             name="manager",
             field=models.ForeignKey(
                 on_delete=django.db.models.deletion.CASCADE,
-                related_name="m2m_municipalities_as_manager",
+                related_name="m2m_cities_as_manager",
                 to=settings.AUTH_USER_MODEL,
             ),
         ),

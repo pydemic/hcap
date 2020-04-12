@@ -46,17 +46,19 @@ class NotifierPendingApprovalViewSet(ModelViewSet):
             return True
         return self._object_permission(request, obj)
 
-    def city(self, obj):
-        return obj.unit.city.name
-
-    city.short_description = "Cidade"
-
     def _object_permission(self, request, obj):
         user = request.user
         if not user.is_manager:
             return False
         if obj is not None:
-            # FIXME: check explicitly authorized municipalities and do not look
-            # just for state id
-            return obj.unit.city.state_id == user.state_id
+            d = user._wrapped.__dict__
+            f = obj.unit.__dict__
+            e = obj.__dict__
+            raise
+            return obj.unit.city in user.m2m_cities_as_manager.all()
         return True
+
+    def city(self, obj):
+        return obj.unit.city.name
+
+    city.short_description = "Cidade"

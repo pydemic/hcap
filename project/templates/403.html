@@ -21,6 +21,9 @@
     <div class="col s12">
         <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-primary white-text">{% trans 'Log in' %}</a>
     </div>
+    <div class="col s12">
+        <a href="{% url 'app:index' %}" class="btn btn-flat">{% trans 'Back to main site' %}</a>
+    </div>
 </div>
 {% endblock %}
 

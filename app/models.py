@@ -40,7 +40,7 @@ class HealthcareUnit(models.Model):
         verbose_name_plural = "Estabelecimentos de Saúde"
 
     def __str__(self):
-        return self.name
+        return f"{self.name} ({self.cnes_id})"
 
     def register_notifier(self, user, authorize=True):
         """
