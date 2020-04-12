@@ -34,19 +34,29 @@ class NotifierPendingApprovalViewSet(ModelViewSet):
     def has_view_permission(self, request, obj=None):
         if super().has_view_permission(request, obj):
             return True
-
-        # FIXME: check explicitly authorized municipalities and do not look
-        # just for state id
-        user = request.user
-        return user.is_manager and obj.unit.municipality.state_id == user.state_id
+        return self._object_permission(request, obj)
 
     def has_change_permission(self, request, obj=None):
-        return self.has_view_permission(request, obj)
+        if super().has_change_permission(request, obj):
+            return True
+        return self._object_permission(request, obj)
 
     def has_delete_permission(self, request, obj=None):
-        return self.has_view_permission(request, obj)
+        if super().has_delete_permission(request, obj):
+            return True
+        return self._object_permission(request, obj)
 
     def city(self, obj):
         return obj.unit.municipality.name
 
     city.short_description = "Cidade"
+
+    def _object_permission(self, request, obj):
+        user = request.user
+        if not user.is_manager:
+            return False
+        if obj is not None:
+            # FIXME: check explicitly authorized municipalities and do not look
+            # just for state id
+            return obj.unit.municipality.state_id == user.state_id
+        return True
