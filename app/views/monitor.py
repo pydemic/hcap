@@ -13,22 +13,20 @@ from .. import models
 registry = CollectorRegistry()
 
 gauge_healthcare_units = Gauge(
-    'healthcare_units',
-    'Healthcare unit state by UF (inactive or active)',
+    "healthcare_units",
+    "Healthcare unit state by UF (inactive or active)",
     ["uf", "is_active"],
-    registry=registry
+    registry=registry,
 )
 
 
 def monitor_view(request):
     if request.method == "GET":
-        units = models.HealthcareUnit.objects.select_related("municipality").all()
+        units = models.HealthcareUnit.objects.select_related("city").all()
         _build_units_report(units)
 
         metrics_page = generate_latest(registry)
-        return HttpResponse(
-            metrics_page, content_type=CONTENT_TYPE_LATEST
-        )
+        return HttpResponse(metrics_page, content_type=CONTENT_TYPE_LATEST)
 
     return HttpResponseBadRequest(f"Invalid method {request.method}")
 
@@ -36,15 +34,12 @@ def monitor_view(request):
 def _build_units_report(units):
     units_report = defaultdict(int)
     for unit in units:
-        units_report[(
-            unit.is_active,
-            unit.municipality.state.name,
-        )] += 1
+        units_report[(unit.is_active, unit.city.state.name,)] += 1
 
     for ref, value in units_report.items():
         labels = {
-            "is_active":    ref[0],
-            "uf":           ref[1],
+            "is_active": ref[0],
+            "uf": ref[1],
         }
 
         gauge_healthcare_units.labels(**labels).set(value)
