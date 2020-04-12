@@ -25,7 +25,7 @@ class State(models.Model):
         user.save()
         create = ManagerForCity.objects.update_or_create
         for city in self.cities.all():
-            create(manager=user, municipality=city)
+            create(manager=user, city=city)
 
 
 class City(models.Model):
@@ -67,7 +67,7 @@ class ManagerForCity(models.Model):
         return query.filter(id__in=qs.values("manager_id"), flat=True)
 
     def all_municipalities(self, only_approved=False):
-        qs = ManagerForMunicipality.objects.filter(manager=self.manager)
+        qs = ManagerForCity.objects.filter(manager=self.manager)
         if only_approved:
             qs = qs.filter(is_approved=True)
         query = type(self.city).objects

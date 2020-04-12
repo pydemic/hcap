@@ -10,7 +10,7 @@ class HealthcareUnitViewSet(ModelViewSet):
     filters = ("city", "is_validated")
     list_display = ("name", "cnes_id", "city", "is_validated")
     layout = Layout(
-        Fieldset("Características do estabelecimento", "name", Row("cnes_id", "city")), "notifiers",
+        Fieldset("Características do estabelecimento", "name", Row("cnes_id", "city")), "notifiers"
     )
 
 
@@ -22,7 +22,7 @@ class NotifierPendingApprovalViewSet(ModelViewSet):
 
     def get_queryset(self, request):
         state_id = request.user.state_id
-        return self.model.objects.filter(unit__municipality__state_id=state_id).order_by(
+        return self.model.objects.filter(unit__city__state_id=state_id).order_by(
             "is_approved", "notifier__name"
         )
 
@@ -47,7 +47,7 @@ class NotifierPendingApprovalViewSet(ModelViewSet):
         return self._object_permission(request, obj)
 
     def city(self, obj):
-        return obj.unit.municipality.name
+        return obj.unit.city.name
 
     city.short_description = "Cidade"
 
@@ -58,5 +58,5 @@ class NotifierPendingApprovalViewSet(ModelViewSet):
         if obj is not None:
             # FIXME: check explicitly authorized municipalities and do not look
             # just for state id
-            return obj.unit.municipality.state_id == user.state_id
+            return obj.unit.city.state_id == user.state_id
         return True

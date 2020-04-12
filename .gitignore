@@ -159,3 +159,4 @@ dmypy.json
 # docker
 docker-compose.yml
 Dockerfile
+notebooks/

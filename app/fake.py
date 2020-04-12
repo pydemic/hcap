@@ -11,7 +11,7 @@ from django.db.models import Count
 from django.utils.timezone import now
 from faker import Factory
 
-from locations.models import Municipality
+from locations.models import City
 from users.fake import create_notifier
 from . import models
 
@@ -25,7 +25,7 @@ NotificationScenario = namedtuple("NotificationScenario", ["capacities", "notifi
 
 def create_unit():
     return models.HealthcareUnit.objects.create_clean(
-        municipality=random_municipality(),
+        city=random_city(),
         cnes_id=str(random.randrange(1000, 1_000_000_000)),
         is_active=fake.boolean(),
         name=fake.name() + " Hospital",
@@ -268,5 +268,5 @@ def random_objects(qs, size=None):
     return [qs[randint(0, count - 1)] for _ in range(size)]
 
 
-random_municipality = partial(random_objects, Municipality.objects.all())
+random_city = partial(random_objects, City.objects.all())
 random_user = partial(random_objects, User.objects.all())
