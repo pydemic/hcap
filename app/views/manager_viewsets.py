@@ -1,4 +1,3 @@
-from django.contrib.auth import get_user_model
 from material import Layout, Fieldset, Row
 from material.frontend.views import ModelViewSet
 
@@ -33,10 +32,21 @@ class NotifierPendingApprovalViewSet(ModelViewSet):
         return request.user.is_manager
 
     def has_view_permission(self, request, obj=None):
-        return self.has_add_permission(request)
+        if super().has_view_permission(request, obj):
+            return True
+
+        # FIXME: check explicitly authorized municipalities and do not look
+        # just for state id
+        user = request.user
+        return user.is_manager and obj.unit.municipality.state_id == user.state_id
 
     def has_change_permission(self, request, obj=None):
-        return self.has_add_permission(request)
+        return self.has_view_permission(request, obj)
 
     def has_delete_permission(self, request, obj=None):
-        return self.has_add_permission(request)
+        return self.has_view_permission(request, obj)
+
+    def city(self, obj):
+        return obj.unit.municipality.name
+
+    city.short_description = "Cidade"
