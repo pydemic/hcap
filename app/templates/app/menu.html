@@ -6,6 +6,7 @@
 {% elif user.is_manager %}
 <ul>
     <li><a href="{% url 'app:notifierforhealthcareunit_list' %}">Notificadores</a></li>
+    <li><a href="{% url 'grafana' %}">Dashboards</a></li>
 </ul>
 {% else %}
 <ul>
