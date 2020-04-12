@@ -28,9 +28,7 @@ class Command(BaseCommand):
 
     def collect_static(self):
         self.inform("==[collectstatic]===========", style_func=self.style.SQL_KEYWORD)
-        call_command(
-            "collectstatic", clear=True, no_input=True, interactive=False, verbosity=self.verbosity,
-        )
+        call_command("collectstatic", clear=True, no_input=True, interactive=False, verbosity=0)
 
     def check_postgres(self):
         self.inform("==[wait_db]=================", style_func=self.style.SQL_KEYWORD)

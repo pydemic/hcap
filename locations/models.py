@@ -59,6 +59,9 @@ class ManagerForCity(models.Model):
     city = models.ForeignKey(City, models.CASCADE, related_name="m2m_managers")
     is_approved = models.BooleanField(default=True)
 
+    class Meta:
+        unique_together = [("manager", "city")]
+
     def all_managers(self, only_approved=False):
         qs = ManagerForCity.objects.filter(city=self.city)
         if only_approved:
@@ -74,5 +77,16 @@ class ManagerForCity(models.Model):
         return query.filter(id__in=qs.values("city_id"), flat=True)
 
 
-def associate_manager_city(user, city):
-    ManagerForCity.objects.update_or_create(manager=user, city=city)
+def associate_manager_city(user, city_or_cities, is_approved=False):
+    """
+    Associate manager user with a city or a list or queryset of cities.
+    """
+    if isinstance(city_or_cities, City):
+        ManagerForCity.objects.update_or_create(manager=user, city=city_or_cities)
+    else:
+        qs = ManagerForCity.objects.filter(manager=user, city__in=city_or_cities)
+        qs.update(is_approved=is_approved)
+        cities = qs.values_list("city_id", flat=True)
+        ManagerForCity.objects.bulk_create(
+            ManagerForCity(manager=user, city_id=city, is_approved=is_approved) for city in cities
+        )

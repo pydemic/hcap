@@ -25,7 +25,7 @@ def index_view(request):
         return redirect("app:wait_confirmation")
 
     cnes_form = forms.CNESForm()
-    cities_form = forms.FillCitiesForm()
+    cities_form = forms.FillCitiesForm(user=user)
     active = "cnes"
 
     if request.method == "POST" and request.POST["action"] not in ("cnes", "cities"):
@@ -40,9 +40,9 @@ def index_view(request):
 
     elif request.method == "POST" and request.POST["action"] == "cities":
         active = "cities"
-        cities_form = forms.FillCitiesForm(request.POST)
+        cities_form = forms.FillCitiesForm(request.POST, user=user)
         if cities_form.is_valid():
-            cities_form.save(user)
+            cities_form.save()
             return redirect("app:wait_confirmation")
 
     ctx = {"cnes_form": cnes_form, "cities_form": cities_form, "active": active}
@@ -51,4 +51,7 @@ def index_view(request):
 
 @login_required
 def wait_authorization_message_view(request):
+    user = request.user
+    if user.role == user.ROLE_NONE:
+        return redirect("app:index")
     return render(request, "app/wait_authorization.html", {})

@@ -1,7 +1,10 @@
+import re
+from operator import attrgetter
+
 from django import forms
 from django.contrib.auth import get_user_model
 
-from locations import models as location_models
+from locations.models import City, associate_manager_city
 from . import models
 from .validators import existing_cnes_validator
 
@@ -30,31 +33,56 @@ class FillCitiesForm(forms.Form):
     )
     state_manager = forms.BooleanField(label="Gestor estadual?", required=False)
 
+    def __init__(self, *args, user, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.user = user
+        self.state = user.state
+        self.cities = None
+
     def clean(self):
-        cities = self.cleaned_data.get("cities")
+        cities = self.cleaned_data.get("cities").strip()
         state_manager = self.cleaned_data.get("state_manager")
 
         if not cities and not state_manager:
             raise forms.ValidationError("Preencha ao menos um dos campos.")
+        if cities:
+            self.process_cities(cities, validate=True)
 
         return self.cleaned_data
 
-    def save(self, user):
+    def process_cities(self, data, validate=False):
+        if self.cities is not None:
+            return self.cities
+
+        state = self.state
+        data = re.split(r",\s*|\s*\n\s*", data)
+        pks = {int(x) for x in data if x and x.isdigit()}
+        names = {x.title() for x in data if x and not x.isdigit()}
+        qs_pk = City.objects.filter(state=state, id__in=pks)
+        qs_name = City.objects.filter(state=state, name__in=names)
+        self.cities = (qs_pk | qs_name).distinct()
+
+        if validate:
+            expected = {*map(attrgetter("id"), self.cities), *map(attrgetter("name"), self.cities)}
+            invalid = {*map(str.title, data)} - expected
+            if invalid:
+                invalid = ", ".join(list(invalid)[:3])
+                raise forms.ValidationError({"cities": f"Cidades inválidas: {invalid}"})
+
+        return self.cities
+
+    def save(self):
+        user = self.user
+
         if self.cleaned_data.get("state_manager"):
-            qs = location_models.City.objects.filter(state=user.state)
-            for city in qs:
-                location_models.associate_manager_city(user, city)
+            cities = City.objects.filter(state=user.state)
         else:
-            cities = self.cleaned_data["cities"]
-            for c in cities.split(","):
-                try:
-                    city_id = int(c)
-                    city = location_models.City.objects.get(id=city_id)
-                    location_models.associate_manager_city(user, city)
-                except ValueError:
-                    city_name = c.title()
-                    city = location_models.City.objects.get(name=city_name)
-                    location_models.associate_manager_city(user, city)
+            data = self.cleaned_data["cities"]
+            cities = self.process_cities(data)
+
+        associate_manager_city(user, cities)
+        user.role = user.ROLE_MANAGER
+        user.save()
 
 
 class NotifierPendingApprovalForm(forms.ModelForm):
