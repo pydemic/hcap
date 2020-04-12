@@ -25,80 +25,64 @@
 
 > TODO
 
+### Getting started
+
+Clone the repo, create a virtualenve using `mkvirtualenv` or your tool of choice
+and `pip install -e .`. This will setup a basic development environment using
+Django's runserver and sqlite.
+
+You can initialize, seed the database, start the development server using
+standard Django management via `manage.py` or, perhaps more conveniently,
+invoke commands
+
+| Command               | Description                            |
+| :-------------------- | :------------------------------------- |
+| `inv db`              | Run makemigrations and migrate         |
+| `inv db-fake`         | Seed database with users and fake data |
+| `inv run`             | Start application                      |
+
+You can list all options with `inv -l`.
+
+### Getting started with Docker
+
+If you prefer Docker ask for someone to fill this section ;-)
+There are lots of Docker enthusiasts in the team that use it for daily
+development.
+
 ## Using rit tunnel
 
 ### Installation
 
 After installing [rit](https://gitlab.com/ritproject/cli#installation), config
-your tunnel repo:
+your tunnel repo either remotely,
 
-- Remotely:
+```bash
+rit config tunnel add repo https://gitlab.com/pydemic/tunnel --name pydemic
+rit config tunnel default set pydemic --path .
+```
 
-  ```bash
-  rit config tunnel add repo https://gitlab.com/pydemic/tunnel --name pydemic
-  rit config tunnel default set pydemic --path .
-  ```
+or locally,
 
-- Locally:
-
-  ```bash
-  git clone https://gitlab.com/pydemic/tunnel ../tunnel
-  rit config tunnel add local ../tunnel --name pydemic
-  rit config tunnel default set pydemic --path .
-  ```
+```bash
+git clone https://gitlab.com/pydemic/tunnel ../tunnel
+rit config tunnel add local ../tunnel --name pydemic
+rit config tunnel default set pydemic --path .
+```
 
 ### Usage
 
-Examples of usage:
+If you use docker and docker-compose, you use `rit` commands to automate several
+processes. The table list the main options.
 
-- If you use docker and docker-compose, you can:
-
-  - Build the development image:
-
-    ```bash
-    rit tunnel run apps hcap development build
-    ```
-
-  - Fetch the development docker-compose:
-
-    ```bash
-    rit tunnel run apps hcap development fetch compose
-    ```
-
-  - Run the test pipeline:
-
-    ```bash
-    rit tunnel run apps hcap development test up
-    rit tunnel run apps hcap development test sync
-    rit tunnel run apps hcap development test all
-    rit tunnel run apps hcap development test down
-    ```
-
-  - Start or shutdown PostgreSQL service:
-
-    ```bash
-    rit tunnel run services postgres up
-    rit tunnel run services postgres down
-    ```
-
-  - Start or shutdown PostGis service:
-
-    ```bash
-    rit tunnel run services postgis up
-    rit tunnel run services postgis down
-    ```
-
-  - Build the production image:
-
-    ```bash
-    rit tunnel run apps hcap production build
-    ```
-
-  - Fetch the production docker-compose:
-
-    ```bash
-    rit tunnel run apps hcap production fetch compose
-    ```
+| Description                          | Commands                                                                                                                                                                                             |
+| :----------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Build the development image          | `rit tunnel run apps hcap development build`                                                                                                                                                         |
+| Fetch the development docker-compose | `rit tunnel run apps hcap development fetch compose`                                                                                                                                                 |
+| Run the test pipeline                | `rit tunnel run apps hcap development test up<br>rit tunnel run apps hcap development test sync<br>rit tunnel run apps hcap development test all<br>>rit tunnel run apps hcap development test down` |
+| Start or shutdown PostgreSQL service | `rit tunnel run services postgres up<br>rit tunnel run services postgres down`                                                                                                                       |
+| Start or shutdown PostGis service    | `rit tunnel run services postgis up<br>rit tunnel run services postgis down`                                                                                                                         |
+| Build the production image           | `rit tunnel run apps hcap production build`                                                                                                                                                          |
+| Fetch the production docker-compose  | `rit tunnel run apps hcap production fetch compose`                                                                                                                                                  |
 
 ## Production Environment Variables
 
