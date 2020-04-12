@@ -19,15 +19,18 @@ class NotifierPendingApprovalViewSet(ModelViewSet):
     model = models.NotifierForHealthcareUnit
     create_view_class = views.NotifierPendingApprovalCreateModelView
     update_view_class = views.NotifierPendingApprovalUpdateModelView
-    list_display = ("notifier", "unit")
+    list_display = ("notifier", "unit", "city", "is_approved")
 
     def get_queryset(self, request):
         state_id = request.user.state_id
-        return self.model.objects.filter(unit__city__state_id=state_id, is_approved=False)
+        return self.model.objects.filter(unit__municipality__state_id=state_id).order_by(
+            "is_approved", "notifier__name"
+        )
 
     def has_add_permission(self, request):
-        user = request.user
-        return user.is_manager or user.is_staff or user.is_superuser
+        if super().has_change_permission(request):
+            return True
+        return request.user.is_manager
 
     def has_view_permission(self, request, obj=None):
         return self.has_add_permission(request)

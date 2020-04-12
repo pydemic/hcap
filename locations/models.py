@@ -25,13 +25,14 @@ class State(models.Model):
         user.save()
         create = ManagerForCity.objects.update_or_create
         for city in self.cities.all():
-            create(manager=user, city=city)
+            create(manager=user, municipality=city)
 
 
 class City(models.Model):
     id = models.IntegerField(primary_key=True)
     state = models.ForeignKey("State", on_delete=models.CASCADE, related_name="cities")
     name = models.CharField(max_length=50)
+    full_name = property(lambda self: f"{self.name} - {self.state.code}")
 
     class Meta:
         verbose_name = "Município"
@@ -62,13 +63,15 @@ class ManagerForCity(models.Model):
         qs = ManagerForCity.objects.filter(city=self.city)
         if only_approved:
             qs = qs.filter(is_approved=True)
-        return type(self.manager).objects.filter(id__in=qs.values("manager_id"), flat=True)
+        query = type(self.manager).objects
+        return query.filter(id__in=qs.values("manager_id"), flat=True)
 
     def all_municipalities(self, only_approved=False):
-        qs = ManagerForCity.objects.filter(manager=self.manager)
+        qs = ManagerForMunicipality.objects.filter(manager=self.manager)
         if only_approved:
             qs = qs.filter(is_approved=True)
-        return type(self.city).objects.filter(id__in=qs.values("city_id"), flat=True)
+        query = type(self.city).objects
+        return query.filter(id__in=qs.values("city_id"), flat=True)
 
 
 def associate_manager_city(user, city):

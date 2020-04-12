@@ -52,7 +52,7 @@ class Command(BaseCommand):
         if roles:
             self.mk_user("Default", create_default_user, force=force)
             self.mk_user("Notifier", create_notifier, force=force)
-            self.mk_user("Manager", create_manager, force=force)
+            self.mk_user("Manager", create_manager, force=force, notifiers=(2, 3))
 
         # Create regular users
         for _ in range(users // 2):

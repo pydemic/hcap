@@ -1,5 +1,6 @@
 import random
 from types import MappingProxyType as frozendict
+from typing import Union
 
 from faker import Factory
 
@@ -13,7 +14,7 @@ def create_user(email=None, password=None, validate_email=True, force=False, **k
     """
     Generic function for creating users.
 
-    It creates user, sets password and register e-mail in allauth.
+    It creates a user, sets password and register e-mail in allauth.
     """
     new = True
     try:
@@ -29,6 +30,7 @@ def create_user(email=None, password=None, validate_email=True, force=False, **k
         "cpf": kwargs.get("cpf") or random_cpf(),
         "name": kwargs.get("name") or fake.name(),
         "is_active": kwargs.pop("is_active", True),
+        "state": kwargs.get("state") or random_state(),
         **kwargs,
     }
     user = User(**kwargs)
@@ -39,23 +41,28 @@ def create_user(email=None, password=None, validate_email=True, force=False, **k
     return user, new
 
 
-def create_notifier(**kwargs):
+def create_notifier(suffix: Union[str, int] = "", is_authorized=True, **kwargs):
     state = kwargs.setdefault("state", random_state())
     unit = healthcare_unit(city=random_city(state))
+    dash_idx = f"-{suffix}" if suffix != "" else ""
     kwargs = {
-        "email": "notifier@notifier.com",
+        "email": f"notifier{dash_idx}@notifier.com",
         "password": "notifier",
-        "name": "Joe Notifier Smith",
-        "is_authorized": True,
+        "name": f"Joe Notifier Smith {suffix}".strip(),
+        "is_authorized": is_authorized,
         "role": User.ROLE_NOTIFIER,
         **kwargs,
     }
     user, is_new = create_user(**kwargs)
-    unit.register_notifier(user)
+    unit.register_notifier(user, authorize=is_authorized)
     return user, is_new
 
 
-def create_manager(**kwargs):
+def create_manager(notifiers=None, **kwargs):
+    """
+    Create manager. If notifiers is given and is a tuple (a, b), it generates
+    a authorized notifiers and b non-authorized notifiers in the same state.
+    """
     state = kwargs.setdefault("state", random_state())
     kwargs = {
         "email": "manager@manager.com",
@@ -67,6 +74,16 @@ def create_manager(**kwargs):
     }
     user, is_new = create_user(**kwargs)
     state.register_manager(user)
+
+    # Create a authorized and b non-authorized notifiers in the same state
+    if notifiers:
+        a, b = notifiers
+        kwargs_a = {"state": state, "is_authorized": True}
+        kwargs_b = {**kwargs_a, "is_authorized": False}
+        user.notifiers = [
+            *(create_notifier(i, **kwargs_a)[0] for i in range(a)),
+            *(create_notifier(i, **kwargs_b)[0] for i in range(a, b + a)),
+        ]
     return user, is_new
 
 
@@ -81,7 +98,7 @@ def create_admin(**kwargs):
         "is_staff": True,
         **kwargs,
     }
-    return create_manager(**kwargs)
+    return create_user(**kwargs)
 
 
 def create_default_user(**kwargs):

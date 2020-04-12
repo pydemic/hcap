@@ -39,14 +39,19 @@ class HealthcareUnit(models.Model):
     def __str__(self):
         return self.name
 
-    def register_notifier(self, user):
+    def register_notifier(self, user, authorize=True):
         """
         Register user as a valid notifier.
+
+        If authorize = False, create association, but dis-authorize user.
         """
-        user.is_authorized = True
+        user.is_authorized = authorize
         user.role = user.ROLE_NOTIFIER
         user.save()
-        authorize_notifier(user, self)
+        if authorize:
+            authorize_notifier(user, self)
+        else:
+            associate_notifier(user, self)
 
 
 class Capacity(TimeStampedModel):

@@ -10,11 +10,10 @@ __all__ = ["index_view", "wait_authorization_message_view"]
 @login_required
 def index_view(request):
     user = request.user
-    if user.is_authorized:
-        if user.role == user.ROLE_MANAGER:
-            return redirect("app:logentry_list")
-        elif user.role == user.ROLE_NOTIFIER:
-            return redirect("app:logentry_list")
+    if user.is_manager:
+        return redirect("app:notifierforhealthcareunit_list")
+    elif user.is_notifier:
+        return redirect("app:logentry_list")
 
     cnes_form = forms.CNESForm()
     cities_form = forms.FillCitiesForm()
