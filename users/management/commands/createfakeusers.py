@@ -22,7 +22,7 @@ class Command(BaseCommand):
             "--admin-password", action="store_true", default="admin", help="Sets the admin password"
         )
         parser.add_argument("--roles", action="store_true", help="Create users with default roles")
-        parser.add_argument("--users", type=int, default=10, help="Number of regular users")
+        parser.add_argument("--users", type=int, default=5, help="Number of regular users")
         parser.add_argument(
             "--force", action="store_true", help="Force-recreation of special users"
         )
@@ -50,9 +50,9 @@ class Command(BaseCommand):
         if admin:
             self.mk_user("Admin", create_admin, password=admin_password, force=force)
         if roles:
-            self.mk_user("Default", create_default_user, force=force)
-            self.mk_user("Notifier", create_notifier, force=force)
-            self.mk_user("Manager", create_manager, force=force, notifiers=(2, 3))
+            user = self.mk_user("Default", create_default_user, force=force)
+            self.mk_user("Manager", create_manager, force=force, notifiers=(2, 3), state=user.state)
+            self.mk_user("Notifier", create_notifier, force=force, state=user.state)
 
         # Create regular users
         for _ in range(users // 2):
@@ -80,12 +80,11 @@ class Command(BaseCommand):
         Try to create user with factory function and return the number of
         created users.
         """
-        _, created = fn(**kwargs)
+        user, created = fn(**kwargs)
         if created:
             msg = self.style.SUCCESS(kind)
             self.inform(msg + " user created!", depth=1)
-            return 1
         else:
             msg = self.style.WARNING(kind)
             self.inform(msg + " user was already created!", depth=1)
-            return 0
+        return user
