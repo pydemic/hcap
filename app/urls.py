@@ -10,5 +10,5 @@ urlpatterns = [
     path("diario/", include(views.LogEntryViewSet().urls)),
     path("notificadores-pendentes/", include(views.NotifierPendingApprovalViewSet().urls)),
     path("unidade-de-saude/", include(views.HealthcareUnitViewSet().urls)),
-    path("vis/units/<int:pk>/capacity.svg", views.plot_healthcare_unit_capacity),
+    path("vis/units/<int:cnes_id>/capacity.svg", views.plot_healthcare_unit_capacity),
 ]

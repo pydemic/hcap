@@ -18,8 +18,8 @@ CAPACITY_FIELDS = ["beds_adults", "beds_pediatric", "icu_adults", "icu_pediatric
 
 
 @login_required
-def plot_healthcare_unit_capacity(request, pk, start_date=None):
-    unit = get_object_or_404(models.HealthcareUnit, pk=pk)
+def plot_healthcare_unit_capacity(request, cnes_id, start_date=None):
+    unit = get_object_or_404(models.HealthcareUnit, cnes_id=cnes_id)
     user = request.user
     if settings.DEBUG and user.is_superuser:
         pass
