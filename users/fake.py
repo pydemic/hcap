@@ -54,6 +54,7 @@ def create_notifier(suffix: Union[str, int] = "", is_authorized=True, **kwargs):
         **kwargs,
     }
     user, is_new = create_user(**kwargs)
+    user.healthcare_unit_ = unit
     unit.register_notifier(user, authorize=is_authorized)
     return user, is_new
 

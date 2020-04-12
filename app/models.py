@@ -20,7 +20,10 @@ class HealthcareUnit(models.Model):
         verbose_name="Município",
     )
     cnes_id = models.CharField(
-        "Registro CNES", max_length=15, validators=[validators.RegexValidator(r"[0-9]+")]
+        "Registro CNES",
+        max_length=15,
+        validators=[validators.RegexValidator(r"[0-9]+")],
+        db_index=True,
     )
     is_active = models.BooleanField("Unidade está ativa?", default=True)
     name = models.CharField(
@@ -92,6 +95,10 @@ class Capacity(TimeStampedModel):
         )
 
     @property
+    def capacities_tuple(self):
+        return (self.beds_adults, self.beds_pediatric, self.icu_adults, self.icu_pediatric)
+
+    @property
     def icu_and_beds_total(self):
         return self.beds_adults + self.beds_pediatric + self.icu_adults + self.icu_pediatric
 
@@ -108,7 +115,7 @@ class Capacity(TimeStampedModel):
         verbose_name_plural = "Alterações de capacidade hospitalar"
 
     def __str__(self):
-        return f"{self.unit} ({self.created_date})"
+        return f"{self.unit} ({self.date})"
 
 
 class LogEntry(TimeStampedModel):
@@ -171,6 +178,27 @@ class LogEntry(TimeStampedModel):
     icu_regular_pediatric = HospitalBedsField(
         "Pediátrico", help_text="Informe o total de pacientes."
     )
+
+    @property
+    def cases(self):
+        return {
+            "sari_cases_adults": self.sari_cases_adults,
+            "covid_cases_adults": self.covid_cases_adults,
+            "sari_cases_pediatric": self.sari_cases_pediatric,
+            "covid_cases_pediatric": self.covid_cases_pediatric,
+            "icu_sari_cases_adults": self.icu_sari_cases_adults,
+            "icu_covid_cases_adults": self.icu_covid_cases_adults,
+            "icu_sari_cases_pediatric": self.icu_sari_cases_pediatric,
+            "icu_covid_cases_pediatric": self.icu_covid_cases_pediatric,
+            "regular_cases_adults": self.regular_cases_adults,
+            "regular_cases_pediatric": self.regular_cases_pediatric,
+            "icu_regular_adults": self.icu_regular_adults,
+            "icu_regular_pediatric": self.icu_regular_pediatric,
+        }
+
+    @property
+    def cases_tuple(self):
+        return tuple(self.cases.values())
 
     @property
     def icu_and_cases_total(self):
