@@ -32,8 +32,8 @@ and `pip install -e .`. This will setup a basic development environment using
 Django's runserver and sqlite.
 
 You can initialize, seed the database, start the development server using
-standard Django management via `manage.py` or, perhaps more conveniently,
-invoke commands
+standard Django management commands via `manage.py` or, perhaps more conveniently,
+you may use invoke tasks to execute the most common chores
 
 | Command               | Description                            |
 | :-------------------- | :------------------------------------- |
@@ -45,7 +45,7 @@ You can list all options with `inv -l`.
 
 ### Getting started with Docker
 
-If you prefer Docker ask for someone to fill this section ;-)
+If you prefer Docker ask someone in the dev team to fill up this section ;-)
 There are lots of Docker enthusiasts in the team that use it for daily
 development.
 
