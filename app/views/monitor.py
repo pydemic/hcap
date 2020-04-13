@@ -9,93 +9,72 @@ registry = CollectorRegistry()
 
 # metrics definition
 gauge_healthcare_units = Gauge(
-    'healthcare_units',
-    'Healthcare unit state by UF (inactive or active)',
+    "healthcare_units",
+    "Healthcare unit state by UF (inactive or active)",
     ["uf", "is_active"],
-    registry=registry
+    registry=registry,
 )
 
 gauge_cases_covid_adult = Gauge(
-    'cases_covid_adult_daily',
-    'Covid daily adult cases',
-    ["uf", "city"],
-    registry=registry,
+    "cases_covid_adult_daily", "Covid daily adult cases", ["uf", "city"], registry=registry,
 )
 
 gauge_cases_icu_covid_adult = Gauge(
-    'cases_icu_covid_adult_daily',
-    'ICU covid daily adult cases',
-    ["uf", "city"],
-    registry=registry,
+    "cases_icu_covid_adult_daily", "ICU covid daily adult cases", ["uf", "city"], registry=registry,
 )
 
 gauge_cases_covid_pediatric = Gauge(
-    'cases_covid_pediatric_daily',
-    'Covid daily pediatric cases',
-    ["uf", "city"],
-    registry=registry,
+    "cases_covid_pediatric_daily", "Covid daily pediatric cases", ["uf", "city"], registry=registry,
 )
 
 gauge_cases_icu_covid_pediatric = Gauge(
-    'cases_icu_covid_pediatric_daily',
-    'ICU covid daily pediatric cases',
+    "cases_icu_covid_pediatric_daily",
+    "ICU covid daily pediatric cases",
     ["uf", "city"],
     registry=registry,
 )
 
 gauge_cases_sari_adult = Gauge(
-    'cases_sari_adult_daily',
-    'Covid daily adult cases',
-    ["uf", "city"],
-    registry=registry,
+    "cases_sari_adult_daily", "Covid daily adult cases", ["uf", "city"], registry=registry,
 )
 
 gauge_cases_icu_sari_adult = Gauge(
-    'cases_icu_sari_adult_daily',
-    'ICU sari daily adult cases',
-    ["uf", "city"],
-    registry=registry,
+    "cases_icu_sari_adult_daily", "ICU sari daily adult cases", ["uf", "city"], registry=registry,
 )
 
 gauge_cases_sari_pediatric = Gauge(
-    'cases_sari_pediatric_daily',
-    'Covid daily pediatric cases',
-    ["uf", "city"],
-    registry=registry,
+    "cases_sari_pediatric_daily", "Covid daily pediatric cases", ["uf", "city"], registry=registry,
 )
 
 gauge_cases_icu_sari_pediatric = Gauge(
-    'cases_icu_sari_pediatric_daily',
-    'ICU sari daily pediatric cases',
+    "cases_icu_sari_pediatric_daily",
+    "ICU sari daily pediatric cases",
     ["uf", "city"],
     registry=registry,
 )
 
 
 gauge_cases_regular_adult = Gauge(
-    'cases_regular_adult_daily',
-    'Covid daily adult cases',
-    ["uf", "city"],
-    registry=registry,
+    "cases_regular_adult_daily", "Covid daily adult cases", ["uf", "city"], registry=registry,
 )
 
 gauge_cases_icu_regular_adult = Gauge(
-    'cases_icu_regular_adult_daily',
-    'ICU regular daily adult cases',
+    "cases_icu_regular_adult_daily",
+    "ICU regular daily adult cases",
     ["uf", "city"],
     registry=registry,
 )
 
 gauge_cases_regular_pediatric = Gauge(
-    'cases_regular_pediatric_daily',
-    'Covid daily pediatric cases',
+    "cases_regular_pediatric_daily",
+    "Covid daily pediatric cases",
     ["uf", "city"],
     registry=registry,
 )
 
 gauge_cases_icu_regular_pediatric = Gauge(
-    'cases_icu_regular_pediatric_daily',
-    'ICU regular daily pediatric cases',
+    "cases_icu_regular_pediatric_daily",
+    "ICU regular daily pediatric cases",
     ["uf", "city"],
     registry=registry,
 )
@@ -104,15 +83,15 @@ gauge_cases_icu_regular_pediatric = Gauge(
 def monitor_view(request):
     if request.method == "GET":
         units = models.HealthcareUnit.objects.select_related("city", "city__state").all()
-        logs = models.LogEntry.objects.select_related("unit", "unit__city", "unit__city__state").all()
+        logs = models.LogEntry.objects.select_related(
+            "unit", "unit__city", "unit__city__state"
+        ).all()
 
         _build_units_report(units)
         _build_covid_cases_report(logs)
 
         metrics_page = generate_latest(registry)
-        return HttpResponse(
-            metrics_page, content_type=CONTENT_TYPE_LATEST
-        )
+        return HttpResponse(metrics_page, content_type=CONTENT_TYPE_LATEST)
 
     return HttpResponseBadRequest(f"Invalid method {request.method}")
 
@@ -133,7 +112,7 @@ def _build_covid_cases_report(logs):
     for log in last_logs:
         labels = {
             "city": log.unit.city.name,
-            "uf":   log.unit.city.state.name,
+            "uf": log.unit.city.state.name,
         }
 
         # covid
@@ -152,8 +131,9 @@ def _build_covid_cases_report(logs):
         gauge_cases_regular_adult.labels(**labels).set(log.cases["regular_cases_adults"])
         gauge_cases_icu_regular_adult.labels(**labels).set(log.cases["icu_regular_cases_adults"])
         gauge_cases_regular_pediatric.labels(**labels).set(log.cases["regular_cases_pediatric"])
-        gauge_cases_icu_regular_pediatric.labels(**labels).set(log.cases["icu_regular_cases_pediatric"])
-
+        gauge_cases_icu_regular_pediatric.labels(**labels).set(
+            log.cases["icu_regular_cases_pediatric"]
+        )
 
 
 def _filter_last_log_by_cnes(logs):
