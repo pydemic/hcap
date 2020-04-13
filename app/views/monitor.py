@@ -1,6 +1,5 @@
 from collections import defaultdict
 from django.http import HttpResponse, HttpResponseBadRequest
-from django.shortcuts import render, redirect
 from prometheus_client import CollectorRegistry, Gauge, generate_latest, CONTENT_TYPE_LATEST
 
 from .. import models
@@ -16,15 +15,15 @@ gauge_healthcare_units = Gauge(
 )
 
 gauge_cases_covid_adult = Gauge(
-    "cases_covid_adult_daily", "Covid daily adult cases", ["uf", "city"], registry=registry,
+    "cases_covid_adult_daily", "Covid daily adult cases", ["uf", "city"], registry=registry
 )
 
 gauge_cases_icu_covid_adult = Gauge(
-    "cases_icu_covid_adult_daily", "ICU covid daily adult cases", ["uf", "city"], registry=registry,
+    "cases_icu_covid_adult_daily", "ICU covid daily adult cases", ["uf", "city"], registry=registry
 )
 
 gauge_cases_covid_pediatric = Gauge(
-    "cases_covid_pediatric_daily", "Covid daily pediatric cases", ["uf", "city"], registry=registry,
+    "cases_covid_pediatric_daily", "Covid daily pediatric cases", ["uf", "city"], registry=registry
 )
 
 gauge_cases_icu_covid_pediatric = Gauge(
@@ -35,15 +34,15 @@ gauge_cases_icu_covid_pediatric = Gauge(
 )
 
 gauge_cases_sari_adult = Gauge(
-    "cases_sari_adult_daily", "Covid daily adult cases", ["uf", "city"], registry=registry,
+    "cases_sari_adult_daily", "Covid daily adult cases", ["uf", "city"], registry=registry
 )
 
 gauge_cases_icu_sari_adult = Gauge(
-    "cases_icu_sari_adult_daily", "ICU sari daily adult cases", ["uf", "city"], registry=registry,
+    "cases_icu_sari_adult_daily", "ICU sari daily adult cases", ["uf", "city"], registry=registry
 )
 
 gauge_cases_sari_pediatric = Gauge(
-    "cases_sari_pediatric_daily", "Covid daily pediatric cases", ["uf", "city"], registry=registry,
+    "cases_sari_pediatric_daily", "Covid daily pediatric cases", ["uf", "city"], registry=registry
 )
 
 gauge_cases_icu_sari_pediatric = Gauge(
@@ -55,7 +54,7 @@ gauge_cases_icu_sari_pediatric = Gauge(
 
 
 gauge_cases_regular_adult = Gauge(
-    "cases_regular_adult_daily", "Covid daily adult cases", ["uf", "city"], registry=registry,
+    "cases_regular_adult_daily", "Covid daily adult cases", ["uf", "city"], registry=registry
 )
 
 gauge_cases_icu_regular_adult = Gauge(
@@ -91,6 +90,10 @@ def monitor_view(request):
         _build_covid_cases_report(logs)
 
         metrics_page = generate_latest(registry)
+        if request.GET.get("html") == "true":
+            raw = metrics_page.decode("utf-8")
+            data = f"<body><pre>{raw}</pre></body>"
+            return HttpResponse(data)
         return HttpResponse(metrics_page, content_type=CONTENT_TYPE_LATEST)
 
     return HttpResponseBadRequest(f"Invalid method {request.method}")
@@ -110,10 +113,7 @@ def _build_covid_cases_report(logs):
     last_logs = _filter_last_log_by_cnes(logs)
 
     for log in last_logs:
-        labels = {
-            "city": log.unit.city.name,
-            "uf": log.unit.city.state.name,
-        }
+        labels = {"city": log.unit.city.name, "uf": log.unit.city.state.name}
 
         # covid
         gauge_cases_covid_adult.labels(**labels).set(log.cases["covid_cases_adults"])
