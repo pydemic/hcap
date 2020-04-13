@@ -17,12 +17,13 @@ from django.conf import settings
 from django.urls import path, include
 from django.views.generic import RedirectView
 from material.frontend import urls as frontend_urls
+from locations.urls import urlpatterns as location_urls
 
 urlpatterns = [
     path("accounts/", include("allauth.urls")),
+    path("select2/", include("django_select2.urls")),
     path("", RedirectView.as_view(url="./app/"), name="home"),
     path("", include(frontend_urls)),
-    path("", include("django_prometheus.urls")),
 ]
 
 if settings.DEBUG:

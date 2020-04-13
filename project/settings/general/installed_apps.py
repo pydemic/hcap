@@ -40,4 +40,5 @@ INSTALLED_APPS = [
     "compressor",
     "crispy_forms",
     "utils",
+    "django_select2",
 ]
