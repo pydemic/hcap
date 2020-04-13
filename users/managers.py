@@ -18,3 +18,21 @@ class UserManager(DjangoUserManager):
         user = self.create_user(**extra_fields)
         user.emailaddress_set.create(email=user.email, verified=True, primary=True)
         return user
+
+    def notifiers(self, only_authorized=True):
+        """
+        Filter only valid notifier users.
+        """
+        qs = self.filter(role=self.model.ROLE_NOTIFIER)
+        if only_authorized:
+            qs = qs.filter(is_authorized=True)
+        return qs
+
+    def managers(self, only_authorized=True):
+        """
+        Filter only valid notifier users.
+        """
+        qs = self.filter(role=self.model.ROLE_MANAGER)
+        if only_authorized:
+            qs = qs.filter(is_authorized=True)
+        return qs

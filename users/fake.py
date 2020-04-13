@@ -45,10 +45,13 @@ def create_notifier(suffix: Union[str, int] = "", is_authorized=True, **kwargs):
     # state = kwargs.setdefault("state", random_state())
     unit = healthcare_unit(cnes_id="1234")
     dash_idx = f"-{suffix}" if suffix != "" else ""
+    name = f"Joe Notifier Smith {suffix}".strip()
+    if "name" in kwargs:
+        name = kwargs.pop("name") or fake.name()
     kwargs = {
         "email": f"notifier{dash_idx}@notifier.com",
         "password": "notifier",
-        "name": f"Joe Notifier Smith {suffix}".strip(),
+        "name": name,
         "is_authorized": is_authorized,
         "role": User.ROLE_NOTIFIER,
         **kwargs,
@@ -79,7 +82,7 @@ def create_manager(notifiers=None, **kwargs):
     # Create a authorized and b non-authorized notifiers in the same state
     if notifiers:
         a, b = notifiers
-        kwargs_a = {"state": state, "is_authorized": True}
+        kwargs_a = {"state": state, "is_authorized": True, "name": None}
         kwargs_b = {**kwargs_a, "is_authorized": False}
         user.notifiers = [
             *(create_notifier(i, **kwargs_a)[0] for i in range(a)),
@@ -161,6 +164,4 @@ def healthcare_unit(**kwargs) -> "app.models.HealthcareUnit":
         return obj
     kwargs = {"city": kwargs.get("city") or random_city(), "name": "Foo Bar Hospital", **kwargs}
     obj, status = HealthcareUnit.objects.update_or_create(**kwargs)
-    print(obj)
-    print(status)
     return obj
