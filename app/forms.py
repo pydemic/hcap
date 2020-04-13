@@ -3,10 +3,15 @@ from operator import attrgetter
 
 from django import forms
 from django.contrib.auth import get_user_model
+from django.contrib.admin.widgets import AutocompleteSelectMultiple
+from django.contrib import admin
 
 from locations.models import City, associate_manager_city
+from locations.widgets import CityAutocomplete
 from . import models
 from .validators import existing_cnes_validator
+
+from django_select2.forms import ModelSelect2MultipleWidget
 
 
 class CNESForm(forms.Form):
@@ -24,12 +29,17 @@ class CNESForm(forms.Form):
 
 
 class FillCitiesForm(forms.Form):
-    cities = forms.CharField(
-        label="Lista de municípios do gestor regional",
-        help_text="Inclua um município por linha e dê preferência a usar o código IBGE "
-        "ao invés do nome de cada município.",
+    cities = forms.ModelMultipleChoiceField(
+        widget=ModelSelect2MultipleWidget(
+            queryset=City.objects.none(),
+            search_fields=["name__icontains"],
+            attrs={
+                "data-placeholder": "Digite o nome de uma cidade.",
+                "data-minimum-input-length": 2,
+            },
+        ),
+        queryset=City.objects.all(),
         required=False,
-        widget=forms.Textarea,
     )
     state_manager = forms.BooleanField(label="Gestor estadual?", required=False)
 
@@ -37,39 +47,17 @@ class FillCitiesForm(forms.Form):
         super().__init__(*args, **kwargs)
         self.user = user
         self.state = user.state
-        self.cities = None
+        self.fields["cities"].widget.queryset = City.objects.filter(state=self.user.state)
+        self.fields["cities"].queryset = City.objects.filter(state=self.user.state)
 
     def clean(self):
-        cities = self.cleaned_data.get("cities").strip()
+        cities = self.cleaned_data.get("cities")
         state_manager = self.cleaned_data.get("state_manager")
 
         if not cities and not state_manager:
             raise forms.ValidationError("Preencha ao menos um dos campos.")
-        if cities:
-            self.process_cities(cities, validate=True)
 
         return self.cleaned_data
-
-    def process_cities(self, data, validate=False):
-        if self.cities is not None:
-            return self.cities
-
-        state = self.state
-        data = re.split(r",\s*|\s*\n\s*", data)
-        pks = {int(x) for x in data if x and x.isdigit()}
-        names = {x.title() for x in data if x and not x.isdigit()}
-        qs_pk = City.objects.filter(state=state, id__in=pks)
-        qs_name = City.objects.filter(state=state, name__in=names)
-        self.cities = (qs_pk | qs_name).distinct()
-
-        if validate:
-            expected = {*map(attrgetter("id"), self.cities), *map(attrgetter("name"), self.cities)}
-            invalid = {*map(str.title, data)} - expected
-            if invalid:
-                invalid = ", ".join(list(invalid)[:3])
-                raise forms.ValidationError({"cities": f"Cidades inválidas: {invalid}"})
-
-        return self.cities
 
     def save(self):
         user = self.user
@@ -77,8 +65,7 @@ class FillCitiesForm(forms.Form):
         if self.cleaned_data.get("state_manager"):
             cities = City.objects.filter(state=user.state)
         else:
-            data = self.cleaned_data["cities"]
-            cities = self.process_cities(data)
+            cities = self.cleaned_data["cities"]
 
         associate_manager_city(user, cities)
         user.role = user.ROLE_MANAGER
