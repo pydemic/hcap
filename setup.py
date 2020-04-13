@@ -54,6 +54,7 @@ DEV_REQUIREMENTS = [
     "pytest-django==3.9.0",
     "pre-commit==2.2.0",
     "pycodestyle==2.5.0",
+    "Werkzeug==1.0.1",
 ]
 
 PROD_REQUIREMENTS = ["gunicorn==20.0.4"]

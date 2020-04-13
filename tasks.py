@@ -24,6 +24,12 @@ def db_fake(ctx):
 
 
 @task
+def db_staging(ctx):
+    """Populate with staging data."""
+    db_fake(ctx)
+
+
+@task
 def migrate(ctx):
     """Alias to Django's "migrate" command."""
     ctx.run("python manage.py migrate")

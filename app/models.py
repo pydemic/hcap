@@ -193,8 +193,8 @@ class LogEntry(TimeStampedModel):
             "icu_covid_cases_pediatric": self.icu_covid_cases_pediatric,
             "regular_cases_adults": self.regular_cases_adults,
             "regular_cases_pediatric": self.regular_cases_pediatric,
-            "icu_regular_adults": self.icu_regular_adults,
-            "icu_regular_pediatric": self.icu_regular_pediatric,
+            "icu_regular_cases_adults": self.icu_regular_adults,
+            "icu_regular_cases_pediatric": self.icu_regular_pediatric,
         }
 
     @property

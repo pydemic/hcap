@@ -24,7 +24,7 @@ def index_view(request):
     elif user.role != user.ROLE_NONE:
         return redirect("app:wait_confirmation")
 
-    cnes_form = forms.CNESForm()
+    cnes_form = forms.CNESForm(request=request)
     cities_form = forms.FillCitiesForm(user=user)
     active = "cnes"
 
@@ -33,7 +33,7 @@ def index_view(request):
         return HttpResponseBadRequest(f"invalid action: {action}")
 
     elif request.method == "POST" and request.POST["action"] == "cnes":
-        cnes_form = forms.CNESForm(request.POST)
+        cnes_form = forms.CNESForm(request.POST, request=request)
         if cnes_form.is_valid():
             cnes_form.save(user)
             return redirect("app:wait_confirmation")

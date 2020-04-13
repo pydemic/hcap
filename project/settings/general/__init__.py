@@ -3,6 +3,7 @@ from .cors import *
 from .databases import *
 from .email import *
 from .fake import *
+from .grafana import *
 from .i18n import *
 from .installed_apps import *
 from .middleware import *

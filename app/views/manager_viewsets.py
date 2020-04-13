@@ -22,8 +22,10 @@ class NotifierPendingApprovalViewSet(ModelViewSet):
 
     def get_queryset(self, request):
         state_id = request.user.state_id
-        return self.model.objects.filter(unit__city__state_id=state_id).order_by(
-            "is_approved", "notifier__name"
+        return (
+            self.model.objects.filter(unit__city__state_id=state_id)
+            .order_by("is_approved", "notifier__name")
+            .select_related("notifier", "unit", "unit__city")
         )
 
     def has_add_permission(self, request):
@@ -51,11 +53,8 @@ class NotifierPendingApprovalViewSet(ModelViewSet):
         if not user.is_manager:
             return False
         if obj is not None:
-            d = user._wrapped.__dict__
-            f = obj.unit.__dict__
-            e = obj.__dict__
-            raise
-            return obj.unit.city in user.m2m_cities_as_manager.all()
+            rel = user.m2m_cities_as_manager.filter(city=obj.unit.city)
+            return rel.exists()
         return True
 
     def city(self, obj):
