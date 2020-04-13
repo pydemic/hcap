@@ -24,6 +24,7 @@ class HealthcareUnit(models.Model):
         max_length=15,
         validators=[validators.RegexValidator(r"[0-9]+")],
         db_index=True,
+        unique=True,
     )
     is_active = models.BooleanField("Unidade está ativa?", default=True)
     name = models.CharField(
