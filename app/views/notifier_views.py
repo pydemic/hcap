@@ -7,10 +7,11 @@ __all__ = ["NotifierListModelView", "NotifierUpdateModelView", "NotifierCreateMo
 class NotifierCreateOrUpdateMixin:
     def form_valid(self, form: forms.ModelForm, *args, **kwargs):
         save_fn = form.save
+        user = self.request.user
 
         def save():
             obj = save_fn(commit=False)
-            obj.notifier = self.request.user
+            obj.notifier = user
             obj.save()
             form.save_m2m()
             return obj
