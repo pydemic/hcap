@@ -41,7 +41,7 @@ class Command(BaseCommand):
     def runserver(self):
         self.inform("==[runserver]===============", style_func=self.style.SQL_KEYWORD)
         os.system(
-            f"./manage.py runserver {settings.SERVER_HOST}:{settings.SERVER_PORT} --verbosity={self.verbosity}"
+            f"WERKZEUG_DEBUG_PIN=off ./manage.py runserver_plus {settings.SERVER_HOST}:{settings.SERVER_PORT} --verbosity={self.verbosity}"
         )
 
     def start_gunicorn(self):
