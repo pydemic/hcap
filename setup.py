@@ -42,7 +42,7 @@ REQUIREMENTS = [
     "soupsieve==2.0",
     "sqlparse==0.3.1",
     "urllib3==1.25.8",
-    "django-select2==7.2.31",
+    "django_select2==7.2.31",
 ]
 
 DEV_REQUIREMENTS = [
