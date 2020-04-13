@@ -42,8 +42,8 @@ def create_user(email=None, password=None, validate_email=True, force=False, **k
 
 
 def create_notifier(suffix: Union[str, int] = "", is_authorized=True, **kwargs):
-    state = kwargs.setdefault("state", random_state())
-    unit = healthcare_unit(city=random_city(state))
+    # state = kwargs.setdefault("state", random_state())
+    unit = healthcare_unit(cnes_id="1234")
     dash_idx = f"-{suffix}" if suffix != "" else ""
     kwargs = {
         "email": f"notifier{dash_idx}@notifier.com",
@@ -159,10 +159,8 @@ def healthcare_unit(**kwargs) -> "app.models.HealthcareUnit":
     obj = HealthcareUnit.objects.filter(**kwargs).first()
     if obj is not None:
         return obj
-    kwargs = {
-        "cnes_id": 1234,
-        "city": kwargs.get("city") or random_city(),
-        "name": "Foo Bar Hospital",
-        **kwargs,
-    }
-    return HealthcareUnit.objects.create(**kwargs)
+    kwargs = {"city": kwargs.get("city") or random_city(), "name": "Foo Bar Hospital", **kwargs}
+    obj, status = HealthcareUnit.objects.update_or_create(**kwargs)
+    print(obj)
+    print(status)
+    return obj
