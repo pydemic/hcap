@@ -19,3 +19,6 @@ class HealthcareUnitAdmin(ModelAdmin):
 
     get_city_name.short_description = "Município"
     get_city_name.admin_order_field = "city__name"
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).select_related("city")
