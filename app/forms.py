@@ -3,11 +3,9 @@ from operator import attrgetter
 
 from django import forms
 from django.contrib.auth import get_user_model
-from django.contrib.admin.widgets import AutocompleteSelectMultiple
 from django.contrib import admin
 
 from locations.models import City, associate_manager_city
-from locations.widgets import CityAutocomplete
 from . import models
 from .validators import existing_cnes_validator
 
