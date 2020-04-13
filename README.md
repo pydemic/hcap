@@ -43,9 +43,9 @@
 
 - Set your development environment with:
 
-  - [virtualenv](#getting-started-with-virtualenv)
+  - [virtualenv](#setup-with-virtualenv)
 
-  - [docker](#getting-started-with-docker)
+  - [docker and docker-compose](#setup-with-docker-and-docker-compose)
 
   - Another setup of your choice
 
@@ -107,27 +107,31 @@
 
 Create a virtualenv using `mkvirtualenv` or another tool of your choice.
 
+After that, you can continue the [getting started](getting-started) section normally.
+
 ### Setup with docker and docker compose
 
-An updated `docker-compose.yml` for development can be found at
-<https://gitlab.com/pydemic/tunnel/-/blob/master/apps/hcap/development/fetch/docker-compose.yml>.
+An updated `docker-compose.yml` for development can be found at:
+
+- <https://gitlab.com/pydemic/tunnel/-/blob/master/apps/hcap/development/fetch/docker-compose.yml>.
 
 If you use [VSCode](https://code.visualstudio.com/) and
 [ms-vscode-remote.remote-containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
-extension, a `.devcontainer` settings can be found at
-<https://gitlab.com/pydemic/tunnel/-/tree/master/apps/hcap/development/fetch/vscode/.devcontainer>.
+extension, a `.devcontainer` settings can be found at:
 
-- First, start the services:
+- <https://gitlab.com/pydemic/tunnel/-/tree/master/apps/hcap/development/fetch/vscode/.devcontainer>.
 
-  ```bash
-  docker-compose up -d
-  ```
-
-- Then, access the `hcap` service terminal:
+The `hcap` service starts idle, simply access the service terminal:
 
   ```bash
+  # With docker-compose
   docker-compose exec hcap bash
+
+  # With docker
+  docker exec -it hcap bash
   ```
+
+After that, you can continue the [getting started](getting-started) section normally.
 
 ## Production Environment Variables
 
