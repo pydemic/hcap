@@ -15,6 +15,7 @@ from . import models
 from ..utils import parse_date
 
 CAPACITY_FIELDS = ["beds_adults", "beds_pediatric", "icu_adults", "icu_pediatric"]
+plt.style.use("ggplot")
 
 
 @login_required
@@ -26,15 +27,20 @@ def plot_healthcare_unit_capacity(request, cnes_id, start_date=None):
     elif not user.is_notifier or not user.healthcare_units.filter(pk=unit.pk).exists():
         raise Http404
 
+    # Query db
     qs = unit.capacity_notifications.all()
     if start_date:
         date = parse_date(start_date)
         qs = qs.filter(date__gte=date)
     cols = ["date", *CAPACITY_FIELDS]
+
+    # Prepare raw data
     data = list(qs.values_list(*cols))
     if not data:
         data = [[now().date(), *([0] * (len(cols) - 1))]]
     data = np.array(data)
+
+    # Prepare dataframe
     df = pd.DataFrame(data, columns=cols)
     if len(df) == 1:
         day = datetime.timedelta(days=1)
@@ -43,9 +49,21 @@ def plot_healthcare_unit_capacity(request, cnes_id, start_date=None):
         df = first.append(df)
     df.index = df.pop("date")
     df = df.sort_index()
+    df = pd.DataFrame(
+        {
+            "Clínicos": df[["beds_adults", "beds_pediatric"]].sum(1),
+            "UTI": df[["icu_adults", "icu_pediatric"]].sum(1),
+        }
+    )
+
+    # Prepare plot
     fig, ax = plt.subplots()
-    df.plot(ax=ax)
-    adj_dates(angle=45, pretty=True, ax=ax)
+    df.plot.bar(ax=ax, rot=45)
+    df.index.label = "Datas"
+    ax.margins()
+    ax.set_xlabel(None)
+    ax.set_ylabel("Capacidade (número leitos)")
+    ax.set_xticklabels([d.strftime("%x") for d in df.index])
     data = plt_svg(fig)
     return HttpResponse(data, content_type="image/svg+xml")
 
@@ -56,7 +74,7 @@ def plt_svg(fig=None) -> str:
     if fig is None:
         fig = plt.gca()
     fd = io.StringIO()
-    fig.savefig(fd, format="svg")
+    fig.savefig(fd, format="svg", bbox_inches="tight")
     return fd.getvalue()
 
 

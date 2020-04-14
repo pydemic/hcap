@@ -1,7 +1,7 @@
 # Hospital Capacity
 
-[![pipeline status](https://gitlab.com/pydemic/hcap/badges/master/pipeline.svg)](https://gitlab.com/pydemic/hcap/commits/master)
-[![coverage report](https://gitlab.com/pydemic/hcap/badges/master/coverage.svg)](https://gitlab.com/pydemic/hcap/commits/master)
+[![pipeline](https://gitlab.com/pydemic/hcap/badges/master/pipeline.svg)](https://gitlab.com/pydemic/hcap/commits/master)
+[![coverage](https://gitlab.com/pydemic/hcap/badges/master/coverage.svg)](https://gitlab.com/pydemic/hcap/commits/master)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pydemic/hcap)
 
 ## Table of Contents
@@ -9,14 +9,16 @@
 - [Hospital Capacity](#hospital-capacity)
   - [Table of Contents](#table-of-contents)
   - [Project Description](#project-description)
-  - [Using rit tunnel](#using-rit-tunnel)
-    - [Installation](#installation)
-    - [Usage](#usage)
+  - [Development](#development)
+    - [Getting started](#getting-started)
+    - [Setup with virtualenv](#setup-with-virtualenv)
+    - [Setup with docker and docker compose](#setup-with-docker-and-docker-compose)
   - [Production Environment Variables](#production-environment-variables)
     - [CORS](#cors)
     - [Database](#database)
     - [Email](#email)
     - [Fake](#fake)
+    - [Grafana](#grafana)
     - [Secrets](#secrets)
     - [Server](#server)
     - [Validations](#validations)
@@ -25,78 +27,111 @@
 
 > TODO
 
+## Development
+
 ### Getting started
 
-Clone the repo, create a virtualenve using `mkvirtualenv` or your tool of choice
-and `pip install -e .`. This will setup a basic development environment using
-Django's runserver and sqlite.
+- Start by cloning the project:
 
-You can initialize, seed the database, start the development server using
-standard Django management commands via `manage.py` or, perhaps more conveniently,
-you may use invoke tasks to execute the most common chores
+  ```bash
+  # HTTPS
+  git clone https://github.com/pydemic/hcap.git
 
-| Command               | Description                            |
-| :-------------------- | :------------------------------------- |
-| `inv db`              | Run makemigrations and migrate         |
-| `inv db-fake`         | Seed database with users and fake data |
-| `inv run`             | Start application                      |
+  # SSH
+  git@github.com:pydemic/hcap.git
+  ```
 
-You can list all options with `inv -l`. Like make, invoke chains commands, so
-if you're eager to get started, just run `inv db db-fake run`
+- Set your development environment with:
 
-The `inv db-fake` command creates a few useful users that you can use to interact
-with the platform under different roles.
+  - [virtualenv](#setup-with-virtualenv)
 
-* **admin:** The superuser, e-mail: admin@admin.com, password: admin.
-* **user:** A regular user that just sign up, e-mail: user@user.com, password: user.
-* **notifier:** A user authorized to notify for a hospital, e-mail: notifier@notifier.com, password: notifier.
-* **manager:** A user authorized manage notifiers for a given state, e-mail: manager@manager.com, password: manager.
+  - [docker and docker-compose](#setup-with-docker-and-docker-compose)
 
-It also populates the database with a few additional entries. The manager has a few
-authorized and non-authorized notifiers to play with. The notifier is registered to
-a healthcare unit and already has a small history of notifications.
+  - Another setup of your choice
 
+- Install/fetch the development dependencies:
 
-### Getting started with Docker
+  ```bash
+  pip install -e .[dev]
+  ```
 
-If you prefer Docker ask someone in the dev team to fill up this section ;-)
-There are lots of Docker enthusiasts in the team that use it for daily
-development.
+- Seed the database with fake data:
 
-## Using rit tunnel
+  ```bash
+  inv db-fake
+  ```
 
-### Installation
+- Start the application (the system will be available at <http://localhost:8000>):
 
-After installing [rit](https://gitlab.com/ritproject/cli#installation), config
-your tunnel repo either remotely,
+  ```bash
+  # With inv
+  inv run
 
-```bash
-rit config tunnel add repo https://gitlab.com/pydemic/tunnel --name pydemic
-rit config tunnel default set pydemic --path .
-```
+  # With manage.py
+  python manage.py start
 
-or locally,
+  # With hcap reference
+  hcap start
+  ```
 
-```bash
-git clone https://gitlab.com/pydemic/tunnel ../tunnel
-rit config tunnel add local ../tunnel --name pydemic
-rit config tunnel default set pydemic --path .
-```
+- The `inv db-fake` command creates a few useful users from which you can use to interact with the
+  platform under different roles:
 
-### Usage
+  | Role     | E-mail                | Password | Description                                            |
+  | :------- | :-------------------- | :------- | :----------------------------------------------------- |
+  | Admin    | admin@admin.com       | admin    | Staff with superuser privileges                        |
+  | User     | user@user.com         | user     | User that just signed up                               |
+  | Notifier | notifier@notifier.com | notifier | User authorized to notify for hospitals                |
+  | Manager  | manager@manager.com   | manager  | User authorized to manage notifiers from a given state |
 
-If you use docker and docker-compose, you use `rit` commands to automate several
-processes. The table list the main options.
+- The `inv db-fake` command also populate the database with a few additional entries:
 
-| Description                          | Commands                                                                                                                                                                                             |
-| :----------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Build the development image          | `rit tunnel run apps hcap development build`                                                                                                                                                         |
-| Fetch the development docker-compose | `rit tunnel run apps hcap development fetch compose`                                                                                                                                                 |
-| Run the test pipeline                | `rit tunnel run apps hcap development test up<br>rit tunnel run apps hcap development test sync<br>rit tunnel run apps hcap development test all<br>>rit tunnel run apps hcap development test down` |
-| Start or shutdown PostgreSQL service | `rit tunnel run services postgres up<br>rit tunnel run services postgres down`                                                                                                                       |
-| Start or shutdown PostGis service    | `rit tunnel run services postgis up<br>rit tunnel run services postgis down`                                                                                                                         |
-| Build the production image           | `rit tunnel run apps hcap production build`                                                                                                                                                          |
-| Fetch the production docker-compose  | `rit tunnel run apps hcap production fetch compose`                                                                                                                                                  |
+  - The manager has a few authorized and non-authorized notifiers to play with
+
+  - The notifier is registered to a healthcare unit and already has a small history of notifications
+
+- To list additional tasks or commands:
+
+  ```bash
+  # invoke tasks
+  inv -l
+
+  # manage.py commands
+  python manage.py
+
+  # hcap reference commands
+  hcap
+  ```
+
+### Setup with virtualenv
+
+Create a virtualenv using `mkvirtualenv` or another tool of your choice.
+
+After that, you can continue the [getting started](getting-started) section normally.
+
+### Setup with docker and docker compose
+
+An updated `docker-compose.yml` for development can be found at:
+
+- <https://gitlab.com/pydemic/tunnel/-/blob/master/apps/hcap/development/fetch/docker-compose.yml>.
+
+If you use [VSCode](https://code.visualstudio.com/) and
+[ms-vscode-remote.remote-containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+extension, a `.devcontainer` settings can be found at:
+
+- <https://gitlab.com/pydemic/tunnel/-/tree/master/apps/hcap/development/fetch/vscode/.devcontainer>.
+
+The `hcap` service starts idle, simply access the service terminal:
+
+  ```bash
+  # With docker-compose
+  docker-compose exec hcap bash
+
+  # With docker
+  docker exec -it hcap bash
+  ```
+
+After that, you can continue the [getting started](getting-started) section normally.
 
 ## Production Environment Variables
 
@@ -134,6 +169,13 @@ processes. The table list the main options.
 | :-------------------------- | :------ | :------ | :-------------------------------------------------------- |
 | `HCAP__FAKE_ADMIN_PASSWORD` | `admin` | String  | Set admin password generated by "createfakeusers" command |
 | `HCAP__FAKE_USER_PASSWORD`  | `user`  | String  | Set user password generated by "createfakeusers" command  |
+
+### Grafana
+
+| Name                          | Default                 | Pattern | Description           |
+| :---------------------------- | :---------------------- | :------ | :-------------------- |
+| `HCAP__GRAFANA_DASHBOARD_UID` | `OMynCUCWx`             | String  | Grafana dashboard UID |
+| `HCAP__GRAFANA_URL`           | `http://localhost:3000` | String  | Grafana URL           |
 
 ### Secrets
 

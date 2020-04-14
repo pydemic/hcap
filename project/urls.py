@@ -17,10 +17,12 @@ from django.conf import settings
 from django.urls import path, include
 from django.views.generic import RedirectView
 from material.frontend import urls as frontend_urls
+import environ
 
 urlpatterns = [
     path("accounts/", include("allauth.urls")),
     path("select2/", include("django_select2.urls")),
+    path("dashboard/", RedirectView.as_view(url=settings.GRAFANA_DASHBOARD_URL), name="grafana"),
     path("", RedirectView.as_view(url="./app/"), name="home"),
     path("", include(frontend_urls)),
 ]

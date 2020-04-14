@@ -16,8 +16,8 @@ from users.fake import create_notifier
 from . import models
 
 fake = Factory.create("pt-BR")
-
 User = get_user_model()
+DAY = datetime.timedelta(days=1)
 SMALL_INT_LIMIT = 32760
 RANDOM_SIZES = [10, 50, 100, 200, 500, 1000, 5000, 10000]
 NotificationScenario = namedtuple("NotificationScenario", ["capacities", "notifications"])
@@ -60,22 +60,28 @@ def create_notification(
     **kwargs,
 ):
     safe = lambda x: max(0, min(x or 0, SMALL_INT_LIMIT))
+    if sari_cases_adults is None and "unit" in kwargs:
+        unit, notifier = fix_unit_notifier(kwargs)
+        capacity = unit.capacities.last()
+        walker = CaseNotificationsWalker(*capacity.capacities_tuple)
+        cases = walker.step()
+    else:
+        cases = dict(
+            sari_cases_adults=safe(sari_cases_adults),
+            covid_cases_adults=safe(covid_cases_adults),
+            sari_cases_pediatric=safe(sari_cases_pediatric),
+            covid_cases_pediatric=safe(covid_cases_pediatric),
+            icu_sari_cases_adults=safe(icu_sari_cases_adults),
+            icu_covid_cases_adults=safe(icu_covid_cases_adults),
+            icu_sari_cases_pediatric=safe(icu_sari_cases_pediatric),
+            icu_covid_cases_pediatric=safe(icu_covid_cases_pediatric),
+            regular_cases_adults=safe(regular_cases_adults),
+            regular_cases_pediatric=safe(regular_cases_pediatric),
+            icu_regular_adults=safe(icu_regular_adults),
+            icu_regular_pediatric=safe(icu_regular_pediatric),
+        )
     fix_unit_notifier(kwargs)
-    return models.LogEntry.objects.create_clean(
-        sari_cases_adults=safe(sari_cases_adults),
-        covid_cases_adults=safe(covid_cases_adults),
-        sari_cases_pediatric=safe(sari_cases_pediatric),
-        covid_cases_pediatric=safe(covid_cases_pediatric),
-        icu_sari_cases_adults=safe(icu_sari_cases_adults),
-        icu_covid_cases_adults=safe(icu_covid_cases_adults),
-        icu_sari_cases_pediatric=safe(icu_sari_cases_pediatric),
-        icu_covid_cases_pediatric=safe(icu_covid_cases_pediatric),
-        regular_cases_adults=safe(regular_cases_adults),
-        regular_cases_pediatric=safe(regular_cases_pediatric),
-        icu_regular_adults=safe(icu_regular_adults),
-        icu_regular_pediatric=safe(icu_regular_pediatric),
-        **kwargs,
-    )
+    return models.LogEntry.objects.create_clean(**cases, **kwargs)
 
 
 def capacity_progression(days=(7, 7, 14), size=None, expansions=None, **kwargs):
@@ -95,7 +101,7 @@ def capacity_progression(days=(7, 7, 14), size=None, expansions=None, **kwargs):
     """
     size = size or random.choice(RANDOM_SIZES)
     fix_unit_notifier(kwargs)
-    date = kwargs.pop("date", None) or now().date()
+    date = kwargs.pop("date", None) or now().date() - sum(days) * DAY
 
     if expansions is None:
         expansions = [random.uniform(0.9, 1.25) for _ in days]
@@ -122,7 +128,7 @@ def notification_progression(days=7, size=None, capacity=None, **kwargs):
     Create a week (or another time-span) of daily notifications.
     """
     unit, notifier = fix_unit_notifier(kwargs)
-    date = kwargs.pop("date", None) or now().date()
+    date = kwargs.pop("date", None) or now().date() - days * DAY
     if capacity is None:
         ns = distribute_beds(size)
         capacity = create_capacity(*ns, unit=unit, date=date, notifier=notifier)

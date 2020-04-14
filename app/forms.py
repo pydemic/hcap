@@ -4,6 +4,7 @@ from operator import attrgetter
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib import admin
+from django.utils.functional import cached_property
 
 from locations.models import City, associate_manager_city
 from . import models
@@ -20,10 +21,25 @@ class CNESForm(forms.Form):
         validators=[existing_cnes_validator],
     )
 
-    def save(self, user):
+    @cached_property
+    def unit(self):
         cnes = self.cleaned_data["cnes"]
-        unit = models.HealthcareUnit.objects.get(cnes_id=cnes)
-        unit.register_notifier(user, authorize=False)
+        return models.HealthcareUnit.objects.get(cnes_id=cnes)
+
+    def __init__(self, *args, request, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.request = request
+        self.user = self.request.user
+
+    def clean(self):
+        state = self.unit.city.state
+        if state != self.user.state:
+            state = self.user.state
+            raise forms.ValidationError({"cnes": f"CNES deve ser do seu estado: {state}"})
+        return self.cleaned_data
+
+    def save(self, user):
+        self.unit.register_notifier(user, authorize=False)
 
 
 class FillCitiesForm(forms.Form):
@@ -75,13 +91,6 @@ class NotifierPendingApprovalForm(forms.ModelForm):
         model = models.NotifierForHealthcareUnit
         fields = ("notifier", "unit", "is_approved")
 
-    def save(self, commit=True):
-        obj = super().save(commit)
-        if obj.is_approved and not obj.notifier.is_authorized:
-            obj.notifier.is_authorized = True
-            obj.notifier.save()
-        return obj
-
     def __init__(self, manager=None, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -92,3 +101,10 @@ class NotifierPendingApprovalForm(forms.ModelForm):
             self.fields["unit"].queryset = models.HealthcareUnit.objects.filter(
                 city__state_id=manager.state_id
             )
+
+    def save(self, commit=True):
+        obj = super().save(commit)
+        if obj.is_approved and not obj.notifier.is_authorized:
+            obj.notifier.is_authorized = True
+            obj.notifier.save()
+        return obj

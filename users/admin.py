@@ -50,8 +50,8 @@ class UserAdmin(DjangoUserAdmin):
     fieldsets = (
         (None, {"fields": ("id",)}),
         ("Informações pessoais", {"fields": ("name", "email", "cpf")}),
-        ("Atuação", {"fields": ("role", "state",)}),
-        ("Permissões", {"fields": ("is_active", "is_staff", "is_authorized")},),
+        ("Atuação", {"fields": ("role", "state")}),
+        ("Permissões", {"fields": ("is_active", "is_staff", "is_authorized")}),
         ("Datas importantes", {"fields": ("last_login", "date_joined")}),
     )
 
@@ -61,10 +61,7 @@ class UserAdmin(DjangoUserAdmin):
         ("Atuação", {"fields": ("state",)}),
     )
 
-    inlines = (
-        NotifierForHealthcareUnitInline,
-        EmailAddressInline,
-    )
+    inlines = (NotifierForHealthcareUnitInline, EmailAddressInline)
 
     readonly_fields = ("id", "date_joined", "last_login")
 

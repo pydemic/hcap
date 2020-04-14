@@ -2,6 +2,8 @@ import os
 
 from django import setup as _setup
 
+__all__ = ["start", "run"]
+
 
 def start(settings="project.settings"):
     """

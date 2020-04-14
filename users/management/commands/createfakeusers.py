@@ -22,10 +22,11 @@ class Command(BaseCommand):
             "--admin-password", action="store_true", default="admin", help="Sets the admin password"
         )
         parser.add_argument("--roles", action="store_true", help="Create users with default roles")
-        parser.add_argument("--users", type=int, default=5, help="Number of regular users")
+        parser.add_argument("--users", type=int, default=0, help="Number of regular users")
         parser.add_argument(
             "--force", action="store_true", help="Force-recreation of special users"
         )
+        parser.add_argument("--staging", action="store_true", help="Create the staging database")
 
     def handle(
         self,
@@ -35,10 +36,14 @@ class Command(BaseCommand):
         roles=False,
         users=None,
         force=False,
+        staging=False,
         **options,
     ):
         self.inform("Creating fake users", topic=True)
         fake = Factory.create("en-US")
+        if staging:
+            users = 20
+
         size = users + int(admin) + int(roles) * 3
         emails = User.objects.values_list("email", flat=True)
         emails = [email.split("@")[0] for email in emails]
@@ -47,11 +52,11 @@ class Command(BaseCommand):
         cpfs = random_set(random_cpf, size)
 
         # Create special users with known passwords
-        if admin:
+        if admin or staging:
             self.mk_user("Admin", create_admin, password=admin_password, force=force)
-        if roles:
+        if roles or staging:
             user = self.mk_user("Default", create_default_user, force=force)
-            self.mk_user("Manager", create_manager, force=force, notifiers=(2, 3), state=user.state)
+            self.mk_user("Manager", create_manager, force=force, notifiers=(5, 7), state=user.state)
             self.mk_user("Notifier", create_notifier, force=force, state=user.state)
 
         # Create regular users

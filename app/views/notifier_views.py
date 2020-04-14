@@ -1,16 +1,23 @@
 from django import forms
+from django.shortcuts import render
 from material.frontend.views import CreateModelView, ListModelView, UpdateModelView
 
-__all__ = ["NotifierListModelView", "NotifierUpdateModelView", "NotifierCreateModelView"]
+__all__ = [
+    "NotifierListModelView",
+    "NotifierUpdateModelView",
+    "NotifierCreateModelView",
+    "notification_history_view",
+]
 
 
 class NotifierCreateOrUpdateMixin:
     def form_valid(self, form: forms.ModelForm, *args, **kwargs):
         save_fn = form.save
+        user = self.request.user
 
         def save():
             obj = save_fn(commit=False)
-            obj.notifier = self.request.user
+            obj.notifier = user
             obj.save()
             form.save_m2m()
             return obj
@@ -41,15 +48,28 @@ class NotifierCreateOrUpdateMixin:
 
 
 class NotifierCreateModelView(NotifierCreateOrUpdateMixin, CreateModelView):
-    pass
+    """
+    Creates a new notification
+    """
 
 
 class NotifierUpdateModelView(NotifierCreateOrUpdateMixin, UpdateModelView):
-    pass
+    """
+    Updates a new notification
+    """
 
 
 class NotifierListModelView(ListModelView):
+    """
+    List notifications.
+    """
+
     def get_queryset(self):
         user = self.request.user
         qs = super().get_queryset()
         return qs.filter(notifier=user)
+
+
+def notification_history_view(request):
+    units = request.user.healthcare_units.all()
+    return render(request, "app/notification_history.html", {"units": units})
