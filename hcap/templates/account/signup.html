@@ -1,38 +1,30 @@
 {% extends "frontend/base_lockscreen.html" %}
 {% load i18n material_form static%}
 
-{% block page_title %}{% trans 'Sign Up' %}{% endblock %}
+{% block page_title %}{% trans "Sign Up" %}{% endblock %}
 
 {% block content %}
 <div class="row">
-    <div class="col s12">
-        {% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}
-    </div>
+  <div class="col s12">
+    {% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}
+  </div>
 </div>
-<form action="{{ app_path }}" method="post" id="signup-form">{% csrf_token %}
-    {% form %}
+
+<form action="{{ app_path }}" method="post" id="signup-form">
+  {% csrf_token %}
+
+  {% form %}
+    {% part form.name prefix %}<i class="material-icons prefix">short_text</i>{% endpart %}
     {% part form.cpf prefix %}<i class="material-icons prefix">perm_contact_calendar</i>{% endpart %}
     {% part form.email prefix %}<i class="material-icons prefix">email</i>{% endpart %}
-    {% part form.name prefix %}<i class="material-icons prefix">short_text</i>{% endpart %}
     {% part form.password1 prefix %}<i class="material-icons prefix">lock</i>{% endpart %}
     {% part form.password2 prefix %}<i class="material-icons prefix">lock</i>{% endpart %}
-    {% attr form.state 'group' style %}text-align: start;{% endattr %}
-    {% part form.state errors %}
-    {% if form.state.errors %}
-    <div class="errors" style="text-align: center; margin-left: 3rem;">
-        {% for error in form.state.errors %}<small class="error">{{ error }}</small>{% endfor %}
-    </div>
-    {% endif %}
-    {% endpart %}
-    {% part form.state prefix %}<i class="material-icons prefix" style="text-align: center;">place</i>{% endpart %}
-    {% endform %}
+  {% endform %}
 
-    <div class="action">
-        <button type="submit" class="btn btn-success">{% trans 'Sign Up' %}</button>
-    </div>
+  <div class="action">
+    <button type="submit" class="btn btn-success">{% trans "Sign Up" %}</button>
+  </div>
 </form>
-
-<script src="{% static 'js/jquery-mask-1.14.16.min.js' %}"></script>
 {% endblock %}
 
 {% block icon %}local_hospital{% endblock %}

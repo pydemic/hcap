@@ -33,3 +33,9 @@ class RegionManager(models.Model):
 
     def __str__(self):
         return f"{self.region}: {self.user}"
+
+    @property
+    def region_kind(self):
+        return self.region.get_kind_display()
+
+    region_kind.fget.short_description = _("region kind")

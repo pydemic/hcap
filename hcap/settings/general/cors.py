@@ -5,4 +5,4 @@ django:
 """
 
 ALLOWED_HOSTS = "*"
-INTERNAL_IPS = ["127.0.0.1", "localhost"]
+INTERNAL_IPS = ("127.0.0.1", "localhost", "172.18.0.1")

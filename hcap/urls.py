@@ -1,12 +1,18 @@
 from django.conf import settings
 from django.urls import path, include
+from django.utils.translation import gettext as __
 
 from hcap import views
 
 
 urlpatterns = [
     path("", views.index_view, name="index"),
-    path("aguarde-confirmacao/", views.wait_authorization_message_view, name="wait_confirmation"),
+    path(
+        __("request-authorization/"), views.request_authorization_view, name="request_authorization"
+    ),
+    path(__("my-authorizations/"), views.my_authorizations_view, name="my_authorizations"),
+    path(__("my-authorizations/manager/"), include(views.MyManagerAuthorizationsViewSet().urls)),
+    path(__("my-authorizations/notifier/"), include(views.MyNotifierAuthorizationsViewSet().urls)),
     # path("capacidade/", include(views.CapacityViewSet().urls)),
     # path("diario/", include(views.LogEntryViewSet().urls)),
     # path(

@@ -12,15 +12,7 @@ viewflow:
     http://docs.viewflow.io/material_frontend.html#installation
 """
 
-INSTALLED_APPS = [
-    # Material
-    "material",
-    "material.frontend",
-    "material.admin",
-    # All auth
-    "allauth",
-    "allauth.account",
-    "allauth.socialaccount",
+INSTALLED_APPS = (
     # Django
     "django.contrib.admin",
     "django.contrib.auth",
@@ -29,9 +21,17 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # Material
+    "material",
+    "material.frontend",
+    "material.admin",
+    # All auth
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
     # Monitoring
     # "django_prometheus",
-    # Others
+    # General
     "compressor",
     "crispy_forms",
     "django_select2",
@@ -43,4 +43,4 @@ INSTALLED_APPS = [
     "hcap_monitors",
     "hcap_notifications",
     "hcap_utils",
-]
+)

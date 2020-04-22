@@ -8,4 +8,4 @@ django-debug-toolbar:
 
 from ..general.middleware import MIDDLEWARE
 
-MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]
+MIDDLEWARE += ("debug_toolbar.middleware.DebugToolbarMiddleware",)

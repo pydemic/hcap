@@ -1,2 +1,3 @@
-from .cnes_form import CNESForm
-from .fill_cities_form import FillCitiesForm
+from .manager_cities_authorization_request_form import ManagerCitiesAuthorizationRequestForm
+from .manager_state_authorization_request_form import ManagerStateAuthorizationRequestForm
+from .notifier_authorization_request_form import NotifierAuthorizationRequestForm

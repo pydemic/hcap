@@ -19,7 +19,7 @@ SQLITE_PATH = BASE_DIR / "db.sqlite3"
 MEDIA_ROOT = BASE_DIR / "media"
 STATIC_ROOT = BASE_DIR / "static"
 
-LOCALE_PATHS = [BASE_DIR / "locale"]
+LOCALE_PATHS = (BASE_DIR / "locale",)
 
-STATICFILES_DIRS = [BASE_DIR / "hcap" / "static"]
-TEMPLATE_DIRS = [BASE_DIR / "hcap" / "templates"]
+STATICFILES_DIRS = (BASE_DIR / "hcap" / "static",)
+TEMPLATE_DIRS = (BASE_DIR / "hcap" / "templates",)

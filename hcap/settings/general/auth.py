@@ -11,12 +11,12 @@ django-allauth:
 
 AUTH_USER_MODEL = "hcap_accounts.User"
 
-AUTH_PASSWORD_VALIDATORS = [
+AUTH_PASSWORD_VALIDATORS = (
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
-]
+)
 
 AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",
@@ -27,15 +27,16 @@ LOGIN_REDIRECT_URL = "/"
 
 # Allauth
 
-ACCOUNT_ADAPTER = "hcap_accounts.adapters.AccountAdapter"
+ACCOUNT_ADAPTER = "hcap_utils.contrib.allauth.AccountAdapter"
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_FORMS = {
-    "change_password": "hcap_accounts.forms.ChangePasswordForm",
-    "login": "hcap_accounts.forms.LoginForm",
-    "reset_password": "hcap_accounts.forms.ResetPasswordForm",
-    "signup": "hcap_accounts.forms.SignupForm",
+    "change_password": "hcap_utils.contrib.allauth.ChangePasswordForm",
+    "login": "hcap_utils.contrib.allauth.LoginForm",
+    "reset_password": "hcap_utils.contrib.allauth.ResetPasswordForm",
+    "signup": "hcap_utils.contrib.allauth.SignupForm",
 }
+ACCOUNT_USER_DISPLAY = "hcap_utils.contrib.allauth.user_display"
 ACCOUNT_USER_MODEL_USERNAME_FIELD = "email"
 ACCOUNT_USERNAME_REQUIRED = False

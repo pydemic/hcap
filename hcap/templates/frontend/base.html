@@ -110,4 +110,10 @@
         </dmc-snackbar>
         {% endblock messages %}
     </body>
+
+{% block footerjs %}
+<script src="{% static 'js/jquery-mask-1.14.16.min.js' %}"></script>
+
+{% block footerextrajs %}{% endblock %}
+{% endblock %}
 </html>

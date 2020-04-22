@@ -1,16 +1,14 @@
+{% load i18n %}
+
+<ul>
 {% if user.is_notifier %}
-<ul>
-    <li><a href="{% url 'hcap:logentry_list' %}">Informe diário</a></li>
-    <li><a href="{% url 'hcap:capacity_list' %}">Capacidade hospitalar</a></li>
-    <li><a href="{% url 'hcap:notification_history' %}">Histórico</a></li>
-</ul>
+  <li><a href="{% url 'hcap:logentry_list' %}">{% trans "Daily report" %}</a></li>
+  <li><a href="{% url 'hcap:capacity_list' %}">{% trans "Hospital Capacity" %}</a></li>
+  <li><a href="{% url 'hcap:notification_history' %}">{% trans "History" %}</a></li>
 {% elif user.is_manager %}
-<ul>
-    <li><a href="{% url 'hcap:notifierforhealthcareunit_list' %}">Notificadores</a></li>
-    <li><a href="{% url 'grafana' %}">Dashboards</a></li>
-</ul>
-{% else %}
-<ul>
-    <li><a href="{% url 'hcap:wait_confirmation' %}">Aguardando confirmação</a></li>
-</ul>
+  <li><a href="{% url 'hcap:notifierforhealthcareunit_list' %}">{% trans "Notifier" %}</a></li>
+  <li><a href="{% url 'grafana' %}">{% trans "Dashboards" %}</a></li>
 {% endif %}
+  <li><a href="{% url 'hcap:request_authorization' %}">{% trans "Request authorization" %}</a></li>
+  <li><a href="{% url 'hcap:my_authorizations' %}">{% trans "My authorizations" %}</a></li>
+</ul>

@@ -5,4 +5,4 @@ django:
 
 from hcap.settings.env import env
 
-ALLOWED_HOSTS = env("HCAP__ALLOWED_HOSTS", default=[])
+ALLOWED_HOSTS = env("ALLOWED_HOSTS", default=[])

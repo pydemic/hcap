@@ -6,4 +6,4 @@ django:
 from hcap.settings.env import env
 
 DEBUG = True
-CHEAT = env("HCAP__CHEAT", default=False)
+CHEAT = env("CHEAT", default=False)

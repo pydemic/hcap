@@ -1,17 +1,22 @@
 {% extends "material/frontend/base_lockscreen.html" %}
-{% load i18n  %}
+{% load i18n %}
 
-{% block page_title %}{% trans 'Sign Out' %}{% endblock %}
+{% block page_title %}{% trans "Sign Out" %}{% endblock %}
 
 {% block content %}
-<p>{% trans 'Are you sure you want to sign out?' %}</p>
-<a href="{% url 'home' %}">{% trans 'Back' %}</a>
+<p>{% trans "Are you sure you want to sign out?" %}</p>
+
 <form method="post" action="{% url 'account_logout' %}">
-    {% csrf_token %}
-    <div class="action">
-        <button type="submit" class="btn red darken-2 white-text">{% trans 'Sign Out' %}</a>
-    </div>
+  {% csrf_token %}
+
+  <div class="action">
+    <button type="submit" class="btn red darken-2 white-text">{% trans "Sign Out" %}</a>
+  </div>
 </form>
+
+<div style="margin-top: 1.5rem">
+  <a class="btn-flat" href="{% url 'home' %}">{% trans "Back" %}</a>
+</div>
 {% endblock %}
 
 {% block icon %}subdirectory_arrow_left{% endblock %}

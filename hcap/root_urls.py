@@ -3,11 +3,12 @@ from django.urls import path, include
 from django.views.generic import RedirectView
 
 urlpatterns = [
-    path("", include("material.frontend.urls")),
     path("", RedirectView.as_view(url="./hcap/"), name="home"),
-    path("accounts/", include("allauth.urls")),
     path("dashboard/", RedirectView.as_view(url=settings.GRAFANA_DASHBOARD_URL), name="grafana"),
     path("select2/", include("django_select2.urls")),
+    path("accounts/", include("allauth.urls")),
+    # Material override routes and must be defined last
+    path("", include("material.frontend.urls")),
 ]
 
 if settings.DEBUG:
