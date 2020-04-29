@@ -53,6 +53,7 @@ DEV_REQUIREMENTS = [
     "faker==4.0.2",
     "pytest==5.4.1",
     "pytest-django==3.9.0",
+    "selenium==3.141.0",
     "pre-commit==2.2.0",
     "pycodestyle==2.5.0",
     "Werkzeug==1.0.1",
