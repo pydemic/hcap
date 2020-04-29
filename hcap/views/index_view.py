@@ -8,7 +8,7 @@ class IndexView(RedirectView):
         user = self.request.user
 
         if user.is_manager:
-            return reverse("hcap:notifiers")
+            return reverse("hcap:pending_authorizations")
         elif user.is_notifier:
             return reverse("hcap:my_healthcare_units")
         elif user.has_pending_authorization:

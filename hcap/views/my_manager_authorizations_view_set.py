@@ -1,12 +1,11 @@
-from material.frontend.views import ModelViewSet
-
 from hcap_accounts.models import RegionManager
+from hcap_utils.contrib.material.viewsets import ModelViewSet
 
 
 class MyManagerAuthorizationsViewSet(ModelViewSet):
     model = RegionManager
-    model._meta.app_label = "hcap"
-    model._meta.model_name = "my_manager_authorizations"
+    label = "hcap"
+    name = "my_manager_authorizations"
 
     list_display = ("region", "region_kind", "is_authorized")
     ordering = ("region",)
@@ -19,10 +18,12 @@ class MyManagerAuthorizationsViewSet(ModelViewSet):
         return False
 
     def has_view_permission(self, request, obj=None):
-        return request.user is not None
+        user = request.user
+        return user is not None and user.is_authenticated
 
     def has_change_permission(self, request, obj=None):
         return False
 
-    def has_delete_permission(Self, request, obj=None):
-        return request.user is not None
+    def has_delete_permission(self, request, obj=None):
+        user = request.user
+        return user is not None and user.is_authenticated

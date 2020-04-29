@@ -56,6 +56,11 @@ class HealthcareUnitCapacity(models.Model):
     def __str__(self):
         return f"{self.healthcare_unit}: {self.date}"
 
+    def clean_fields(self, exclude=None):
+        if "healthcare_unit_id" not in exclude and self.notifier is not None:
+            self.healthcare_unit_id = self.notifier.healthcare_unit_id
+        return super().clean_fields(exclude=exclude)
+
     @property
     def beds_summary(self):
         return {
