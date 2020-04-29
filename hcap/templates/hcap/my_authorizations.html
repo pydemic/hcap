@@ -1,0 +1,24 @@
+{% extends 'hcap/base_module.html' %}
+{% load i18n %}
+
+{% block content %}
+<div class="left-panel">
+  <div class="card">
+    <div class="card-content">
+      <span class="card-title">{% trans "My authorizations" %}</span>
+
+      <div class="collection">
+        <a class="collection-item" href="{% url 'hcap:my_notifier_authorizations_list' %}">
+            <i class="material-icons left">alarm_add</i>
+            {% trans "Healthcare unit notifier" %}
+        </a>
+
+        <a class="collection-item" href="{% url 'hcap:my_manager_authorizations_list' %}">
+          <i class="material-icons left">supervisor_account</i>
+          {% trans "Manager" %}
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

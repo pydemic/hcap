@@ -1,0 +1,791 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-04-21 01:15+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: hcap/apps.py:8
+msgid "Hospital Capacity"
+msgstr ""
+
+#: hcap/templates/400.html:4 hcap/templates/400.html:6
+msgid "Bad Request"
+msgstr ""
+
+#: hcap/templates/400.html:11 hcap/templates/404.html:16
+#: hcap/templates/500.html:18
+msgid "View site"
+msgstr ""
+
+#: hcap/templates/403.html:4 hcap/templates/403.html:10
+msgid "Access Forbidden"
+msgstr ""
+
+#: hcap/templates/403.html:14
+msgid "You are not logged in"
+msgstr ""
+
+#: hcap/templates/403.html:16
+#, python-format
+msgid "%(user)s have no rights to access to the page"
+msgstr ""
+
+#: hcap/templates/403.html:22 hcap/templates/account/login.html:4
+#: hcap/templates/account/login.html:24 hcap/templates/frontend/base.html:80
+#: hcap/templates/material/frontend/base.html:89
+#: hcap/templates/registration/login.html:4
+#: hcap/templates/registration/login.html:24
+msgid "Log in"
+msgstr ""
+
+#: hcap/templates/403.html:25
+msgid "Back to main site"
+msgstr ""
+
+#: hcap/templates/404.html:4 hcap/templates/404.html:6
+msgid "Page not found"
+msgstr ""
+
+#: hcap/templates/404.html:11
+msgid "We're sorry, but the requested page could not be found."
+msgstr ""
+
+#: hcap/templates/500.html:4 hcap/templates/500.html:10
+msgid "Server error"
+msgstr ""
+
+#: hcap/templates/500.html:13
+msgid ""
+"There's been an error. It's been reported to the site administrators via "
+"email and should be fixed shortly. Thanks for your patience."
+msgstr ""
+
+#: hcap/templates/account/account_inactive.html:4
+msgid "Account Inactive"
+msgstr ""
+
+#: hcap/templates/account/account_inactive.html:9
+msgid "This account is inactive."
+msgstr ""
+
+#: hcap/templates/account/email.html:5
+msgid "Email Addresses"
+msgstr ""
+
+#: hcap/templates/account/email.html:9
+msgid "E-mail Addresses"
+msgstr ""
+
+#: hcap/templates/account/email.html:11
+msgid "The following e-mail addresses are associated with your account:"
+msgstr ""
+
+#: hcap/templates/account/email.html:25
+msgid "Verified"
+msgstr ""
+
+#: hcap/templates/account/email.html:27
+msgid "Unverified"
+msgstr ""
+
+#: hcap/templates/account/email.html:29
+msgid "Primary"
+msgstr ""
+
+#: hcap/templates/account/email.html:45
+msgid "Warning:"
+msgstr ""
+
+#: hcap/templates/account/email.html:45
+msgid ""
+"You currently do not have any e-mail address set up. You should really add "
+"an e-mail address so you can receive notifications, reset your password, etc."
+msgstr ""
+
+#: hcap/templates/account/email.html:50
+msgid "Add E-mail Address"
+msgstr ""
+
+#: hcap/templates/account/email.html:65
+msgid "Do you really want to remove the selected e-mail address?"
+msgstr ""
+
+#: hcap/templates/account/email/email_confirmation_message.txt:1
+#, python-format
+msgid ""
+"Hello from %(site_name)s!\n"
+"\n"
+"You're receiving this e-mail because user %(user_display)s at "
+"%(site_domain)s has given yours as an e-mail address to connect their "
+"account.\n"
+"\n"
+"To confirm this is correct, go to %(activate_url)s\n"
+msgstr ""
+
+#: hcap/templates/account/email/email_confirmation_message.txt:7
+#, python-format
+msgid ""
+"Thank you from %(site_name)s!\n"
+"%(site_domain)s"
+msgstr ""
+
+#: hcap/templates/account/email/email_confirmation_subject.txt:3
+msgid "Please Confirm Your E-mail Address"
+msgstr ""
+
+#: hcap/templates/account/email/password_reset_key_message.txt:1
+#, python-format
+msgid ""
+"Hello from %(site_name)s!\n"
+"\n"
+"You're receiving this e-mail because you or someone else has requested a "
+"password for your user account at %(site_domain)s.\n"
+"It can be safely ignored if you did not request a password reset. Click the "
+"link below to reset your password."
+msgstr ""
+
+#: hcap/templates/account/email/password_reset_key_message.txt:8
+#, python-format
+msgid "In case you forgot, your username is %(username)s."
+msgstr ""
+
+#: hcap/templates/account/email/password_reset_key_message.txt:10
+#, python-format
+msgid ""
+"Thank you for using %(site_name)s!\n"
+"%(site_domain)s"
+msgstr ""
+
+#: hcap/templates/account/email/password_reset_key_subject.txt:3
+msgid "Password Reset E-mail"
+msgstr ""
+
+#: hcap/templates/account/email_confirm.html:7
+msgid "Confirm E-mail Address"
+msgstr ""
+
+#: hcap/templates/account/email_confirm.html:15
+#, python-format
+msgid ""
+"Please confirm that <a href=\"mailto:%(email)s\">%(email)s</a> is an e-mail "
+"address for user %(user_display)s."
+msgstr ""
+
+#: hcap/templates/account/email_confirm.html:32
+#, python-format
+msgid ""
+"This e-mail confirmation link expired or is invalid. Please <a href="
+"\"%(email_url)s\">issue a new e-mail confirmation request</a>."
+msgstr ""
+
+#: hcap/templates/account/login.html:10
+#, python-format
+msgid ""
+"If you have not created an account yet, then please\n"
+"<a href=\"%(signup_url)s\">sign up</a> first."
+msgstr ""
+
+#: hcap/templates/account/login.html:21
+msgid "Forgot Password?"
+msgstr ""
+
+#: hcap/templates/account/logout.html:4 hcap/templates/account/logout.html:12
+msgid "Sign Out"
+msgstr ""
+
+#: hcap/templates/account/logout.html:7
+msgid "Are you sure you want to sign out?"
+msgstr ""
+
+#: hcap/templates/account/logout.html:8
+#: hcap/templates/account/password_change.html:21
+msgid "Back"
+msgstr ""
+
+#: hcap/templates/account/password_change.html:4
+#: hcap/templates/account/password_change.html:17
+#: hcap/templates/account/password_reset_from_key.html:4
+#: hcap/templates/account/password_reset_from_key.html:20
+#: hcap/templates/account/password_reset_from_key_done.html:4
+msgid "Change Password"
+msgstr ""
+
+#: hcap/templates/account/password_reset.html:5
+#: hcap/templates/account/password_reset_done.html:6
+msgid "Password Reset"
+msgstr ""
+
+#: hcap/templates/account/password_reset.html:15
+msgid ""
+"Forgotten your password? Enter your e-mail address below, and we'll send you "
+"an e-mail allowing you to reset it."
+msgstr ""
+
+#: hcap/templates/account/password_reset.html:26
+msgid "Reset My Password"
+msgstr ""
+
+#: hcap/templates/account/password_reset.html:34
+msgid "Please contact us if you have any trouble resetting your password."
+msgstr ""
+
+#: hcap/templates/account/password_reset_done.html:15
+msgid ""
+"We have sent you an e-mail. Please contact us if you do not receive it "
+"within a few minutes."
+msgstr ""
+
+#: hcap/templates/account/password_reset_from_key.html:4
+msgid "Bad Token"
+msgstr ""
+
+#: hcap/templates/account/password_reset_from_key.html:9
+#, python-format
+msgid ""
+"The password reset link was invalid, possibly because it has already been "
+"used.  Please request a <a href=\"%(passwd_reset_url)s\">new password reset</"
+"a>."
+msgstr ""
+
+#: hcap/templates/account/password_reset_from_key.html:24
+#: hcap/templates/account/password_reset_from_key_done.html:9
+msgid "Your password is now changed."
+msgstr ""
+
+#: hcap/templates/account/signup.html:4 hcap/templates/account/signup.html:31
+msgid "Sign Up"
+msgstr ""
+
+#: hcap/templates/account/signup.html:9
+#, python-format
+msgid ""
+"Already have an account? Then please <a href=\"%(login_url)s\">sign in</a>."
+msgstr ""
+
+#: hcap/templates/account/verification_sent.html:4
+msgid "Verify Your E-mail Address"
+msgstr ""
+
+#: hcap/templates/account/verification_sent.html:9
+msgid ""
+"We have sent an e-mail to you for verification. Follow the link provided to "
+"finalize the signup process. Please contact us if you do not receive it "
+"within a few minutes."
+msgstr ""
+
+#: hcap/templates/frontend/base.html:78
+#: hcap/templates/material/frontend/base.html:87
+msgid "Log out"
+msgstr ""
+
+#: hcap/templates/material/frontend/base_site.html:4
+#: hcap/templates/material/frontend/base_site.html:5
+msgid "Ocupação Hospitalar"
+msgstr ""
+
+#: hcap/templates/material/frontend/views/confirm_delete.html:7
+#: hcap/templates/material/frontend/views/detail.html:33
+msgid "Delete"
+msgstr ""
+
+#: hcap/templates/material/frontend/views/confirm_delete.html:17
+#, python-format
+msgid "Are you sure you want to delete the %(object)s and related items?"
+msgstr ""
+
+#: hcap/templates/material/frontend/views/confirm_delete.html:28
+msgid "Yes, I'm sure"
+msgstr ""
+
+#: hcap/templates/material/frontend/views/detail.html:34
+#: hcap/templates/material/frontend/views/form.html:7
+msgid "Change"
+msgstr ""
+
+#: hcap/templates/material/frontend/views/form.html:7
+#: hcap/templates/material/frontend/views/form.html:18
+msgid "Add"
+msgstr ""
+
+#: hcap/templates/material/frontend/views/form.html:40
+msgid "Save"
+msgstr ""
+
+#: hcap/templates/registration/logged_out.html:7
+msgid "Thanks for spending some quality time with the Web site today."
+msgstr ""
+
+#: hcap/templates/registration/logged_out.html:12
+msgid "Log in again"
+msgstr ""
+
+#: hcap/templates/registration/login.html:20
+msgid "Forgotten your password or username?"
+msgstr ""
+
+#: hcap_accounts/admin/user_admin.py:15
+msgid "Yes"
+msgstr ""
+
+#: hcap_accounts/admin/user_admin.py:15
+msgid "No"
+msgstr ""
+
+#: hcap_accounts/apps.py:7
+msgid "User Accounts"
+msgstr ""
+
+#: hcap_accounts/forms/signup_form.py:12 hcap_accounts/models/user.py:25
+msgid "CPF"
+msgstr ""
+
+#: hcap_accounts/forms/signup_form.py:19 hcap_accounts/models/user.py:21
+msgid "full name"
+msgstr ""
+
+#: hcap_accounts/forms/signup_form.py:33
+msgid "CPF already registered."
+msgstr ""
+
+#: hcap_accounts/models/anonymous_user.py:9
+msgid "Guest"
+msgstr ""
+
+#: hcap_accounts/models/healthcare_unit_notifier.py:9
+#: hcap_accounts/models/region_manager.py:9
+msgid "user"
+msgstr ""
+
+#: hcap_accounts/models/healthcare_unit_notifier.py:12
+#: hcap_accounts/models/healthcare_unit_notifier.py:20
+#: hcap_accounts/models/region_manager.py:12
+#: hcap_accounts/models/region_manager.py:20
+#: hcap_institutions/models/healthcare_unit.py:12
+#: hcap_notifications/models/healthcare_unit_capacity.py:13
+#: hcap_notifications/models/healthcare_unit_capacity.py:33
+#: hcap_notifications/models/healthcare_unit_capacity.py:37
+#: hcap_notifications/models/healthcare_unit_capacity.py:40
+#: hcap_notifications/models/healthcare_unit_capacity.py:43
+#: hcap_notifications/models/healthcare_unit_condition.py:13
+#: hcap_notifications/models/healthcare_unit_condition.py:72
+#: hcap_notifications/models/healthcare_unit_condition.py:83
+msgid "Required."
+msgstr ""
+
+#: hcap_accounts/models/healthcare_unit_notifier.py:17
+#: hcap_institutions/models/healthcare_unit.py:52
+#: hcap_notifications/models/healthcare_unit_capacity.py:18
+#: hcap_notifications/models/healthcare_unit_condition.py:18
+msgid "healthcare unit"
+msgstr ""
+
+#: hcap_accounts/models/healthcare_unit_notifier.py:24
+#: hcap_accounts/models/region_manager.py:24
+msgid "authorized"
+msgstr ""
+
+#: hcap_accounts/models/healthcare_unit_notifier.py:26
+msgid "Designates whether the user can notify for the healthcare unit."
+msgstr ""
+
+#: hcap_accounts/models/healthcare_unit_notifier.py:30
+msgid "healthcare unit notifier"
+msgstr ""
+
+#: hcap_accounts/models/healthcare_unit_notifier.py:31
+msgid "healthcare unit notifiers"
+msgstr ""
+
+#: hcap_accounts/models/region_manager.py:17 hcap_geo/models/region.py:103
+msgid "region"
+msgstr ""
+
+#: hcap_accounts/models/region_manager.py:26
+msgid "Designates whether the user can manage the region."
+msgstr ""
+
+#: hcap_accounts/models/region_manager.py:30
+msgid "region manager"
+msgstr ""
+
+#: hcap_accounts/models/region_manager.py:31
+msgid "region managers"
+msgstr ""
+
+#: hcap_accounts/models/user.py:17
+msgid "email address"
+msgstr ""
+
+#: hcap_accounts/models/user.py:17
+msgid "Required. Must be a valid email address."
+msgstr ""
+
+#: hcap_accounts/models/user.py:21 hcap_geo/models/region.py:69
+#: hcap_institutions/models/healthcare_unit.py:42
+msgid "Required. At most 150 characters."
+msgstr ""
+
+#: hcap_accounts/models/user.py:28
+msgid "Required. 11 digits formatted as \"000.000.000-00\"."
+msgstr ""
+
+#: hcap_geo/apps.py:7
+msgid "Geography"
+msgstr ""
+
+#: hcap_geo/models/region.py:11
+msgid "code"
+msgstr ""
+
+#: hcap_geo/models/region.py:14
+msgid ""
+"Required. At most 30 characters. Prioritize official code from government or "
+"geographic institution."
+msgstr ""
+
+#: hcap_geo/models/region.py:21
+msgid "Parent regions"
+msgstr ""
+
+#: hcap_geo/models/region.py:23
+msgid "Each region from which is part."
+msgstr ""
+
+#: hcap_geo/models/region.py:27
+msgid "Default parent hierarchy"
+msgstr ""
+
+#: hcap_geo/models/region.py:32
+msgid ""
+"At most 180 characters. Identifier to simplify filtering. Set each level as "
+"the region code, separated by \":\" character."
+msgstr ""
+
+#: hcap_geo/models/region.py:50
+msgid "None"
+msgstr ""
+
+#: hcap_geo/models/region.py:51
+msgid "World"
+msgstr ""
+
+#: hcap_geo/models/region.py:52
+msgid "Continent"
+msgstr ""
+
+#: hcap_geo/models/region.py:53 hcap_institutions/models/healthcare_unit.py:26
+msgid "Country"
+msgstr ""
+
+#: hcap_geo/models/region.py:54
+msgid "Macroregion"
+msgstr ""
+
+#: hcap_geo/models/region.py:55 hcap_institutions/models/healthcare_unit.py:17
+msgid "State"
+msgstr ""
+
+#: hcap_geo/models/region.py:56
+msgid "Mesoregion"
+msgstr ""
+
+#: hcap_geo/models/region.py:57 hcap_institutions/models/healthcare_unit.py:9
+msgid "City"
+msgstr ""
+
+#: hcap_geo/models/region.py:58
+msgid "Neighborhood"
+msgstr ""
+
+#: hcap_geo/models/region.py:62
+msgid "type"
+msgstr ""
+
+#: hcap_geo/models/region.py:65
+msgid ""
+"Required. The region type according to the hierarchy of geographic regions."
+msgstr ""
+
+#: hcap_geo/models/region.py:69 hcap_institutions/models/healthcare_unit.py:42
+msgid "name"
+msgstr ""
+
+#: hcap_geo/models/region.py:73
+msgid "name abbreviation"
+msgstr ""
+
+#: hcap_geo/models/region.py:73
+msgid "At most 100 characters."
+msgstr ""
+
+#: hcap_geo/models/region.py:77
+msgid "latitude"
+msgstr ""
+
+#: hcap_geo/models/region.py:84
+msgid ""
+"Required. Must be a float number between -90 and 90, inclusive, with maximum "
+"precision of seven digits."
+msgstr ""
+
+#: hcap_geo/models/region.py:90
+msgid "longitude"
+msgstr ""
+
+#: hcap_geo/models/region.py:97
+msgid ""
+"Required. Must be a float number between -180 and 180, inclusive, with "
+"maximum precision of seven digits."
+msgstr ""
+
+#: hcap_geo/models/region.py:104
+msgid "regions"
+msgstr ""
+
+#: hcap_geo/models/region.py:106
+msgid "Can add regions to database"
+msgstr ""
+
+#: hcap_institutions/models/healthcare_unit.py:21
+msgid "It will be defined according to the city."
+msgstr ""
+
+#: hcap_institutions/models/healthcare_unit.py:30
+msgid "It will be defined according to the state."
+msgstr ""
+
+#: hcap_institutions/models/healthcare_unit.py:34
+msgid "CNES registry"
+msgstr ""
+
+#: hcap_institutions/models/healthcare_unit.py:38
+msgid "Required. At most 15 digits."
+msgstr ""
+
+#: hcap_institutions/models/healthcare_unit.py:46
+msgid "active"
+msgstr ""
+
+#: hcap_institutions/models/healthcare_unit.py:48
+msgid "Designates whether the healthcare unit can be used by the system."
+msgstr ""
+
+#: hcap_institutions/models/healthcare_unit.py:53
+msgid "healthcare units"
+msgstr ""
+
+#: hcap_monitors/apps.py:7
+msgid "Monitors"
+msgstr ""
+
+#: hcap_notifications/apps.py:7
+msgid "Notifications"
+msgstr ""
+
+#: hcap_notifications/models/healthcare_unit_capacity.py:10
+#: hcap_notifications/models/healthcare_unit_condition.py:10
+msgid "notifier"
+msgstr ""
+
+#: hcap_notifications/models/healthcare_unit_capacity.py:22
+#: hcap_notifications/models/healthcare_unit_condition.py:22
+msgid "It will be defined according to the notifier."
+msgstr ""
+
+#: hcap_notifications/models/healthcare_unit_capacity.py:26
+#: hcap_notifications/models/healthcare_unit_condition.py:26
+msgid "date"
+msgstr ""
+
+#: hcap_notifications/models/healthcare_unit_capacity.py:29
+msgid "Required. Date from which the healthcare unit changed its capacity."
+msgstr ""
+
+#: hcap_notifications/models/healthcare_unit_capacity.py:33
+msgid "clinical adult beds"
+msgstr ""
+
+#: hcap_notifications/models/healthcare_unit_capacity.py:37
+msgid "clinical pediatric beds"
+msgstr ""
+
+#: hcap_notifications/models/healthcare_unit_capacity.py:40
+msgid "ICU adult beds"
+msgstr ""
+
+#: hcap_notifications/models/healthcare_unit_capacity.py:43
+msgid "ICU pediatric beds"
+msgstr ""
+
+#: hcap_notifications/models/healthcare_unit_capacity.py:46
+#: hcap_notifications/models/healthcare_unit_condition.py:32
+msgid "created at"
+msgstr ""
+
+#: hcap_notifications/models/healthcare_unit_capacity.py:48
+#: hcap_notifications/models/healthcare_unit_condition.py:34
+msgid "updated at"
+msgstr ""
+
+#: hcap_notifications/models/healthcare_unit_capacity.py:51
+#: hcap_notifications/models/healthcare_unit_condition.py:112
+msgid "healthcare unit capacity"
+msgstr ""
+
+#: hcap_notifications/models/healthcare_unit_capacity.py:52
+#: hcap_notifications/models/healthcare_unit_condition.py:113
+msgid "healthcare unit capacities"
+msgstr ""
+
+#: hcap_notifications/models/healthcare_unit_condition.py:29
+msgid "Required. Date from which the healthcare unit changed its condition."
+msgstr ""
+
+#: hcap_notifications/models/healthcare_unit_condition.py:39
+msgid "SARI adult clinical cases"
+msgstr ""
+
+#: hcap_notifications/models/healthcare_unit_condition.py:41
+msgid ""
+"Required. Includes confirmed COVID adult cases. Excludes SARI adult ICU "
+"cases."
+msgstr ""
+
+#: hcap_notifications/models/healthcare_unit_condition.py:46
+msgid "confirmed COVID adult clinical cases"
+msgstr ""
+
+#: hcap_notifications/models/healthcare_unit_condition.py:47
+msgid "Required. Excludes confirmed COVID adult ICU cases"
+msgstr ""
+
+#: hcap_notifications/models/healthcare_unit_condition.py:53
+msgid "SARI pediatric clinical cases"
+msgstr ""
+
+#: hcap_notifications/models/healthcare_unit_condition.py:55
+msgid ""
+"Required. Includes confirmed COVID pediatric cases. Excludes SARI pediatric "
+"ICU cases."
+msgstr ""
+
+#: hcap_notifications/models/healthcare_unit_condition.py:60
+msgid "confirmed COVID pediatric clinical cases"
+msgstr ""
+
+#: hcap_notifications/models/healthcare_unit_condition.py:61
+msgid "Required. Excludes confirmed COVID pediatric ICU cases."
+msgstr ""
+
+#: hcap_notifications/models/healthcare_unit_condition.py:67
+msgid "SARI adult ICU cases"
+msgstr ""
+
+#: hcap_notifications/models/healthcare_unit_condition.py:68
+msgid "Required. Includes confirmed COVID adult ICU cases."
+msgstr ""
+
+#: hcap_notifications/models/healthcare_unit_condition.py:72
+msgid "confirmed COVID adult ICU cases"
+msgstr ""
+
+#: hcap_notifications/models/healthcare_unit_condition.py:78
+msgid "SARI pediatric ICU cases"
+msgstr ""
+
+#: hcap_notifications/models/healthcare_unit_condition.py:79
+msgid "Required. Includes confirmed COVID pediatric ICU cases."
+msgstr ""
+
+#: hcap_notifications/models/healthcare_unit_condition.py:83
+msgid "confirmed COVID pediatric ICU cases"
+msgstr ""
+
+#: hcap_notifications/models/healthcare_unit_condition.py:89
+msgid "general adult clinical cases"
+msgstr ""
+
+#: hcap_notifications/models/healthcare_unit_condition.py:90
+msgid ""
+"Required. Excludes SARI adult clinical cases and general adult ICU cases."
+msgstr ""
+
+#: hcap_notifications/models/healthcare_unit_condition.py:94
+msgid "general pediatric clinical cases"
+msgstr ""
+
+#: hcap_notifications/models/healthcare_unit_condition.py:96
+msgid ""
+"Required. Excludes SARI pediatric clinical cases and general pediatric ICU "
+"cases."
+msgstr ""
+
+#: hcap_notifications/models/healthcare_unit_condition.py:103
+msgid "general adult ICU cases"
+msgstr ""
+
+#: hcap_notifications/models/healthcare_unit_condition.py:103
+msgid "Required. Excludes SARI adult ICU cases."
+msgstr ""
+
+#: hcap_notifications/models/healthcare_unit_condition.py:107
+msgid "general pediatric ICU cases"
+msgstr ""
+
+#: hcap_notifications/models/healthcare_unit_condition.py:108
+msgid "Required. Excludes SARI pediatric ICU cases."
+msgstr ""
+
+#: hcap_notifications/models/healthcare_unit_condition.py:133
+msgid "COVID cases cannot be greater than SARI cases."
+msgstr ""
+
+#: hcap_utils/apps.py:7
+msgid "Utility"
+msgstr ""
+
+#: hcap_utils/models/seed_state.py:6
+msgid "app name"
+msgstr ""
+
+#: hcap_utils/models/seed_state.py:7
+msgid "model name"
+msgstr ""
+
+#: hcap_utils/models/seed_state.py:9
+msgid "seed context"
+msgstr ""
+
+#: hcap_utils/models/seed_state.py:10
+msgid "seed type"
+msgstr ""
+
+#: hcap_utils/models/seed_state.py:12
+msgid "seeded"
+msgstr ""
+
+#: hcap_utils/models/seed_state.py:14
+msgid "date of seeding"
+msgstr ""
+
+#: hcap_utils/models/seed_state.py:17
+msgid "seed state"
+msgstr ""
+
+#: hcap_utils/models/seed_state.py:18
+msgid "seed states"
+msgstr ""

@@ -1,0 +1,2 @@
+email,cpf,name,is_staff,is_superuser
+admin@admin.com,426.227.655-41,John Doe,1,1
