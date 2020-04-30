@@ -37,7 +37,7 @@ class RequestAuthorizationView(TemplateView):
 
         if form.is_valid():
             form.save()
-            return redirect("hcap:my_notifier_authorizations")
+            return redirect("hcap:my_notifier_authorizations_list")
         else:
             return self.render_to_response(
                 {

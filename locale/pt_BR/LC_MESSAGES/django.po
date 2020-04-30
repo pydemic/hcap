@@ -394,7 +394,7 @@ msgid ""
 "We have sent you an e-mail. Please contact us if you do not receive it "
 "within a few minutes."
 msgstr ""
-"Enviamoos para você um e-mail. Por favor, contate-nos se você não receber o "
+"Enviamos para você um e-mail. Por favor, contate-nos se você não receber o "
 "e-mail nos próximos minutos."
 
 #: hcap/templates/account/password_reset_from_key.html:6
