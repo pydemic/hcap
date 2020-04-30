@@ -1,4 +1,4 @@
 email,cpf,name,is_staff,is_superuser
 admin@admin.com,426.227.655-41,John Doe,1,1
-notifier@notifier.com,979.178.620-89,Joana Doe,0,0
-manager@manager.com,801.312.980-20,Jean Doe,0,0
+notifier@notifier.com,979.178.620-89,Joana Doe,1,1
+manager@manager.com,801.312.980-20,Jean Doe,1,1

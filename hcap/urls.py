@@ -7,6 +7,7 @@ from hcap import views
 
 urlpatterns = [
     path("", views.index_view, name="index"),
+    path("monitor/", views.monitor_view),
     path(
         __("request-authorization/"), views.request_authorization_view, name="request_authorization"
     ),

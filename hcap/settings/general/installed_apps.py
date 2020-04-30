@@ -30,7 +30,7 @@ INSTALLED_APPS = (
     "allauth.account",
     "allauth.socialaccount",
     # Monitoring
-    # "django_prometheus",
+    "django_prometheus",
     # General
     "compressor",
     "crispy_forms",

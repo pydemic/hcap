@@ -9,6 +9,7 @@ urlpatterns = [
     path("accounts/", include("allauth.urls")),
     # Material override routes and must be defined last
     path("", include("material.frontend.urls")),
+    path("", include("django_prometheus.urls")),
 ]
 
 if settings.DEBUG:

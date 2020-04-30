@@ -24,18 +24,21 @@ class Command(BaseCommand):
         self.check_postgres()
         self.migrate()
         self.seed_development_data()
+        self.create_dashboards()
         self.runserver()
 
     def start_staging(self):
         self.check_postgres()
         self.migrate()
         self.seed_staging_data()
+        self.create_dashboards()
         self.start_gunicorn()
 
     def start_production(self):
         self.check_postgres()
         self.migrate()
         self.seed_production_data()
+        self.create_dashboards()
         self.start_gunicorn()
 
     def compile_messages(self):
@@ -100,6 +103,10 @@ class Command(BaseCommand):
         call_command("seed_base_users", no_wait_db=True, verbosity=self.verbosity)
         call_command("seed_base_regions", no_wait_db=True, verbosity=self.verbosity)
         call_command("seed_base_healthcare_units", no_wait_db=True, verbosity=self.verbosity)
+
+    def create_dashboards(self):
+        self.inform("==[create_dashboards]=======", style_func=self.style.SQL_KEYWORD)
+        call_command("create_dashboards", verbosity=self.verbosity)
 
     def runserver(self):
         self.inform("==[runserver]===============", style_func=self.style.SQL_KEYWORD)
