@@ -13,3 +13,6 @@ elif ENV == "test":
     from .test import *
 elif ENV == "prod":
     from .prod import *
+elif ENV == "staging":
+    from .dev import *
+    from .prod import *

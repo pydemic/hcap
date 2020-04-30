@@ -66,7 +66,11 @@ setup(
     packages=find_packages(),
     python_requires=">=3.8",
     install_requires=REQUIREMENTS,
-    extras_require={"dev": DEV_REQUIREMENTS, "prod": PROD_REQUIREMENTS},
+    extras_require={
+        "dev": DEV_REQUIREMENTS,
+        "prod": PROD_REQUIREMENTS,
+        "staging": DEV_REQUIREMENTS + PROD_REQUIREMENTS,
+    },
     zip_safe=False,
     entry_points={"console_scripts": ["hcap = manage:main"]},
 )
