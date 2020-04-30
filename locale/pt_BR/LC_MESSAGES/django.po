@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-30 06:42+0000\n"
+"POT-Creation-Date: 2020-04-30 06:57+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,18 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: hcap/admin.py:4
+msgid "Administrative Panel"
+msgstr "Painel Administrativo"
+
+#: hcap/admin.py:5
+msgid "Hospital Capacity Administration"
+msgstr "Administração de Capacidade Hospitalar"
+
+#: hcap/admin.py:6
+msgid "HCap Admin"
+msgstr "Admin HCap"
 
 #: hcap/apps.py:8 hcap/templates/material/frontend/base_site.html:4
 #: hcap/templates/material/frontend/base_site.html:5
