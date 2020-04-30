@@ -90,7 +90,7 @@ class HealthcareUnitCondition(models.Model):
         help_text=_("Required. Excludes SARI adult clinical cases and general adult ICU cases."),
     )
 
-    general_pediatric_cases = models.PositiveSmallIntegerField(
+    general_pediatric_clinical_cases = models.PositiveSmallIntegerField(
         _("general pediatric clinical cases"),
         help_text=_(
             "Required. Excludes SARI pediatric clinical cases and general pediatric ICU cases."
@@ -126,6 +126,8 @@ class HealthcareUnitCondition(models.Model):
             self.covid_adult_icu_cases = self.covid_adult_icu_cases or 0
         if "covid_pediatric_icu_cases" not in exclude:
             self.covid_pediatric_icu_cases = self.covid_pediatric_icu_cases or 0
+        if "healthcare_unit_id" not in exclude and self.notifier is not None:
+            self.healthcare_unit_id = self.notifier.healthcare_unit_id
         return super().clean_fields(exclude=exclude)
 
     def clean(self):
