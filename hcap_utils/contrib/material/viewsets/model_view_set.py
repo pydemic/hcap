@@ -7,6 +7,7 @@ from hcap_utils.contrib.material import views
 class ModelViewSet(MaterialModelViewSet):
     label = None
     name = None
+    extra_context = None
 
     def __init__(self, *args, **kwargs):
         if self.label is None:
@@ -18,7 +19,18 @@ class ModelViewSet(MaterialModelViewSet):
         super().__init__(*args, **kwargs)
 
     def filter_kwargs(self, view_class, **kwargs):
-        kwargs = {"label": self.label, "name": self.name, **kwargs}
+        extra_context = None
+        if self.extra_context is not None:
+            extra_context = self.extra_context
+        elif hasattr(self, "get_extra_context"):
+            extra_context = self.get_extra_context
+
+        kwargs = {
+            "label": self.label,
+            "name": self.name,
+            "extra_context": extra_context,
+            **kwargs,
+        }
         return super().filter_kwargs(view_class, **kwargs)
 
     create_view_class = views.CreateModelView

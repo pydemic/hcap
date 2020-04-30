@@ -14,6 +14,7 @@ class UpdateModelView(MaterialUpdateModelView):
     def __init__(self, *args, **kwargs):
         self.label = kwargs.get("label")
         self.name = kwargs.get("name")
+        self.extra_context = kwargs.get("extra_context")
 
         super().__init__(*args, **kwargs)
 
@@ -23,7 +24,18 @@ class UpdateModelView(MaterialUpdateModelView):
             "detail_url": f"{self.label}:{self.name}_detail",
         }
 
-        return super().get_context_data(**kwargs)
+        kwargs.setdefault("view", self)
+
+        if "form" not in kwargs:
+            kwargs["form"] = self.get_form()
+
+        if self.extra_context is not None:
+            if callable(self.extra_context):
+                kwargs.update(self.extra_context(self.request))
+            else:
+                kwargs.update(self.extra_context)
+
+        return kwargs
 
     def get_success_url(self):
         if self.success_url is None:

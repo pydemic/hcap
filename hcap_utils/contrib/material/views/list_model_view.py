@@ -9,6 +9,7 @@ class ListModelView(MaterialListModelView):
     def __init__(self, *args, **kwargs):
         self.label = kwargs.get("label")
         self.name = kwargs.get("name")
+        self.extra_context = kwargs.get("extra_context")
 
         super().__init__(*args, **kwargs)
 
@@ -24,15 +25,33 @@ class ListModelView(MaterialListModelView):
         kwargs.setdefault("view", self)
 
         if self.has_add_permission(self.request):
-            kwargs["add_url"] = reverse(f"{self.label}:{self.name}_add")
+            kwargs["add_url"] = f"{self.label}:{self.name}_add"
 
         if self.extra_context is not None:
-            kwargs.update(self.extra_content)
+            if callable(self.extra_context):
+                kwargs.update(self.extra_context(self.request))
+            else:
+                kwargs.update(self.extra_context)
 
         return kwargs
 
     def get_item_url(self, item):
-        return reverse(f"{self.label}:{self.name}_detail", args=[item.pk])
+        args = []
+
+        extra_context = None
+
+        if callable(self.extra_context):
+            extra_context = self.extra_context(self.request)
+        else:
+            extra_context = self.extra_context
+
+        if extra_context is not None:
+            item_args = extra_context.get("item_args", [])
+            args += item_args
+
+        args += [item.pk]
+
+        return reverse(f"{self.label}:{self.name}_detail", args=args)
 
     def get_template_names(self):
         if self.template_name is None:

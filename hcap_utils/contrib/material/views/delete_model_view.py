@@ -9,6 +9,7 @@ class DeleteModelView(MaterialDeleteModelView):
     def __init__(self, *args, **kwargs):
         self.label = kwargs.get("label")
         self.name = kwargs.get("name")
+        self.extra_context = kwargs.get("extra_context")
 
         super().__init__(*args, **kwargs)
 
@@ -18,7 +19,22 @@ class DeleteModelView(MaterialDeleteModelView):
             "detail_url": f"{self.label}:{self.name}_detail",
         }
 
-        return super().get_context_data(**kwargs)
+        kwargs.setdefault("view", self)
+        kwargs.setdefault("deleted_objects", self._get_deleted_objects())
+
+        if self.object:
+            kwargs["object"] = self.object
+            context_object_name = self.get_context_object_name(self.object)
+            if context_object_name:
+                kwargs[context_object_name] = self.object
+
+        if self.extra_context is not None:
+            if callable(extra_context):
+                kwargs.update(self.extra_context(self.request))
+            else:
+                kwargs.update(self.extra_context)
+
+        return kwargs
 
     def get_success_url(self):
         if self.success_url is None:

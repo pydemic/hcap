@@ -9,6 +9,7 @@ class DetailModelView(MaterialDetailModelView):
     def __init__(self, *args, **kwargs):
         self.label = kwargs.get("label")
         self.name = kwargs.get("name")
+        self.extra_context = kwargs.get("extra_context")
 
         super().__init__(*args, **kwargs)
 
@@ -28,14 +29,16 @@ class DetailModelView(MaterialDetailModelView):
                 kwargs[context_object_name] = self.object
 
         if self.has_change_permission(self.request, self.object):
-            kwargs["change_url"] = reverse(
-                f"{self.label}:{self.name}_change", args=[self.object.pk]
-            )
+            kwargs["change_url"] = f"{self.label}:{self.name}_change"
 
         if self.has_delete_permission(self.request, self.object):
-            kwargs["delete_url"] = reverse(
-                f"{self.label}:{self.name}_delete", args=[self.object.pk]
-            )
+            kwargs["delete_url"] = f"{self.label}:{self.name}_delete"
+
+        if self.extra_context is not None:
+            if callable(self.extra_context):
+                kwargs.update(self.extra_context(self.request))
+            else:
+                kwargs.update(self.extra_context)
 
         return kwargs
 

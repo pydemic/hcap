@@ -1,0 +1,15 @@
+{% extends "material/frontend/views/list.html" %}
+{% load i18n material_form material_form_internal material_frontend %}
+
+{% block breadcrumbs_items %}
+<a class="active" href="{% url list_url healthcare_unit_id %}">{{ view.model|verbose_name_plural|title }}</a>
+{% endblock %}
+
+
+{% block action_btn %}
+<div class="fixed-action-btn">
+  {% if add_url %}
+    <a class="btn-floating btn-large waves-effect waves-light red z-depth-2" href="{% url add_url  healthcare_unit_id %}"><i class="large material-icons">add</i></a>
+  {% endif %}
+</div>
+{% endblock %}
