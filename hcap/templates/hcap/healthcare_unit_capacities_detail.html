@@ -1,0 +1,12 @@
+{% extends "material/frontend/views/detail.html" %}
+{% load i18n material_form material_frontend %}
+
+{% block breadcrumbs_items %}
+<a href="{% url list_url healthcare_unit_id %}">{{ view.model|verbose_name_plural|title }}</a>
+<a class="active">{{ object }}</a>
+{% endblock %}
+
+{% block actions_row %}
+{% if delete_url %}<a class="waves-effect waves-light btn red white-text" href="{% url delete_url healthcare_unit_id object.pk %}">{% trans 'Delete' %}</a>{% endif %}
+{% if change_url %}<a class="waves-effect waves-light btn white-text" href="{% url change_url healthcare_unit_id object.pk %}">{% trans 'Change' %}</a>{% endif %}
+{% endblock actions_row %}

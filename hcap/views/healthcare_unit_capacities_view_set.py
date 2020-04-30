@@ -15,11 +15,14 @@ class HealthcareUnitCapacitiesViewSet(ModelViewSet):
         "total_icu_beds",
     )
 
-    ordering = ("healthcare_unit", "date")
+    ordering = ("healthcare_unit", "-date")
+
+    def get_extra_context(self, request):
+        healthcare_unit_id = request.path.split("/")[3]
+        return {"healthcare_unit_id": healthcare_unit_id, "item_args": [healthcare_unit_id]}
 
     def get_queryset(self, request):
-        healthcare_unit_id = request.GET.get("healthcare_unit_id")
-        return self.model.objects.filter(healthcare_unit_id=healthcare_unit_id)
+        return self.model.objects.filter(healthcare_unit_id=request.path.split("/")[3])
 
     def has_add_permission(self, request):
         return False

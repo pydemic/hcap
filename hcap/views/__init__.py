@@ -1,6 +1,7 @@
 from .index_view import index_view
 from .healthcare_unit_capacities_view_set import HealthcareUnitCapacitiesViewSet
 from .healthcare_unit_conditions_view_set import HealthcareUnitConditionsViewSet
+from .healthcare_units_view_set import HealthcareUnitsViewSet
 from .my_authorizations_view import my_authorizations_view
 from .my_manager_authorizations_view_set import MyManagerAuthorizationsViewSet
 from .my_notifier_authorizations_view_set import MyNotifierAuthorizationsViewSet

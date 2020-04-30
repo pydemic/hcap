@@ -28,23 +28,12 @@ urlpatterns = [
     ),
     path(__("notify/"), views.notify_view, name="notify"),
     path(
-        __("healthcare-units/capacities/"), include(views.HealthcareUnitCapacitiesViewSet().urls),
+        __(r"healthcare-units/<str:healthcare_unit_id>/capacities/"),
+        include(views.HealthcareUnitCapacitiesViewSet().urls),
     ),
     path(
-        __("healthcare-units/conditions/"), include(views.HealthcareUnitConditionsViewSet().urls),
+        __(r"healthcare-units/<str:healthcare_unit_id>/conditions/"),
+        include(views.HealthcareUnitConditionsViewSet().urls),
     ),
-    # path("capacidade/", include(views.CapacityViewSet().urls)),
-    # path("diario/", include(views.LogEntryViewSet().urls)),
-    # path(
-    #     "historico-de-notificacoes/",
-    #     views.notification_history_view,
-    #     name="notification_history",
-    # ),
-    # path("monitor", views.monitor_view),
-    # path("unidade-de-saude/", include(views.HealthcareUnitViewSet().urls)),
-    # path(
-    #     "vis/units/<int:cnes_id>/capacity.svg",
-    #     views.plot_healthcare_unit_capacity,
-    #     name="capacity_plot",
-    # ),
+    path(__("healthcare-units/"), include(views.HealthcareUnitsViewSet().urls)),
 ]

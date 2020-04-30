@@ -1,6 +1,7 @@
 {% load i18n %}
 
 <ul>
+  <li><a href="{% url 'hcap:healthcare_units_list' %}">{% trans "Healthcare units" %}</a></li>
 {% if user.is_notifier %}
   <li><a href="{% url 'hcap:notify' %}">{% trans "Notify" %}</a></li>
 {% endif %}
