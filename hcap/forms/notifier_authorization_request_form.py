@@ -29,7 +29,7 @@ class NotifierAuthorizationRequestForm(forms.Form):
             raise forms.ValidationError(
                 _(
                     "The CNES registry provided is not from a valid healthcare unit."
-                    + "\nIf you are certain that the CNES registry is valid, please contact the administrator."
+                    + " If you are certain that the CNES registry is valid, please contact the administrator."
                 )
             )
 

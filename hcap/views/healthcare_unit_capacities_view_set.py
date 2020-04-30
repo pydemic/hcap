@@ -1,3 +1,4 @@
+from hcap.forms import HealthcareUnitCapacityForm
 from hcap_accounts.models import HealthcareUnitNotifier, RegionManager
 from hcap_notifications.models import HealthcareUnitCapacity
 from hcap_utils.contrib.material.viewsets import ModelViewSet
@@ -17,6 +18,8 @@ class HealthcareUnitCapacitiesViewSet(ModelViewSet):
 
     ordering = ("healthcare_unit", "-date")
 
+    form_class = HealthcareUnitCapacityForm
+
     def get_extra_context(self, request):
         healthcare_unit_id = request.path.split("/")[3]
         return {"healthcare_unit_id": healthcare_unit_id, "item_args": [healthcare_unit_id]}
@@ -32,9 +35,12 @@ class HealthcareUnitCapacitiesViewSet(ModelViewSet):
         return user is not None and user.is_authenticated
 
     def has_change_permission(self, request, obj=None):
-        return False
+        return self.has_delete_permission(request, obj)
 
     def has_delete_permission(self, request, obj=None):
+        if (obj.updated_at - obj.created_at).days > 0:
+            return False
+
         user = request.user
         if user is None:
             return False

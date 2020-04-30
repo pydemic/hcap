@@ -38,9 +38,20 @@ class DeleteModelView(MaterialDeleteModelView):
 
     def get_success_url(self):
         if self.success_url is None:
-            return reverse(f"{self.label}:{self.name}_list")
+            args = []
 
-        return self.success_url
+            extra_context = None
+
+            if callable(self.extra_context):
+                extra_context = self.extra_context(self.request)
+            else:
+                extra_context = self.extra_context
+
+            if extra_context is not None:
+                item_args = extra_context.get("item_args", [])
+                args += item_args
+
+            return reverse(f"{self.label}:{self.name}_detail", args=args)
 
     def get_template_names(self):
         if self.template_name is None:

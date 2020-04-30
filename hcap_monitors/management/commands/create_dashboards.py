@@ -8,8 +8,7 @@ class Command(BaseCommand):
     help = "Creates Grafana dashboard's json for each state based on the template.json"
 
     def safe_handle(
-        self,
-        **options,
+        self, **options,
     ):
         states = Region.objects.filter(kind=Region.KIND_STATE).values_list("name", "code")
         generate_json_dashboards(states)

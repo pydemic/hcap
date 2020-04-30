@@ -6,7 +6,7 @@ from hcap_accounts.models import HealthcareUnitNotifier
 from hcap_notifications.models import HealthcareUnitCondition
 
 
-class NotifyConditionForm(forms.ModelForm):
+class HealthcareUnitConditionForm(forms.ModelForm):
     layout = Layout(
         "notifier",
         "date",
@@ -48,19 +48,7 @@ class NotifyConditionForm(forms.ModelForm):
             "general_pediatric_icu_cases",
         )
 
-    def __init__(self, *args, user, **kwargs):
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["notifier"].queryset = HealthcareUnitNotifier.objects.filter(
-            user=user, is_authorized=True
-        )
-
-    def clean_date(self):
-        date = self.cleaned_data["date"]
-        notifier = self.cleaned_data["notifier"]
-
-        if isinstance(notifier, HealthcareUnitNotifier):
-            healthcare_unit = notifier.healthcare_unit
-            if healthcare_unit.capacity_notifications.filter(date=date).exists():
-                raise forms.ValidationError(_("Notification already exists for this date."))
-
-        return date
+        self.fields["notifier"].disabled = True
+        self.fields["date"].disabled = True

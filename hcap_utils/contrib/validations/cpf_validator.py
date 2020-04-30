@@ -1,8 +1,9 @@
 import re
 
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.utils.deconstruct import deconstructible
-from django.conf import settings
+from django.utils.translation import gettext_lazy as _
 
 CPF_REGEX = re.compile(r"^([0-9]{3})\.?([0-9]{3})\.?([0-9]{3})-?([0-9]{2})$")
 
@@ -12,19 +13,17 @@ class CPFValidator:
     def __call__(self, value):
         m = CPF_REGEX.fullmatch(value)
         if m is None:
-            raise ValidationError(
-                "CPF deve seguir a formatação xxx.xxx.xxx-xx, substituindo x por números."
-            )
-        if not settings.VALIDATE_CPF:
-            return
+            raise ValidationError(_('Must be formatted as "000.000.000-00".'))
 
-        data = "".join(m.groups())
-        if (
-            len(set(value)) == 1
-            or (not self.is_valid_digit(data, 9))
-            or (not self.is_valid_digit(data, 10))
-        ):
-            raise ValidationError("CPF deve ser válido.")
+        if settings.VALIDATE_CPF:
+            data = "".join(m.groups())
+
+            if (
+                len(set(value)) == 1
+                or (not self.is_valid_digit(data, 9))
+                or (not self.is_valid_digit(data, 10))
+            ):
+                raise ValidationError(_("Must be a valid CPF."))
 
     def __eq__(self, other):
         return isinstance(other, CPFValidator)

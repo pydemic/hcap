@@ -3,6 +3,8 @@ from datetime import date
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from hcap_utils.contrib.validations import DateNotFromFutureValidator
+
 
 class HealthcareUnitCondition(models.Model):
     notifier = models.ForeignKey(
@@ -27,6 +29,7 @@ class HealthcareUnitCondition(models.Model):
         default=date.today,
         db_index=True,
         help_text=_("Required. Date from which the healthcare unit changed its condition."),
+        validators=(DateNotFromFutureValidator(),),
     )
 
     created_at = models.DateTimeField(_("created at"), auto_now_add=True, editable=False)
@@ -120,29 +123,47 @@ class HealthcareUnitCondition(models.Model):
     def clean_fields(self, exclude=None):
         if "covid_adult_clinical_cases" not in exclude:
             self.covid_adult_clinical_cases = self.covid_adult_clinical_cases or 0
+
         if "covid_pediatric_clinical_cases" not in exclude:
             self.covid_pediatric_clinical_cases = self.covid_pediatric_clinical_cases or 0
+
         if "covid_adult_icu_cases" not in exclude:
             self.covid_adult_icu_cases = self.covid_adult_icu_cases or 0
+
         if "covid_pediatric_icu_cases" not in exclude:
             self.covid_pediatric_icu_cases = self.covid_pediatric_icu_cases or 0
+
         if "healthcare_unit_id" not in exclude and self.notifier is not None:
             self.healthcare_unit_id = self.notifier.healthcare_unit_id
+
         return super().clean_fields(exclude=exclude)
 
     def clean(self):
-        errors = {}
-        message = _("COVID cases cannot be greater than SARI cases.")
-        if self.covid_adult_clinical_cases > self.sari_adult_clinical_cases:
-            errors["covid_adult_clinical_cases"] = message
-        if self.covid_pediatric_clinical_cases > self.sari_pediatric_clinical_cases:
-            errors["covid_pediatric_clinical_cases"] = message
-        if self.covid_adult_icu_cases > self.sari_adult_icu_cases:
-            errors["covid_adult_icu_cases"] = message
-        if self.covid_pediatric_icu_cases > self.sari_pediatric_icu_cases:
-            errors["covid_pediatric_icu_cases"] = message
-        if errors:
-            raise ValidationError(errors)
+        if (
+            self.updated_at is not None
+            and self.created_at is not None
+            and (self.updated_at - self.created_at).days > 0
+        ):
+            raise ValidationError(
+                _("Cannot change notification after elapsed 24 hours from creation.")
+            )
+        else:
+            errors = {}
+            message = _("COVID cases cannot be greater than SARI cases.")
+            if self.covid_adult_clinical_cases > self.sari_adult_clinical_cases:
+                errors["covid_adult_clinical_cases"] = message
+
+            if self.covid_pediatric_clinical_cases > self.sari_pediatric_clinical_cases:
+                errors["covid_pediatric_clinical_cases"] = message
+
+            if self.covid_adult_icu_cases > self.sari_adult_icu_cases:
+                errors["covid_adult_icu_cases"] = message
+
+            if self.covid_pediatric_icu_cases > self.sari_pediatric_icu_cases:
+                errors["covid_pediatric_icu_cases"] = message
+
+            if errors:
+                raise ValidationError(errors)
 
     @property
     def summary(self):

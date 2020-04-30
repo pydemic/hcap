@@ -1,0 +1,8 @@
+{% extends "material/frontend/views/form.html" %}
+{% load i18n material_form material_frontend %}
+
+{% block breadcrumbs_items %}
+<a href="{% url list_url healthcare_unit_id %}">{{ view.model|verbose_name_plural|title }}</a>
+{% if object.pk %}<a href="{% url detail_url healthcare_unit_id object.pk %}">{{ object }}</a>{% endif %}
+<a class="active">{% if object.pk %}{% trans 'Change' %}{% else %}{% trans 'Add' %}{% endif %}</a>
+{% endblock %}

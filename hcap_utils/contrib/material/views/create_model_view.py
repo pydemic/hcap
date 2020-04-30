@@ -39,7 +39,22 @@ class CreateModelView(MaterialCreateModelView):
 
     def get_success_url(self):
         if self.success_url is None:
-            return reverse(f"{self.label}:{self.name}_detail", args=[self.object.pk])
+            args = []
+
+            extra_context = None
+
+            if callable(self.extra_context):
+                extra_context = self.extra_context(self.request)
+            else:
+                extra_context = self.extra_context
+
+            if extra_context is not None:
+                item_args = extra_context.get("item_args", [])
+                args += item_args
+
+            args += [self.object.pk]
+
+            return reverse(f"{self.label}:{self.name}_detail", args=args)
 
         return self.success_url
 
@@ -54,7 +69,23 @@ class CreateModelView(MaterialCreateModelView):
         return [self.template_name]
 
     def report(self, message, level=messages.INFO, fail_silently=True, **kwargs):
-        url = reverse(f"{self.label}:{self.name}_detail", args=[self.object.pk])
+        args = []
+
+        extra_context = None
+
+        if callable(self.extra_context):
+            extra_context = self.extra_context(self.request)
+        else:
+            extra_context = self.extra_context
+
+        if extra_context is not None:
+            item_args = extra_context.get("item_args", [])
+            args += item_args
+
+        args += [self.object.pk]
+
+        url = reverse(f"{self.label}:{self.name}_detail", args=args)
+
         link = format_html('<a href="{}">{}</a>', urlquote(url), force_text(self.object))
 
         name = force_text(self.model._meta.verbose_name)
