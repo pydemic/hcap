@@ -36,4 +36,7 @@ urlpatterns = [
         include(views.HealthcareUnitConditionsViewSet().urls),
     ),
     path(__("healthcare-units/"), include(views.HealthcareUnitsViewSet().urls)),
+    path(__("my-notifications/"), views.my_notifications_view, name="my_notifications"),
+    path(__("my-notifications/capacity/"), include(views.MyCapacityNotificationsViewSet().urls)),
+    path(__("my-notifications/condition/"), include(views.MyConditionNotificationsViewSet().urls)),
 ]

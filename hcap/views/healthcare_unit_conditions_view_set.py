@@ -15,7 +15,6 @@ class HealthcareUnitConditionsViewSet(ModelViewSet):
         "total_cases",
         "sari_cases",
         "covid_cases",
-        "notifier",
     )
 
     ordering = ("healthcare_unit", "-date")

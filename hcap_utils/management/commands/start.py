@@ -61,10 +61,39 @@ class Command(BaseCommand):
         call_command("migrate", verbosity=self.verbosity)
 
     def seed_development_data(self):
-        self.seed_production_data()
+        self.seed_staging_data()
 
     def seed_staging_data(self):
-        self.seed_production_data()
+        self.inform("==[seed]====================", style_func=self.style.SQL_KEYWORD)
+        call_command(
+            "seed_base_users", context="staging", no_wait_db=True, verbosity=self.verbosity
+        )
+        call_command("seed_base_regions", no_wait_db=True, verbosity=self.verbosity)
+        call_command("seed_base_healthcare_units", no_wait_db=True, verbosity=self.verbosity)
+        call_command(
+            "seed_base_region_managers",
+            context="staging",
+            no_wait_db=True,
+            verbosity=self.verbosity,
+        )
+        call_command(
+            "seed_base_healthcare_unit_notifiers",
+            context="staging",
+            no_wait_db=True,
+            verbosity=self.verbosity,
+        )
+        call_command(
+            "seed_base_healthcare_unit_capacities",
+            context="staging",
+            no_wait_db=True,
+            verbosity=self.verbosity,
+        )
+        call_command(
+            "seed_base_healthcare_unit_conditions",
+            context="staging",
+            no_wait_db=True,
+            verbosity=self.verbosity,
+        )
 
     def seed_production_data(self):
         self.inform("==[seed]====================", style_func=self.style.SQL_KEYWORD)

@@ -7,11 +7,21 @@ CSV_DIR = settings.BASE_DIR / "hcap_accounts" / "data" / "user" / "csv"
 
 
 class Command(BaseSeedCommand):
+    CONTEXT_DEFAULT = "default"
+    CONTEXT_STAGING = "staging"
+
+    context_choices = (CONTEXT_DEFAULT, CONTEXT_STAGING)
+
     app = "accounts"
     model = "user"
 
     def seed(self):
-        self.seed_from_csv(CSV_DIR / "default")
+        if self.context == self.CONTEXT_DEFAULT:
+            self.seed_from_csv(CSV_DIR / "default")
+        elif self.context == self.CONTEXT_STAGING:
+            self.seed_from_csv(CSV_DIR / "staging")
+        else:
+            self.raise_message(f'Unknown context "{self.context}"')
 
     def fetch_model(self, row):
         user = get_user_model()()
