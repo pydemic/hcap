@@ -1,38 +1,14 @@
-from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-from django.contrib.auth import get_user_model
 from django.urls import reverse
 
-from selenium.webdriver.firefox.webdriver import WebDriver
-from selenium.webdriver.firefox.options import Options
+from .base import SeleniumTestCase, create_test_user, create_notifier_user, login
 
-from hcap_accounts.models.user import User 
-
-
-class LoginTestCase(StaticLiveServerTestCase):
-    @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
-        options = Options()
-        # options.headless = True
-        cls.browser = WebDriver(options=options)
-
-    @classmethod
-    def tearDownClass(cls):
-        cls.browser.quit()
-        super().tearDownClass()
+class LoginTestCase(SeleniumTestCase):
 
     def test_first_login(self):
         url = f"{self.live_server_url}{reverse('account_login')}"
         self.browser.get(url)
         
-        user = get_user_model()()
-        user.email = 'jhon@doe.com'
-        user.cpf = '715.769.900-10'
-        user.name = 'Jhon Doe' 
-        user.set_password('Secret#123')
-        
-        user.save()
-        user.emailaddress_set.create(email=user.email, verified=True, primary=True)
+        user = create_test_user()
 
         login_input = self.browser.find_element_by_name('login')
         login_input.send_keys('jhon@doe.com')
@@ -43,5 +19,11 @@ class LoginTestCase(StaticLiveServerTestCase):
         submit_btn = self.browser.find_element_by_xpath("//button[@type='submit']")
         submit_btn.click()
 
+        after_login_url = f"{self.live_server_url}/hcap/request-authorization/"
+        self.assertEqual(self.browser.current_url, after_login_url)
+
         cnes_input = self.browser.find_element_by_id('id_cnes_id')
         self.assertTrue(cnes_input)
+        
+        select_state = self.browser.find_element_by_id('id_state')
+        self.assertTrue(select_state)
