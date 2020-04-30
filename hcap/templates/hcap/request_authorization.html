@@ -1,0 +1,85 @@
+{% extends 'hcap/base_module.html' %}
+{% load i18n material_form material_frontend %}
+
+{% block content %}
+<div class="left-panel">
+  <div class="card">
+    <div class="card-content">
+      <span class="card-title">{% trans "Request authorization" %}</span>
+
+      <ul class="collapsible">
+        <li class="{% if active == "notifier" %}active{% endif %}">
+          <div class="collapsible-header">
+            <i class="material-icons">alarm_add</i>
+            {% trans "Healthcare unit notifier" %}
+          </div>
+
+          <div class="collapsible-body">
+            <p>
+              {% trans "Notifier users are responsible to report daily the beds usage of a healthcare unit. These users must also send notifications of beds changes on temporary expansion or reduction." %}
+            </p>
+
+            <form method="POST">
+              {% csrf_token %}
+
+              {% form form=notifier_form %}
+              {% endform %}
+
+              <div class="action center">
+                <button class="btn btn-small" type="submit" name="action" value="notifier">
+                  <i class="material-icons right">send</i>
+                  {% trans "Request authorization" %}
+                </button>
+              </div>
+            </form>
+          </div>
+        </li>
+
+        <li class="{% if active == 'manager' %}active{% endif %}">
+          <div class="collapsible-header">
+              <i class="material-icons">supervisor_account</i>
+              {% trans "Manager" %}
+          </div>
+
+          <div class="collapsible-body">
+            <p>
+              {% trans "Manager users generally are health agents and are responsible to check if notifier users are authorized to notify to the desired healthcare units. Managers can also access graphs and data of conditions from all healthcare units located at the manager region." %}
+            </p>
+
+            {% if manager_state_form %}
+              <form method="POST">
+                {% csrf_token %}
+
+                {% form form=manager_state_form %}
+                {% endform %}
+
+                <div class="action center">
+                  <button class="btn btn-small" type="submit" name="action" value="manager_state">
+                    <i class="material-icons right">send</i>
+                    {% trans "Request authorization" %}
+                  </button>
+                </div>
+              </form>
+            {% else %}
+              <form method="POST">
+                {% csrf_token %}
+
+                {% form form=manager_cities_form %}
+                  {% part form.cities columns %}3{% endpart %}
+                {% endform %}
+
+                <div class="action center">
+                  <button class="btn btn-small" type="submit" name="action" value="manager_cities">
+                    <i class="material-icons right">send</i>
+                    {% trans "Request authorization" %}
+                  </button>
+                </div>
+              </form>
+            {% endif %}
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock content %}

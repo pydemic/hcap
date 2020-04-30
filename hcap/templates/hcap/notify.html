@@ -1,0 +1,60 @@
+{% extends 'hcap/base_module.html' %}
+{% load i18n material_form material_frontend %}
+
+{% block content %}
+<div class="left-panel">
+  <div class="card">
+    <div class="card-content">
+      <span class="card-title">{% trans "Notify" %}</span>
+
+      <ul class="collapsible">
+        <li class="{% if active == 'capacity' %}active{% endif %}">
+          <div class="collapsible-header">
+            <i class="material-icons">today</i>
+            {% trans "Capacity" %}
+          </div>
+
+          <div class="collapsible-body">
+            <form method="POST">
+              {% csrf_token %}
+
+              {% form form=capacity_form %}
+              {% endform %}
+
+              <div class="action center">
+                <button class="btn btn-small" type="submit" name="action" value="capacity">
+                  <i class="material-icons right">send</i>
+                  {% trans "Notify" %}
+                </button>
+              </div>
+            </form>
+          </div>
+        </li>
+
+        <li class="{% if active == 'condition' %}active{% endif %}">
+          <div class="collapsible-header">
+              <i class="material-icons">show_chart</i>
+              {% trans "Condition" %}
+          </div>
+
+          <div class="collapsible-body">
+            <form method="POST">
+              {% csrf_token %}
+
+              {% form form=condition_form %}
+              {% endform %}
+
+              <div class="action center">
+                <button class="btn btn-small" type="submit" name="action" value="condition">
+                  <i class="material-icons right">send</i>
+                  {% trans "Notify" %}
+                </button>
+              </div>
+            </form>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock content %}

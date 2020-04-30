@@ -1,0 +1,8 @@
+{% extends "material/frontend/views/detail.html" %}
+{% load i18n %}
+
+{% block actions_row %}
+{{ super }}
+<a class="waves-effect waves-light btn" href="{% url 'hcap:healthcare_unit_capacities_list' object.id %}">{% trans 'Capacity notifications' %}</a>
+<a class="waves-effect waves-light btn" href="{% url 'hcap:healthcare_unit_conditions_list' object.id %}">{% trans 'Condition notifications' %}</a>
+{% endblock actions_row %}
