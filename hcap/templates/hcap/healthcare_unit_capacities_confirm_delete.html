@@ -1,0 +1,8 @@
+{% extends "material/frontend/views/confirm_delete.html" %}
+{% load i18n material_form material_frontend %}
+
+{% block breadcrumbs_items %}
+<a href="{% url list_url healthcare_unit_id %}">{{ view.model|verbose_name_plural|title }}</a>
+<a href="{% url detail_url healthcare_unit_id object.pk %}">{{ object }}</a>
+<a class="active">{% trans 'Delete' %}</a>
+{% endblock %}

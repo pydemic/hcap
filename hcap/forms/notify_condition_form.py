@@ -55,12 +55,12 @@ class NotifyConditionForm(forms.ModelForm):
         )
 
     def clean_date(self):
-        date = self.cleaned_data["date"]
-        notifier = self.cleaned_data["notifier"]
+        date = self.cleaned_data.get("date")
+        notifier = self.cleaned_data.get("notifier")
 
         if isinstance(notifier, HealthcareUnitNotifier):
             healthcare_unit = notifier.healthcare_unit
-            if healthcare_unit.capacity_notifications.filter(date=date).exists():
+            if healthcare_unit.condition_notifications.filter(date=date).exists():
                 raise forms.ValidationError(_("Notification already exists for this date."))
 
         return date

@@ -29,7 +29,7 @@ class DeleteModelView(MaterialDeleteModelView):
                 kwargs[context_object_name] = self.object
 
         if self.extra_context is not None:
-            if callable(extra_context):
+            if callable(self.extra_context):
                 kwargs.update(self.extra_context(self.request))
             else:
                 kwargs.update(self.extra_context)
@@ -51,7 +51,9 @@ class DeleteModelView(MaterialDeleteModelView):
                 item_args = extra_context.get("item_args", [])
                 args += item_args
 
-            return reverse(f"{self.label}:{self.name}_detail", args=args)
+            return reverse(f"{self.label}:{self.name}_list", args=args)
+
+        return self.success_url
 
     def get_template_names(self):
         if self.template_name is None:
