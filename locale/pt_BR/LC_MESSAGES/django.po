@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-30 06:57+0000\n"
+"POT-Creation-Date: 2020-05-07 17:30+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -48,22 +48,22 @@ msgstr "Leitos de UTI"
 #: hcap/forms/healthcare_unit_condition_form.py:14
 #: hcap/forms/notify_condition_form.py:14
 msgid "SARI clinical cases"
-msgstr "Casos clínicos de SARS"
+msgstr "Casos clínicos de SRAG"
 
 #: hcap/forms/healthcare_unit_condition_form.py:19
 #: hcap/forms/notify_condition_form.py:19
 msgid "SARI ICU cases"
-msgstr "Casos de UTI de SARS"
+msgstr "Casos de UTI de SRAG"
 
 #: hcap/forms/healthcare_unit_condition_form.py:24
 #: hcap/forms/notify_condition_form.py:24
 msgid "Non-SARI clinical cases"
-msgstr "Casos clínicos não-SARS"
+msgstr "Casos clínicos não-SRAG"
 
 #: hcap/forms/healthcare_unit_condition_form.py:28
 #: hcap/forms/notify_condition_form.py:28
 msgid "Non-SARI ICU cases"
-msgstr "Casos de UTI não-SARS"
+msgstr "Casos de UTI não-SRAG"
 
 #: hcap/forms/manager_cities_authorization_request_form.py:14
 #: hcap/forms/manager_state_authorization_request_form.py:12
@@ -949,7 +949,7 @@ msgstr "Obrigatório. Data na qual a unidade de saúde alterou sua condição."
 
 #: hcap_notifications/models/healthcare_unit_condition.py:42
 msgid "SARI adult clinical cases"
-msgstr "casos clínicos de SARS em adultos"
+msgstr "casos clínicos de SRAG em adultos"
 
 #: hcap_notifications/models/healthcare_unit_condition.py:44
 msgid ""
@@ -957,7 +957,7 @@ msgid ""
 "cases."
 msgstr ""
 "Obrigatório. Inclui casos clínicos confirmados de COVID em adultos. Exclui "
-"casos de UTI de SARS em adultos."
+"casos de UTI de SRAG em adultos."
 
 #: hcap_notifications/models/healthcare_unit_condition.py:49
 msgid "confirmed COVID adult clinical cases"
@@ -969,7 +969,7 @@ msgstr "Obrigatório. Exclui casos de UTI confirmados de COVID para adultos."
 
 #: hcap_notifications/models/healthcare_unit_condition.py:56
 msgid "SARI pediatric clinical cases"
-msgstr "casos clínicos pediátricos de SARS"
+msgstr "casos clínicos pediátricos de SRAG"
 
 #: hcap_notifications/models/healthcare_unit_condition.py:58
 msgid ""
@@ -977,7 +977,7 @@ msgid ""
 "ICU cases."
 msgstr ""
 "Obrigatório. Inclui casos clínicos pediátricos confirmados de COVID. Exclui "
-"casos pediátricos de UTI de SARS."
+"casos pediátricos de UTI de SRAG."
 
 #: hcap_notifications/models/healthcare_unit_condition.py:63
 msgid "confirmed COVID pediatric clinical cases"
@@ -989,7 +989,7 @@ msgstr "Obrigatório. Exclui casos pediátricos de UTI confirmados de COVID."
 
 #: hcap_notifications/models/healthcare_unit_condition.py:70
 msgid "SARI adult ICU cases"
-msgstr "casos de UTI de SARS em adultos"
+msgstr "casos de UTI de SRAG em adultos"
 
 #: hcap_notifications/models/healthcare_unit_condition.py:71
 msgid "Required. Includes confirmed COVID adult ICU cases."
@@ -1001,7 +1001,7 @@ msgstr "casos de UTI confirmados de COVID em adultos"
 
 #: hcap_notifications/models/healthcare_unit_condition.py:81
 msgid "SARI pediatric ICU cases"
-msgstr "casos pediátricos de UTI de SARS"
+msgstr "casos pediátricos de UTI de SRAG"
 
 #: hcap_notifications/models/healthcare_unit_condition.py:82
 msgid "Required. Includes confirmed COVID pediatric ICU cases."
@@ -1018,7 +1018,7 @@ msgstr "casos gerais clínicos em adultos"
 #: hcap_notifications/models/healthcare_unit_condition.py:93
 msgid ""
 "Required. Excludes SARI adult clinical cases and general adult ICU cases."
-msgstr "Obrigatório. Exclui casos clínicos e de UTI de SARS em adultos."
+msgstr "Obrigatório. Exclui casos clínicos e de UTI de SRAG em adultos."
 
 #: hcap_notifications/models/healthcare_unit_condition.py:97
 msgid "general pediatric clinical cases"
@@ -1029,7 +1029,7 @@ msgid ""
 "Required. Excludes SARI pediatric clinical cases and general pediatric ICU "
 "cases."
 msgstr ""
-"Obrigatório. Exclui casos pediátricos clínicos de SARS e casos gerais "
+"Obrigatório. Exclui casos pediátricos clínicos de SRAG e casos gerais "
 "pédiatricos de UTI."
 
 #: hcap_notifications/models/healthcare_unit_condition.py:106
@@ -1038,7 +1038,7 @@ msgstr "casos gerais de UTI em adultos"
 
 #: hcap_notifications/models/healthcare_unit_condition.py:106
 msgid "Required. Excludes SARI adult ICU cases."
-msgstr "Obrigatório. Exclui casos de UTI de SARS em adultos."
+msgstr "Obrigatório. Exclui casos de UTI de SRAG em adultos."
 
 #: hcap_notifications/models/healthcare_unit_condition.py:110
 msgid "general pediatric ICU cases"
@@ -1046,7 +1046,7 @@ msgstr "casos gerais pediátricos de UTI"
 
 #: hcap_notifications/models/healthcare_unit_condition.py:111
 msgid "Required. Excludes SARI pediatric ICU cases."
-msgstr "Obrigatório. Exclui casos pediátricos de UTI de SARS."
+msgstr "Obrigatório. Exclui casos pediátricos de UTI de SRAG."
 
 #: hcap_notifications/models/healthcare_unit_condition.py:115
 msgid "healthcare unit condition"
@@ -1058,7 +1058,7 @@ msgstr "condições da unidade de saúde"
 
 #: hcap_notifications/models/healthcare_unit_condition.py:152
 msgid "COVID cases cannot be greater than SARI cases."
-msgstr "Casos de COVID não pode ser maior que casos de SARS."
+msgstr "Casos de COVID não pode ser maior que casos de SRAG."
 
 #: hcap_utils/apps.py:7
 msgid "Utility"
