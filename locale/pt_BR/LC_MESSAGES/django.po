@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-07 17:30+0000\n"
+"POT-Creation-Date: 2020-05-08 03:31+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -394,8 +394,8 @@ msgid ""
 "We have sent you an e-mail. Please contact us if you do not receive it "
 "within a few minutes."
 msgstr ""
-"Enviamos para você um e-mail. Por favor, contate-nos se você não receber o "
-"e-mail nos próximos minutos."
+"Enviamos para você um e-mail. Por favor, contate-nos se você não receber o e-"
+"mail nos próximos minutos."
 
 #: hcap/templates/account/password_reset_from_key.html:6
 msgid "Bad Token"
@@ -448,7 +448,9 @@ msgstr ""
 msgid "Log out"
 msgstr "Encerrar sessão"
 
+#: hcap/templates/hcap/healthcare_unit_capacities_confirm_delete.html:7
 #: hcap/templates/hcap/healthcare_unit_capacities_detail.html:10
+#: hcap/templates/hcap/healthcare_unit_conditions_confirm_delete.html:7
 #: hcap/templates/hcap/healthcare_unit_conditions_detail.html:10
 #: hcap/templates/material/frontend/views/confirm_delete.html:7
 #: hcap/templates/material/frontend/views/detail.html:35
@@ -490,7 +492,7 @@ msgstr "Unidades de saúde"
 msgid "Notify"
 msgstr "Notificar"
 
-#: hcap/templates/hcap/menu.html:7
+#: hcap/templates/hcap/menu.html:7 hcap/templates/hcap/my_notifications.html:8
 msgid "My notifications"
 msgstr "Minhas notificações"
 
@@ -505,7 +507,6 @@ msgstr "Autorizações pendentes"
 
 #: hcap/templates/hcap/menu.html:13
 #: hcap/templates/hcap/my_authorizations.html:8
-#: hcap/templates/hcap/my_notifications.html:8
 msgid "My authorizations"
 msgstr "Minhas autorizações"
 
@@ -591,6 +592,26 @@ msgstr "Acessar novamente"
 #: hcap/templates/registration/login.html:20
 msgid "Forgotten your password or username?"
 msgstr "Esqueceu sua senha?"
+
+#: hcap/views/my_capacity_notifications_view_set.py:16
+msgid "Total clinical beds"
+msgstr "Leitos clínicos"
+
+#: hcap/views/my_capacity_notifications_view_set.py:20
+msgid "Total icu beds"
+msgstr "Leitos UTI"
+
+#: hcap/views/my_condition_notifications_view_set.py:16
+msgid "Total Cases"
+msgstr "Casos Totais"
+
+#: hcap/views/my_condition_notifications_view_set.py:20
+msgid "Sari Cases"
+msgstr "Casos IRAG"
+
+#: hcap/views/my_condition_notifications_view_set.py:24
+msgid "Covid Cases"
+msgstr "Casos COVID"
 
 #: hcap_accounts/admin/user_admin.py:11 hcap_accounts/admin/user_admin.py:71
 msgid "email verified"

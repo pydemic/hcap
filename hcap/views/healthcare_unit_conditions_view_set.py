@@ -1,7 +1,10 @@
+from django.utils.translation import gettext_lazy as _
+
 from hcap.forms import HealthcareUnitConditionForm
 from hcap_accounts.models import HealthcareUnitNotifier, RegionManager
 from hcap_notifications.models import HealthcareUnitCondition
 from hcap_utils.contrib.material.viewsets import ModelViewSet
+from hcap_utils.properties import trans_property
 
 
 class HealthcareUnitConditionsViewSet(ModelViewSet):
@@ -12,14 +15,26 @@ class HealthcareUnitConditionsViewSet(ModelViewSet):
     list_display = (
         "healthcare_unit",
         "date",
-        "total_cases",
-        "sari_cases",
-        "covid_cases",
+        "_total_cases",
+        "_sari_cases",
+        "_covid_cases",
     )
 
     ordering = ("healthcare_unit", "-date")
 
     form_class = HealthcareUnitConditionForm
+
+    @trans_property(_("Total Cases"))
+    def _total_cases(self):
+        self.total_cases
+
+    @trans_property(_("Sari Cases"))
+    def _sari_cases(self):
+        self.sari_cases
+
+    @trans_property(_("Covid Cases"))
+    def _covid_cases(self):
+        self.codiv_cases
 
     def get_extra_context(self, request):
         healthcare_unit_id = request.path.split("/")[3]
