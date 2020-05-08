@@ -104,6 +104,10 @@ deploy staging:
 
 deploy production:
   <<: *deploy
+  script:
+    - $RIT_TUNNEL_RUN latest deploy up
+    - $RIT_TUNNEL_RUN latest deploy sync
+    - $RIT_TUNNEL_RUN latest deploy playbook
   environment:
     name: production
   only:
