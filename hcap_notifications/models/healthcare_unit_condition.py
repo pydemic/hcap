@@ -3,6 +3,7 @@ from datetime import date
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from hcap_utils.contrib.decorators import model_property
 from hcap_utils.contrib.validations import DateNotFromFutureValidator
 
 
@@ -184,7 +185,7 @@ class HealthcareUnitCondition(models.Model):
 
     # Total properties
 
-    @property
+    @model_property(short_description=_("total cases"))
     def total_cases(self):
         return self.adult_cases + self.pediatric_cases
 
@@ -206,7 +207,7 @@ class HealthcareUnitCondition(models.Model):
 
     # SARI composite properties
 
-    @property
+    @model_property(short_description=_("SARI cases"))
     def sari_cases(self):
         return self.sari_adult_cases + self.sari_pediatric_cases
 
@@ -228,7 +229,7 @@ class HealthcareUnitCondition(models.Model):
 
     # COVID composite properties
 
-    @property
+    @model_property(short_description=_("COVID cases"))
     def covid_cases(self):
         return self.covid_adult_cases + self.covid_pediatric_cases
 

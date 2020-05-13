@@ -3,6 +3,7 @@ from datetime import date
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from hcap_utils.contrib.decorators import model_property
 from hcap_utils.contrib.validations import DateNotFromFutureValidator
 
 
@@ -92,11 +93,11 @@ class HealthcareUnitCapacity(models.Model):
     def total_beds(self):
         return self.total_clinical_beds + iself.total_icu_beds
 
-    @property
+    @model_property(short_description=_("total clinical beds"))
     def total_clinical_beds(self):
         return self.clinical_adult_beds + self.clinical_pediatric_beds
 
-    @property
+    @model_property(short_description=_("total ICU beds"))
     def total_icu_beds(self):
         return self.icu_adult_beds + self.icu_pediatric_beds
 

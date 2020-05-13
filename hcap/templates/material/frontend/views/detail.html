@@ -2,7 +2,7 @@
 {% load i18n material_form material_frontend %}
 
 {% block breadcrumbs_items %}
-<a href="{% url list_url %}">{{ view.model|verbose_name_plural|title }}</a>
+<a href="{% url list_url %}">{{ view.model|verbose_name_plural|capfirst }}</a>
 <a class="active">{{ object }}</a>
 {% endblock %}
 
@@ -12,7 +12,7 @@
   <div class="card">
     <div class="card-content">
       {% block card %}
-        <div class="card-title">{{ view.model|verbose_name|title }}: {{ object }}</div>
+        <div class="card-title">{{ view.model|verbose_name|capfirst }}: {{ object }}</div>
 
         <table class="table bordered">
           {% for field_name, value in object_data %}

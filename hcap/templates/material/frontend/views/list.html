@@ -2,7 +2,7 @@
 {% load i18n material_form material_form_internal material_frontend %}
 
 {% block breadcrumbs_items %}
-<a class="active" href="{% url list_url %}">{{ view.model|verbose_name_plural|title }}</a>
+<a class="active" href="{% url list_url %}">{{ view.model|verbose_name_plural|capfirst }}</a>
 {% endblock %}
 
 
@@ -16,7 +16,7 @@
           <thead>
             <tr>
               {% for header, header_title in headers %}
-                <th data-name="{{ header }}" class="{{ header }}">{{ header_title|title }}</th>
+                <th data-name="{{ header }}" class="{{ header }}">{{ header_title|capfirst }}</th>
               {% endfor %}
             </tr>
           </thead>

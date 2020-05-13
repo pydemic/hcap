@@ -2,7 +2,7 @@
 {% load i18n material_form material_frontend %}
 
 {% block breadcrumbs_items %}
-<a href="{% url list_url %}">{{ view.model|verbose_name_plural|title }}</a>
+<a href="{% url list_url %}">{{ view.model|verbose_name_plural|capfirst }}</a>
 <a href="{% url detail_url object.pk %}">{{ object }}</a>
 <a class="active">{% trans 'Delete' %}</a>
 {% endblock %}
@@ -18,7 +18,7 @@
           <div class="card-title">{% blocktrans %}Are you sure you want to delete the {{ object }} and related items?{% endblocktrans %}</div>
 
           {% for model, items in deleted_objects.items %}
-            <h5>{{ model|verbose_name_plural|title }}</h5>
+            <h5>{{ model|verbose_name_plural|capfirst }}</h5>
 
             {% for item in items %}
               {% url detail_name item.pk as details_url %}

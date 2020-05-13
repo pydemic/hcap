@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-08 03:31+0000\n"
+"POT-Creation-Date: 2020-05-13 00:45+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -593,26 +593,6 @@ msgstr "Acessar novamente"
 msgid "Forgotten your password or username?"
 msgstr "Esqueceu sua senha?"
 
-#: hcap/views/my_capacity_notifications_view_set.py:16
-msgid "Total clinical beds"
-msgstr "Leitos clínicos"
-
-#: hcap/views/my_capacity_notifications_view_set.py:20
-msgid "Total icu beds"
-msgstr "Leitos UTI"
-
-#: hcap/views/my_condition_notifications_view_set.py:16
-msgid "Total Cases"
-msgstr "Casos Totais"
-
-#: hcap/views/my_condition_notifications_view_set.py:20
-msgid "Sari Cases"
-msgstr "Casos IRAG"
-
-#: hcap/views/my_condition_notifications_view_set.py:24
-msgid "Covid Cases"
-msgstr "Casos COVID"
-
 #: hcap_accounts/admin/user_admin.py:11 hcap_accounts/admin/user_admin.py:71
 msgid "email verified"
 msgstr "e-mail verificado"
@@ -655,21 +635,21 @@ msgstr "usuário"
 #: hcap_accounts/models/region_manager.py:12
 #: hcap_accounts/models/region_manager.py:20
 #: hcap_institutions/models/healthcare_unit.py:12
-#: hcap_notifications/models/healthcare_unit_capacity.py:15
-#: hcap_notifications/models/healthcare_unit_capacity.py:36
-#: hcap_notifications/models/healthcare_unit_capacity.py:40
-#: hcap_notifications/models/healthcare_unit_capacity.py:43
-#: hcap_notifications/models/healthcare_unit_capacity.py:46
-#: hcap_notifications/models/healthcare_unit_condition.py:15
-#: hcap_notifications/models/healthcare_unit_condition.py:75
-#: hcap_notifications/models/healthcare_unit_condition.py:86
+#: hcap_notifications/models/healthcare_unit_capacity.py:16
+#: hcap_notifications/models/healthcare_unit_capacity.py:37
+#: hcap_notifications/models/healthcare_unit_capacity.py:41
+#: hcap_notifications/models/healthcare_unit_capacity.py:44
+#: hcap_notifications/models/healthcare_unit_capacity.py:47
+#: hcap_notifications/models/healthcare_unit_condition.py:16
+#: hcap_notifications/models/healthcare_unit_condition.py:76
+#: hcap_notifications/models/healthcare_unit_condition.py:87
 msgid "Required."
 msgstr "Obrigatório."
 
 #: hcap_accounts/models/healthcare_unit_notifier.py:17
 #: hcap_institutions/models/healthcare_unit.py:52
-#: hcap_notifications/models/healthcare_unit_capacity.py:20
-#: hcap_notifications/models/healthcare_unit_condition.py:20
+#: hcap_notifications/models/healthcare_unit_capacity.py:21
+#: hcap_notifications/models/healthcare_unit_condition.py:21
 msgid "healthcare unit"
 msgstr "unidade de saúde"
 
@@ -906,73 +886,81 @@ msgstr "Monitores"
 msgid "Notifications"
 msgstr "Notificações"
 
-#: hcap_notifications/models/healthcare_unit_capacity.py:12
-#: hcap_notifications/models/healthcare_unit_condition.py:12
+#: hcap_notifications/models/healthcare_unit_capacity.py:13
+#: hcap_notifications/models/healthcare_unit_condition.py:13
 msgid "notifier"
 msgstr "notificador"
 
-#: hcap_notifications/models/healthcare_unit_capacity.py:24
-#: hcap_notifications/models/healthcare_unit_condition.py:24
+#: hcap_notifications/models/healthcare_unit_capacity.py:25
+#: hcap_notifications/models/healthcare_unit_condition.py:25
 msgid "It will be defined according to the notifier."
 msgstr "Será definido de acordo com o notificador."
 
-#: hcap_notifications/models/healthcare_unit_capacity.py:28
-#: hcap_notifications/models/healthcare_unit_condition.py:28
+#: hcap_notifications/models/healthcare_unit_capacity.py:29
+#: hcap_notifications/models/healthcare_unit_condition.py:29
 msgid "date"
 msgstr "data"
 
-#: hcap_notifications/models/healthcare_unit_capacity.py:31
+#: hcap_notifications/models/healthcare_unit_capacity.py:32
 msgid "Required. Date from which the healthcare unit changed its capacity."
 msgstr "Obrigatório. Data na qual a unidade de saúde alterou sua capacidade."
 
-#: hcap_notifications/models/healthcare_unit_capacity.py:36
+#: hcap_notifications/models/healthcare_unit_capacity.py:37
 msgid "clinical adult beds"
 msgstr "leitos clínicos para adultos"
 
-#: hcap_notifications/models/healthcare_unit_capacity.py:40
+#: hcap_notifications/models/healthcare_unit_capacity.py:41
 msgid "clinical pediatric beds"
 msgstr "leitos clínicos pediátricos"
 
-#: hcap_notifications/models/healthcare_unit_capacity.py:43
+#: hcap_notifications/models/healthcare_unit_capacity.py:44
 msgid "ICU adult beds"
 msgstr "leitos de UTI para adultos"
 
-#: hcap_notifications/models/healthcare_unit_capacity.py:46
+#: hcap_notifications/models/healthcare_unit_capacity.py:47
 msgid "ICU pediatric beds"
 msgstr "leitos de UTI pediátricos"
 
-#: hcap_notifications/models/healthcare_unit_capacity.py:49
-#: hcap_notifications/models/healthcare_unit_condition.py:35
+#: hcap_notifications/models/healthcare_unit_capacity.py:50
+#: hcap_notifications/models/healthcare_unit_condition.py:36
 msgid "created at"
 msgstr "criado em"
 
-#: hcap_notifications/models/healthcare_unit_capacity.py:51
-#: hcap_notifications/models/healthcare_unit_condition.py:37
+#: hcap_notifications/models/healthcare_unit_capacity.py:52
+#: hcap_notifications/models/healthcare_unit_condition.py:38
 msgid "updated at"
 msgstr "atualizado em"
 
-#: hcap_notifications/models/healthcare_unit_capacity.py:54
+#: hcap_notifications/models/healthcare_unit_capacity.py:55
 msgid "healthcare unit capacity"
 msgstr "capacidade da unidade de saúde"
 
-#: hcap_notifications/models/healthcare_unit_capacity.py:55
+#: hcap_notifications/models/healthcare_unit_capacity.py:56
 msgid "healthcare unit capacities"
 msgstr "capacidades da unidade de saúde"
 
-#: hcap_notifications/models/healthcare_unit_capacity.py:79
-#: hcap_notifications/models/healthcare_unit_condition.py:148
+#: hcap_notifications/models/healthcare_unit_capacity.py:80
+#: hcap_notifications/models/healthcare_unit_condition.py:149
 msgid "Cannot change notification after elapsed 24 hours from creation."
 msgstr "Não pode alterar notificação após 24 horas de sua criação."
 
-#: hcap_notifications/models/healthcare_unit_condition.py:31
+#: hcap_notifications/models/healthcare_unit_capacity.py:96
+msgid "total clinical beds"
+msgstr "total de leitos clínicos"
+
+#: hcap_notifications/models/healthcare_unit_capacity.py:100
+msgid "total ICU beds"
+msgstr "total de leitos de UTI"
+
+#: hcap_notifications/models/healthcare_unit_condition.py:32
 msgid "Required. Date from which the healthcare unit changed its condition."
 msgstr "Obrigatório. Data na qual a unidade de saúde alterou sua condição."
 
-#: hcap_notifications/models/healthcare_unit_condition.py:42
+#: hcap_notifications/models/healthcare_unit_condition.py:43
 msgid "SARI adult clinical cases"
 msgstr "casos clínicos de SRAG em adultos"
 
-#: hcap_notifications/models/healthcare_unit_condition.py:44
+#: hcap_notifications/models/healthcare_unit_condition.py:45
 msgid ""
 "Required. Includes confirmed COVID adult cases. Excludes SARI adult ICU "
 "cases."
@@ -980,19 +968,19 @@ msgstr ""
 "Obrigatório. Inclui casos clínicos confirmados de COVID em adultos. Exclui "
 "casos de UTI de SRAG em adultos."
 
-#: hcap_notifications/models/healthcare_unit_condition.py:49
+#: hcap_notifications/models/healthcare_unit_condition.py:50
 msgid "confirmed COVID adult clinical cases"
 msgstr "casos clínicos confirmados de COVID para adultos"
 
-#: hcap_notifications/models/healthcare_unit_condition.py:50
+#: hcap_notifications/models/healthcare_unit_condition.py:51
 msgid "Required. Excludes confirmed COVID adult ICU cases"
 msgstr "Obrigatório. Exclui casos de UTI confirmados de COVID para adultos."
 
-#: hcap_notifications/models/healthcare_unit_condition.py:56
+#: hcap_notifications/models/healthcare_unit_condition.py:57
 msgid "SARI pediatric clinical cases"
 msgstr "casos clínicos pediátricos de SRAG"
 
-#: hcap_notifications/models/healthcare_unit_condition.py:58
+#: hcap_notifications/models/healthcare_unit_condition.py:59
 msgid ""
 "Required. Includes confirmed COVID pediatric cases. Excludes SARI pediatric "
 "ICU cases."
@@ -1000,52 +988,52 @@ msgstr ""
 "Obrigatório. Inclui casos clínicos pediátricos confirmados de COVID. Exclui "
 "casos pediátricos de UTI de SRAG."
 
-#: hcap_notifications/models/healthcare_unit_condition.py:63
-msgid "confirmed COVID pediatric clinical cases"
-msgstr "casos pediátricos de UTI confirmados de COVID"
-
 #: hcap_notifications/models/healthcare_unit_condition.py:64
+msgid "confirmed COVID pediatric clinical cases"
+msgstr "casos clínicos pediátricos confirmados de COVID"
+
+#: hcap_notifications/models/healthcare_unit_condition.py:65
 msgid "Required. Excludes confirmed COVID pediatric ICU cases."
 msgstr "Obrigatório. Exclui casos pediátricos de UTI confirmados de COVID."
 
-#: hcap_notifications/models/healthcare_unit_condition.py:70
+#: hcap_notifications/models/healthcare_unit_condition.py:71
 msgid "SARI adult ICU cases"
 msgstr "casos de UTI de SRAG em adultos"
 
-#: hcap_notifications/models/healthcare_unit_condition.py:71
+#: hcap_notifications/models/healthcare_unit_condition.py:72
 msgid "Required. Includes confirmed COVID adult ICU cases."
 msgstr "Obrigatório. Inclui casos de UTI confirmados de COVID em adultos."
 
-#: hcap_notifications/models/healthcare_unit_condition.py:75
+#: hcap_notifications/models/healthcare_unit_condition.py:76
 msgid "confirmed COVID adult ICU cases"
 msgstr "casos de UTI confirmados de COVID em adultos"
 
-#: hcap_notifications/models/healthcare_unit_condition.py:81
+#: hcap_notifications/models/healthcare_unit_condition.py:82
 msgid "SARI pediatric ICU cases"
 msgstr "casos pediátricos de UTI de SRAG"
 
-#: hcap_notifications/models/healthcare_unit_condition.py:82
+#: hcap_notifications/models/healthcare_unit_condition.py:83
 msgid "Required. Includes confirmed COVID pediatric ICU cases."
 msgstr "Obrigatório. Inclui casos pediátricos de UTI confirmados de COVID."
 
-#: hcap_notifications/models/healthcare_unit_condition.py:86
+#: hcap_notifications/models/healthcare_unit_condition.py:87
 msgid "confirmed COVID pediatric ICU cases"
 msgstr "casos pediátricos de UTI confirmados de COVID"
 
-#: hcap_notifications/models/healthcare_unit_condition.py:92
+#: hcap_notifications/models/healthcare_unit_condition.py:93
 msgid "general adult clinical cases"
 msgstr "casos gerais clínicos em adultos"
 
-#: hcap_notifications/models/healthcare_unit_condition.py:93
+#: hcap_notifications/models/healthcare_unit_condition.py:94
 msgid ""
 "Required. Excludes SARI adult clinical cases and general adult ICU cases."
 msgstr "Obrigatório. Exclui casos clínicos e de UTI de SRAG em adultos."
 
-#: hcap_notifications/models/healthcare_unit_condition.py:97
+#: hcap_notifications/models/healthcare_unit_condition.py:98
 msgid "general pediatric clinical cases"
 msgstr "casos gerais pediátricos clínicos"
 
-#: hcap_notifications/models/healthcare_unit_condition.py:99
+#: hcap_notifications/models/healthcare_unit_condition.py:100
 msgid ""
 "Required. Excludes SARI pediatric clinical cases and general pediatric ICU "
 "cases."
@@ -1053,33 +1041,45 @@ msgstr ""
 "Obrigatório. Exclui casos pediátricos clínicos de SRAG e casos gerais "
 "pédiatricos de UTI."
 
-#: hcap_notifications/models/healthcare_unit_condition.py:106
+#: hcap_notifications/models/healthcare_unit_condition.py:107
 msgid "general adult ICU cases"
 msgstr "casos gerais de UTI em adultos"
 
-#: hcap_notifications/models/healthcare_unit_condition.py:106
+#: hcap_notifications/models/healthcare_unit_condition.py:107
 msgid "Required. Excludes SARI adult ICU cases."
 msgstr "Obrigatório. Exclui casos de UTI de SRAG em adultos."
 
-#: hcap_notifications/models/healthcare_unit_condition.py:110
+#: hcap_notifications/models/healthcare_unit_condition.py:111
 msgid "general pediatric ICU cases"
 msgstr "casos gerais pediátricos de UTI"
 
-#: hcap_notifications/models/healthcare_unit_condition.py:111
+#: hcap_notifications/models/healthcare_unit_condition.py:112
 msgid "Required. Excludes SARI pediatric ICU cases."
 msgstr "Obrigatório. Exclui casos pediátricos de UTI de SRAG."
 
-#: hcap_notifications/models/healthcare_unit_condition.py:115
+#: hcap_notifications/models/healthcare_unit_condition.py:116
 msgid "healthcare unit condition"
 msgstr "condição da unidade de saúde"
 
-#: hcap_notifications/models/healthcare_unit_condition.py:116
+#: hcap_notifications/models/healthcare_unit_condition.py:117
 msgid "healthcare unit conditions"
 msgstr "condições da unidade de saúde"
 
-#: hcap_notifications/models/healthcare_unit_condition.py:152
+#: hcap_notifications/models/healthcare_unit_condition.py:153
 msgid "COVID cases cannot be greater than SARI cases."
 msgstr "Casos de COVID não pode ser maior que casos de SRAG."
+
+#: hcap_notifications/models/healthcare_unit_condition.py:188
+msgid "total cases"
+msgstr "casos totais"
+
+#: hcap_notifications/models/healthcare_unit_condition.py:210
+msgid "SARI cases"
+msgstr "casos de UTI de SRAG"
+
+#: hcap_notifications/models/healthcare_unit_condition.py:232
+msgid "COVID cases"
+msgstr "casos de COVID"
 
 #: hcap_utils/apps.py:7
 msgid "Utility"

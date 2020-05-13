@@ -4,7 +4,6 @@ from hcap.forms import HealthcareUnitCapacityForm
 from hcap_accounts.models import HealthcareUnitNotifier, RegionManager
 from hcap_notifications.models import HealthcareUnitCapacity
 from hcap_utils.contrib.material.viewsets import ModelViewSet
-from hcap_utils.properties import trans_property
 
 
 class HealthcareUnitCapacitiesViewSet(ModelViewSet):
@@ -15,21 +14,13 @@ class HealthcareUnitCapacitiesViewSet(ModelViewSet):
     list_display = (
         "healthcare_unit",
         "date",
-        "_total_clinical_beds",
-        "_total_icu_beds",
+        "total_clinical_beds",
+        "total_icu_beds",
     )
 
     ordering = ("healthcare_unit", "-date")
 
     form_class = HealthcareUnitCapacityForm
-
-    @trans_property(_("Total clinical beds"))
-    def _total_clinical_beds(self):
-        self.total_clinical_beds
-
-    @trans_property(_("Total icu beds"))
-    def _total_icu_beds(self):
-        self.total_icu_beds
 
     def get_extra_context(self, request):
         healthcare_unit_id = request.path.split("/")[3]
