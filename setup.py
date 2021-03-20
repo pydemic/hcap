@@ -25,7 +25,7 @@ REQUIREMENTS = [
     "idna==2.9",
     "invoke==1.4.1",
     "humanize==2.3.0",
-    "Jinja2==2.11.1",
+    "Jinja2==2.11.3",
     "MarkupSafe==1.1.1",
     "matplotlib==3.2.1",
     "numpy==1.18.2",
