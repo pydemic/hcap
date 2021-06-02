@@ -41,7 +41,7 @@ REQUIREMENTS = [
     "six==1.14.0",
     "soupsieve==2.0",
     "sqlparse==0.3.1",
-    "urllib3==1.25.8",
+    "urllib3==1.26.5",
     "django_select2==7.2.3",
 ]
 
