@@ -21,7 +21,7 @@ REQUIREMENTS = [
     "django-model-utils==4.0.0",
     "django-viewflow==1.6.0",
     "django-prometheus==2.0.0",
-    "Django==3.0.5",
+    "Django==3.1.12",
     "idna==2.9",
     "invoke==1.4.1",
     "humanize==2.3.0",
