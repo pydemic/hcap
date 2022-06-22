@@ -28,7 +28,7 @@ REQUIREMENTS = [
     "Jinja2==2.11.1",
     "MarkupSafe==1.1.1",
     "matplotlib==3.2.1",
-    "numpy==1.18.2",
+    "numpy==1.22.0",
     "oauthlib==3.1.0",
     "pandas==1.0.3",
     "psycopg2-binary==2.8.4",
