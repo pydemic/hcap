@@ -5,7 +5,7 @@ from setuptools import find_packages, setup
 REQUIREMENTS = [
     "asgiref==3.2.7",
     "beautifulsoup4==4.9.0",
-    "certifi==2020.4.5.1",
+    "certifi==2022.12.7",
     "chardet==3.0.4",
     "defusedxml==0.6.0",
     "django-allauth-templates-bootstrap4==0.34.12",
